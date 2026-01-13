@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinted Buy App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; padding: 20px; color: #333; }
+        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { margin-top: 0; color: #0088cc; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; background: #0088cc; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .result { font-weight: bold; color: #2ecc71; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Твой баланс: <span id="balance">0.00</span> BYN</h2>
+    </div>
+
+    <div class="card">
+        <h3>Новый заказ</h3>
+        <label>Ссылка на Vinted:</label>
+        <input type="text" id="vinted_link" placeholder="https://www.vinted.pl/...">
+        
+        <label>Категория товара:</label>
+        <select id="category">
+            <option value="clothes">Кофта / Майка</option>
+            <option value="bags">Сумка / Портфель</option>
+            <option value="shoes">Обувь / Куртка</option>
+        </select>
+
+        <label>Цена со всеми сборами (PLN):</label>
+        <input type="number" id="price_pln" placeholder="Например: 123.50">
+
+        <button onclick="calculate()">Рассчитать стоимость</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <button id="order_btn" style="display:none; background: #27ae60;">Оформить заказ</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Расширить на весь экран
+
+        function calculate() {
+            // В следующей итерации мы подключим автоматический расчет
+            // Пока выводим подтверждение данных
+            const price = document.getElementById('price_pln').value;
+            const resDiv = document.getElementById('result');
+            if(price > 0) {
+                resDiv.style.display = 'block';
+                resDiv.innerHTML = `Данные приняты. Система рассчитает цену согласно курсу.`;
+                document.getElementById('order_btn').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
