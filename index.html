@@ -7,7 +7,10 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }
         .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
+        label { display: block; margin: 10px 0 5px 5px; font-weight: bold; font-size: 14px; color: #555; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; transition: border 0.3s; }
+        input:focus { border: 1px solid #0088cc; }
+        .hint { font-size: 11px; color: #888; margin-bottom: 15px; padding-left: 5px; line-height: 1.3; }
         button { width: 100%; background: #0088cc; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
         h2 { color: #0088cc; margin-top: 0; text-align: center; }
     </style>
@@ -15,13 +18,25 @@
 <body>
     <div class="card">
         <h2>🛍️ Новый заказ</h2>
-        <input type="text" id="link" placeholder="Ссылка на Vinted">
+        
+        <label>Ссылка на товар</label>
+        <input type="text" id="link" placeholder="https://www.vinted.pl/items/...">
+        <div class="hint">💡 Копируйте из браузера, чтобы подтянулось фото.</div>
+
+        <label>Ссылка на фото (необязательно)</label>
+        <input type="text" id="photo_link" placeholder="Вставьте ссылку на картинку">
+        <div class="hint">Зажмите фото в Vinted → Копировать ссылку на изображение.</div>
+
+        <label>Категория товара</label>
         <select id="cat">
             <option value="clothes">Кофта / Майка</option>
             <option value="bags">Сумка / Портфель</option>
             <option value="shoes">Обувь / Куртка</option>
         </select>
-        <input type="number" id="price" placeholder="Цена со всеми сборами (PLN)">
+
+        <label>Цена товара</label>
+        <input type="number" id="price" placeholder="Цена в PLN">
+        
         <button onclick="sendDataToBot()">Рассчитать в чате</button>
     </div>
 
@@ -31,16 +46,18 @@
 
         function sendDataToBot() {
             const link = document.getElementById('link').value;
+            const photo_link = document.getElementById('photo_link').value;
             const price = document.getElementById('price').value;
             const category = document.getElementById('cat').value;
 
             if (!link || !price) {
-                alert("Пожалуйста, заполни все поля!");
+                tg.showAlert("Пожалуйста, заполни ссылку и цену!");
                 return;
             }
 
             const data = {
                 link: link,
+                photo_link: photo_link,
                 price: price,
                 category: category
             };
