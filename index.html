@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }
         .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; background: #0088cc; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; }
-        h2 { color: #0088cc; margin-top: 0; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
+        button { width: 100%; background: #0088cc; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        h2 { color: #0088cc; margin-top: 0; text-align: center; }
     </style>
 </head>
 <body>
@@ -35,7 +35,7 @@
             const category = document.getElementById('cat').value;
 
             if (!link || !price) {
-                alert("Заполни все поля!");
+                alert("Пожалуйста, заполни все поля!");
                 return;
             }
 
@@ -45,8 +45,10 @@
                 category: category
             };
 
-            // ВНИМАНИЕ: JSON пишется большими буквами
+            // Отправляем данные боту
             tg.sendData(JSON.stringify(data));
+            // Закрываем приложение
+            tg.close();
         }
     </script>
 </body>
