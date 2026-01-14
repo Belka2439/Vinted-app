@@ -15,7 +15,6 @@
         .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .order-number { font-weight: bold; font-size: 15px; color: #1c1e21; }
         
-        /* СТИЛИ ДЛЯ БЛОКА С КАРТИНКОЙ */
         .order-content { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
         .order-img { 
             width: 60px; 
@@ -32,14 +31,17 @@
         }
 
         .order-details { flex-grow: 1; min-width: 0; }
+        
+        /* Исправленный блок с поддержкой line-clamp */
         .order-link { 
             color: #0088cc; 
             text-decoration: none; 
             font-size: 13px; 
             word-break: break-all; 
             display: -webkit-box;
-            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* Для Chrome/Safari/Edge */
+            line-clamp: 2;         /* Стандартное свойство */
             overflow: hidden;
             line-height: 1.4;
         }
@@ -65,7 +67,8 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]')).reverse(); 
+        // Получаем оригинальный массив (обычно бот шлет их от старых к новым)
+        const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]')); 
 
         function getStatusType(status) {
             if (['В обработке', 'Заказано'].includes(status)) return 'process';
@@ -81,13 +84,16 @@
             const container = document.getElementById('order-container');
             container.innerHTML = '';
 
-            const filtered = orders.map((o, index) => ({...o, displayIndex: index + 1}))
-                .filter(o => {
-                    if (type === 'all') return true;
-                    return getStatusType(o.status) === type;
-                });
+            // Присваиваем индекс ДО разворота массива, чтобы #1 был самым старым
+            const mapped = orders.map((o, index) => ({...o, displayIndex: index + 1}));
 
-            const displayList = [...filtered].reverse();
+            // Фильтруем и разворачиваем, чтобы новые были сверху
+            const filtered = mapped.filter(o => {
+                if (type === 'all') return true;
+                return getStatusType(o.status) === type;
+            });
+
+            const displayList = filtered.reverse();
 
             if (displayList.length === 0) {
                 container.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">Заказов не найдено</div>';
@@ -102,7 +108,6 @@
                     statusClass = 'status-cancel';
                 }
 
-                // Логика картинки: если в данных будет поле o.img, оно подставится. Иначе — иконка.
                 const imageHtml = o.img 
                     ? `<img src="${o.img}" class="order-img" alt="item">` 
                     : `<div class="order-img">📦</div>`;
