@@ -12,17 +12,42 @@
         
         #order-container { padding: 12px; }
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .order-number { font-weight: bold; font-size: 15px; color: #1c1e21; }
-        .order-link { color: #0088cc; text-decoration: none; font-size: 13px; word-break: break-all; display: block; margin-bottom: 10px; opacity: 0.8; }
+        
+        /* СТИЛИ ДЛЯ БЛОКА С КАРТИНКОЙ */
+        .order-content { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
+        .order-img { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 8px; 
+            object-fit: cover; 
+            background-color: #f0f2f5; 
+            flex-shrink: 0; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bcc0c4;
+            font-size: 24px;
+        }
+
+        .order-details { flex-grow: 1; min-width: 0; }
+        .order-link { 
+            color: #0088cc; 
+            text-decoration: none; 
+            font-size: 13px; 
+            word-break: break-all; 
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
         
         .order-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f2f5; padding-top: 10px; }
-        
-        /* ПРИНУДИТЕЛЬНО ЧЕРНЫЙ ЦВЕТ ДЛЯ ЦЕНЫ И ВАЛЮТЫ */
         .price { font-weight: 700; font-size: 16px; color: #000000 !important; }
         .price-label { font-size: 13px; color: #65676b; }
         
-        /* СТИЛИ СТАТУСОВ */
         .status { font-size: 11px; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; font-weight: bold; }
         .status-green { background: #e7f3ed; color: #2b7d52; } 
         .status-process { background: #e7f3ff; color: #1877f2; }
@@ -77,13 +102,23 @@
                     statusClass = 'status-cancel';
                 }
 
+                // Логика картинки: если в данных будет поле o.img, оно подставится. Иначе — иконка.
+                const imageHtml = o.img 
+                    ? `<img src="${o.img}" class="order-img" alt="item">` 
+                    : `<div class="order-img">📦</div>`;
+
                 container.innerHTML += `
                     <div class="order-card">
                         <div class="order-header">
                             <span class="order-number">Товар #${o.displayIndex}</span>
                             <span class="status ${statusClass}">${o.status}</span>
                         </div>
-                        <a href="${o.link}" class="order-link" target="_blank">${o.link}</a>
+                        <div class="order-content">
+                            ${imageHtml}
+                            <div class="order-details">
+                                <a href="${o.link}" class="order-link" target="_blank">${o.link}</a>
+                            </div>
+                        </div>
                         <div class="order-info">
                             <span class="price-label">Сумма:</span>
                             <span class="price">${o.price} BYN</span>
@@ -97,4 +132,5 @@
     </script>
 </body>
 </html>
+
 
