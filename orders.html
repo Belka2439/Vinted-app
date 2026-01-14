@@ -16,17 +16,15 @@
         .order-number { font-weight: bold; font-size: 15px; color: #1c1e21; }
         .order-link { color: #0088cc; text-decoration: none; font-size: 13px; word-break: break-all; display: block; margin-bottom: 10px; opacity: 0.8; }
         
-        .order-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f2f5; pt: 10px; padding-top: 10px; }
-        .price { font-weight: 700; font-size: 16px; color: #2b7d52; }
+        .order-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f2f5; padding-top: 10px; }
+        
+        /* ЦЕНА ТЕПЕРЬ ЧЕРНАЯ */
+        .price { font-weight: 700; font-size: 16px; color: #000000; }
         
         /* СТИЛИ СТАТУСОВ */
         .status { font-size: 11px; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; font-weight: bold; }
-        
-        /* "Заказано" и "Забрали" теперь зеленые */
         .status-green { background: #e7f3ed; color: #2b7d52; } 
-        /* "В обработке" - синий/желтый */
         .status-process { background: #e7f3ff; color: #1877f2; }
-        /* "Продано/Отменено" - красный */
         .status-cancel { background: #fbe9e9; color: #d93025; }
     </style>
 </head>
@@ -40,10 +38,8 @@
     <div id="order-container"></div>
 
     <script>
-        // Получаем данные из URL
         const urlParams = new URLSearchParams(window.location.search);
-        // Разворачиваем массив, чтобы последние заказы были сверху (т.к. в БД они DESC)
-        // Но для нумерации 1, 2, 3... нам нужно знать их реальный порядок.
+        // Получаем заказы и разворачиваем, чтобы проставить ID от старых к новым (1, 2, 3...)
         const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]')).reverse(); 
 
         function getStatusType(status) {
@@ -60,14 +56,14 @@
             const container = document.getElementById('order-container');
             container.innerHTML = '';
 
-            // Фильтруем заказы
-            const filtered = orders.map((o, index) => ({...o, displayIndex: index + 1})) // Добавляем порядковый номер
+            // Добавляем порядковый номер и фильтруем
+            const filtered = orders.map((o, index) => ({...o, displayIndex: index + 1}))
                 .filter(o => {
                     if (type === 'all') return true;
                     return getStatusType(o.status) === type;
                 });
 
-            // Отображаем сверху новые (переворачиваем обратно для вывода)
+            // Для отображения переворачиваем обратно (новые сверху)
             const displayList = [...filtered].reverse();
 
             if (displayList.length === 0) {
@@ -99,8 +95,8 @@
             });
         }
 
-        // Запуск при загрузке
         filterOrders('all', document.querySelector('.tab'));
     </script>
 </body>
 </html>
+
