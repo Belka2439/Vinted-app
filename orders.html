@@ -18,8 +18,9 @@
         
         .order-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f2f5; padding-top: 10px; }
         
-        /* ЦЕНА ТЕПЕРЬ ЧЕРНАЯ */
-        .price { font-weight: 700; font-size: 16px; color: #000000; }
+        /* ПРИНУДИТЕЛЬНО ЧЕРНЫЙ ЦВЕТ ДЛЯ ЦЕНЫ И ВАЛЮТЫ */
+        .price { font-weight: 700; font-size: 16px; color: #000000 !important; }
+        .price-label { font-size: 13px; color: #65676b; }
         
         /* СТИЛИ СТАТУСОВ */
         .status { font-size: 11px; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; font-weight: bold; }
@@ -39,7 +40,6 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        // Получаем заказы и разворачиваем, чтобы проставить ID от старых к новым (1, 2, 3...)
         const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]')).reverse(); 
 
         function getStatusType(status) {
@@ -56,14 +56,12 @@
             const container = document.getElementById('order-container');
             container.innerHTML = '';
 
-            // Добавляем порядковый номер и фильтруем
             const filtered = orders.map((o, index) => ({...o, displayIndex: index + 1}))
                 .filter(o => {
                     if (type === 'all') return true;
                     return getStatusType(o.status) === type;
                 });
 
-            // Для отображения переворачиваем обратно (новые сверху)
             const displayList = [...filtered].reverse();
 
             if (displayList.length === 0) {
@@ -87,7 +85,7 @@
                         </div>
                         <a href="${o.link}" class="order-link" target="_blank">${o.link}</a>
                         <div class="order-info">
-                            <span style="font-size: 13px; color: #65676b;">Сумма:</span>
+                            <span class="price-label">Сумма:</span>
                             <span class="price">${o.price} BYN</span>
                         </div>
                     </div>
