@@ -16,23 +16,34 @@
         .order-number { font-weight: bold; font-size: 15px; color: #1c1e21; }
         
         .order-content { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
+        
+        /* Исправленные стили для фото */
         .order-img { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 8px; 
+            width: 65px; 
+            height: 65px; 
+            border-radius: 10px; 
             object-fit: cover; 
             background-color: #f0f2f5; 
             flex-shrink: 0; 
+            border: 1px solid #eee;
+        }
+
+        /* Заглушка, если фото нет */
+        .order-img-placeholder {
+            width: 65px;
+            height: 65px;
+            border-radius: 10px;
+            background-color: #f0f2f5;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #bcc0c4;
             font-size: 24px;
+            flex-shrink: 0;
+            color: #bcc0c4;
         }
 
         .order-details { flex-grow: 1; min-width: 0; }
         
-        /* Исправленный блок с поддержкой line-clamp */
         .order-link { 
             color: #0088cc; 
             text-decoration: none; 
@@ -40,14 +51,14 @@
             word-break: break-all; 
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2; /* Для Chrome/Safari/Edge */
-            line-clamp: 2;         /* Стандартное свойство */
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             overflow: hidden;
             line-height: 1.4;
         }
         
         .order-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f2f5; padding-top: 10px; }
-        .price { font-weight: 700; font-size: 16px; color: #000000 !important; }
+        .price { font-weight: 700; font-size: 16px; color: #000 !important; }
         .price-label { font-size: 13px; color: #65676b; }
         
         .status { font-size: 11px; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; font-weight: bold; }
@@ -61,14 +72,19 @@
         <div class="tab active" onclick="filterOrders('all', this)">Все</div>
         <div class="tab" onclick="filterOrders('process', this)">В процессе</div>
         <div class="tab" onclick="filterOrders('done', this)">Закончено</div>
-        <div class="tab" onclick="filterOrders('canceled', this)">Аннулировано</div>
+        <div class="tab" onclick="filterOrders('canceled', this)">Отмена</div>
     </div>
     <div id="order-container"></div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        // Получаем оригинальный массив (обычно бот шлет их от старых к новым)
-        const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]')); 
+        // Безопасное получение данных
+        let orders = [];
+        try {
+            orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]'));
+        } catch(e) {
+            console.error("Ошибка парсинга данных:", e);
+        }
 
         function getStatusType(status) {
             if (['В обработке', 'Заказано'].includes(status)) return 'process';
@@ -84,19 +100,20 @@
             const container = document.getElementById('order-container');
             container.innerHTML = '';
 
-            // Присваиваем индекс ДО разворота массива, чтобы #1 был самым старым
+            // Индексация
             const mapped = orders.map((o, index) => ({...o, displayIndex: index + 1}));
 
-            // Фильтруем и разворачиваем, чтобы новые были сверху
+            // Фильтрация
             const filtered = mapped.filter(o => {
                 if (type === 'all') return true;
                 return getStatusType(o.status) === type;
             });
 
-            const displayList = filtered.reverse();
+            // Новые сверху
+            const displayList = [...filtered].reverse();
 
             if (displayList.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">Заказов не найдено</div>';
+                container.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px; font-size:14px;">Список заказов пуст</div>';
                 return;
             }
 
@@ -108,14 +125,16 @@
                     statusClass = 'status-cancel';
                 }
 
-                const imageHtml = o.img 
-                    ? `<img src="${o.img}" class="order-img" alt="item">` 
-                    : `<div class="order-img">📦</div>`;
+                // Улучшенная логика отображения фото
+                // Если ссылка o.img существует и она длиннее 10 символов, рисуем img
+                const imageHtml = (o.img && o.img.length > 10) 
+                    ? `<img src="${o.img}" class="order-img" alt="product" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=order-img-placeholder>📦</div>';">` 
+                    : `<div class="order-img-placeholder">📦</div>`;
 
                 container.innerHTML += `
                     <div class="order-card">
                         <div class="order-header">
-                            <span class="order-number">Товар #${o.displayIndex}</span>
+                            <span class="order-number">Заказ #${o.displayIndex}</span>
                             <span class="status ${statusClass}">${o.status}</span>
                         </div>
                         <div class="order-content">
@@ -125,7 +144,7 @@
                             </div>
                         </div>
                         <div class="order-info">
-                            <span class="price-label">Сумма:</span>
+                            <span class="price-label">Итого:</span>
                             <span class="price">${o.price} BYN</span>
                         </div>
                     </div>
@@ -133,9 +152,11 @@
             });
         }
 
+        // Инициализация
         filterOrders('all', document.querySelector('.tab'));
     </script>
 </body>
 </html>
+
 
 
