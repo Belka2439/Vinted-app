@@ -9,15 +9,25 @@
         .tabs { display: flex; background: white; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #ddd; }
         .tab { flex: 1; padding: 12px 5px; text-align: center; font-size: 13px; font-weight: 600; color: #65676b; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; }
         .tab.active { color: #0088cc; border-bottom-color: #0088cc; }
+        
         #order-container { padding: 12px; }
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .order-link { color: #0088cc; text-decoration: none; font-size: 14px; word-break: break-all; display: block; margin-bottom: 8px; }
-        .order-info { display: flex; justify-content: space-between; align-items: center; }
-        .price { font-weight: 700; font-size: 16px; }
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .order-number { font-weight: bold; font-size: 15px; color: #1c1e21; }
+        .order-link { color: #0088cc; text-decoration: none; font-size: 13px; word-break: break-all; display: block; margin-bottom: 10px; opacity: 0.8; }
+        
+        .order-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f2f5; pt: 10px; padding-top: 10px; }
+        .price { font-weight: 700; font-size: 16px; color: #2b7d52; }
+        
+        /* СТИЛИ СТАТУСОВ */
         .status { font-size: 11px; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; font-weight: bold; }
-        .status-pending { background: #e7f3ff; color: #1877f2; }
-        .status-completed { background: #e7f3ed; color: #2b7d52; }
-        .status-canceled { background: #fbe9e9; color: #d93025; }
+        
+        /* "Заказано" и "Забрали" теперь зеленые */
+        .status-green { background: #e7f3ed; color: #2b7d52; } 
+        /* "В обработке" - синий/желтый */
+        .status-process { background: #e7f3ff; color: #1877f2; }
+        /* "Продано/Отменено" - красный */
+        .status-cancel { background: #fbe9e9; color: #d93025; }
     </style>
 </head>
 <body>
@@ -30,8 +40,11 @@
     <div id="order-container"></div>
 
     <script>
+        // Получаем данные из URL
         const urlParams = new URLSearchParams(window.location.search);
-        const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]'));
+        // Разворачиваем массив, чтобы последние заказы были сверху (т.к. в БД они DESC)
+        // Но для нумерации 1, 2, 3... нам нужно знать их реальный порядок.
+        const orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]')).reverse(); 
 
         function getStatusType(status) {
             if (['В обработке', 'Заказано'].includes(status)) return 'process';
@@ -47,30 +60,46 @@
             const container = document.getElementById('order-container');
             container.innerHTML = '';
 
-            const filtered = orders.filter(o => {
-                if (type === 'all') return true;
-                return getStatusType(o.status) === type;
-            });
+            // Фильтруем заказы
+            const filtered = orders.map((o, index) => ({...o, displayIndex: index + 1})) // Добавляем порядковый номер
+                .filter(o => {
+                    if (type === 'all') return true;
+                    return getStatusType(o.status) === type;
+                });
 
-            if (filtered.length === 0) {
+            // Отображаем сверху новые (переворачиваем обратно для вывода)
+            const displayList = [...filtered].reverse();
+
+            if (displayList.length === 0) {
                 container.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">Заказов не найдено</div>';
                 return;
             }
 
-            filtered.forEach(o => {
-                const typeClass = `status-${getStatusType(o.status) === 'done' ? 'completed' : (getStatusType(o.status) === 'canceled' ? 'canceled' : 'pending')}`;
+            displayList.forEach(o => {
+                let statusClass = 'status-process';
+                if (o.status === 'Заказано' || o.status === 'Забрали' || o.status === 'Доставлено') {
+                    statusClass = 'status-green';
+                } else if (getStatusType(o.status) === 'canceled') {
+                    statusClass = 'status-cancel';
+                }
+
                 container.innerHTML += `
                     <div class="order-card">
-                        <a href="${o.link}" class="order-link" target="_blank">🔗 Товар #${o.id}</a>
+                        <div class="order-header">
+                            <span class="order-number">Товар #${o.displayIndex}</span>
+                            <span class="status ${statusClass}">${o.status}</span>
+                        </div>
+                        <a href="${o.link}" class="order-link" target="_blank">${o.link}</a>
                         <div class="order-info">
+                            <span style="font-size: 13px; color: #65676b;">Сумма:</span>
                             <span class="price">${o.price} BYN</span>
-                            <span class="status ${typeClass}">${o.status}</span>
                         </div>
                     </div>
                 `;
             });
         }
 
+        // Запуск при загрузке
         filterOrders('all', document.querySelector('.tab'));
     </script>
 </body>
