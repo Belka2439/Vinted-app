@@ -17,7 +17,6 @@
         
         .order-content { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
         
-        /* Исправленные стили для фото */
         .order-img { 
             width: 65px; 
             height: 65px; 
@@ -26,20 +25,6 @@
             background-color: #f0f2f5; 
             flex-shrink: 0; 
             border: 1px solid #eee;
-        }
-
-        /* Заглушка, если фото нет */
-        .order-img-placeholder {
-            width: 65px;
-            height: 65px;
-            border-radius: 10px;
-            background-color: #f0f2f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-            color: #bcc0c4;
         }
 
         .order-details { flex-grow: 1; min-width: 0; }
@@ -78,7 +63,6 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        // Безопасное получение данных
         let orders = [];
         try {
             orders = JSON.parse(decodeURIComponent(urlParams.get('data') || '[]'));
@@ -100,16 +84,12 @@
             const container = document.getElementById('order-container');
             container.innerHTML = '';
 
-            // Индексация
             const mapped = orders.map((o, index) => ({...o, displayIndex: index + 1}));
-
-            // Фильтрация
             const filtered = mapped.filter(o => {
                 if (type === 'all') return true;
                 return getStatusType(o.status) === type;
             });
 
-            // Новые сверху
             const displayList = [...filtered].reverse();
 
             if (displayList.length === 0) {
@@ -125,11 +105,10 @@
                     statusClass = 'status-cancel';
                 }
 
-                // Улучшенная логика отображения фото
-                // Если ссылка o.img существует и она длиннее 10 символов, рисуем img
-                const imageHtml = (o.img && o.img.length > 10) 
-                    ? `<img src="${o.img}" class="order-img" alt="product" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=order-img-placeholder>📦</div>';">` 
-                    : `<div class="order-img-placeholder">📦</div>`;
+                // Логика: если есть ссылка на фото, выводим тег. Если нет или ошибка загрузки - убираем его совсем.
+                const imageHtml = (o.img && o.img.startsWith('http')) 
+                    ? `<img src="${o.img}" class="order-img" alt="" onerror="this.style.display='none';">` 
+                    : '';
 
                 container.innerHTML += `
                     <div class="order-card">
@@ -144,7 +123,7 @@
                             </div>
                         </div>
                         <div class="order-info">
-                            <span class="price-label">Итого:</span>
+                            <span class="price-label">Сумма:</span>
                             <span class="price">${o.price} BYN</span>
                         </div>
                     </div>
@@ -152,11 +131,11 @@
             });
         }
 
-        // Инициализация
         filterOrders('all', document.querySelector('.tab'));
     </script>
 </body>
 </html>
+
 
 
 
