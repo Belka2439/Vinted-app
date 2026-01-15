@@ -52,13 +52,13 @@
         
         button.main-btn { width: 100%; background: #0088cc; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; margin-top: 10px; box-shadow: 0 4px 10px rgba(0,136,204,0.2); }
         
-        /* Список заказов с фото */
+        /* Список заказов */
         .order-item { border-bottom: 1px solid #eee; padding: 12px 0; display: flex; align-items: center; gap: 12px; }
         .order-item:last-child { border-bottom: none; }
         
         .order-img { 
-            width: 50px; height: 50px; border-radius: 8px; object-fit: cover; 
-            background: #f0f2f5; border: 1px solid #eee; flex-shrink: 0;
+            width: 60px; height: 60px; border-radius: 8px; object-fit: cover; 
+            background: #eee; border: 1px solid #eee; flex-shrink: 0;
         }
 
         .order-info { flex: 1; min-width: 0; }
@@ -173,6 +173,7 @@
             tg.close();
         }
 
+        // ВНЕСЕННЫЕ ИЗМЕНЕНИЯ В ФУНКЦИЮ ОТРИСОВКИ
         function renderOrders() {
             const listContainer = document.getElementById('orders-list');
             const orders = window.userOrders || [];
@@ -184,27 +185,26 @@
 
             listContainer.innerHTML = '';
             orders.forEach(order => {
+                // Статус
                 let statusClass = 'status-wait';
                 let statusText = order.status || 'В обработке';
+                const lowerS = statusText.toLowerCase();
                 
-                // Распознавание статусов (включая польский из CSV)
-                const lowerStatus = statusText.toLowerCase();
-                if (lowerStatus.includes('куплено') || lowerStatus.includes('zrealizowane') || lowerStatus.includes('заказано')) {
-                    statusClass = 'status-done';
-                } else if (lowerStatus.includes('возврат') || lowerStatus.includes('anulowano') || lowerStatus.includes('продано')) {
-                    statusClass = 'status-sold';
-                }
+                if (lowerS.includes('куплено') || lowerS.includes('zrealizowane')) statusClass = 'status-done';
+                if (lowerS.includes('возврат') || lowerS.includes('anulowano')) statusClass = 'status-sold';
 
-                // Фотография из базы или заглушка
-                let photoSrc = 'https://via.placeholder.com/150?text=V';
-                if (order.photo && order.photo !== 'None' && order.photo !== 'nan' && order.photo.startsWith('http')) {
-                    photoSrc = order.photo;
+                // Фото. Используем order.photo напрямую из данных от бота
+                let photoSrc = order.photo;
+                
+                // Проверка на корректность ссылки
+                if (!photoSrc || photoSrc === 'None' || photoSrc === 'nan' || photoSrc.length < 10) {
+                    photoSrc = 'https://via.placeholder.com/150?text=Wait+Update';
                 }
 
                 const item = document.createElement('div');
                 item.className = 'order-item';
                 item.innerHTML = `
-                    <img src="${photoSrc}" class="order-img" onerror="this.src='https://via.placeholder.com/150?text=?'">
+                    <img src="${photoSrc}" class="order-img" onerror="this.src='https://via.placeholder.com/150?text=Error'">
                     <div class="order-info">
                         <a href="${order.link}" class="order-link" target="_blank">Заказ #${order.id}</a>
                         <div class="order-price">${order.price} BYN</div>
