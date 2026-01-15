@@ -187,18 +187,24 @@
                 let statusClass = 'status-wait';
                 let statusText = order.status || 'В обработке';
                 
-                if (statusText === 'Заказано' || statusText === 'Куплено') statusClass = 'status-done';
-                if (statusText.includes('Продано') || statusText.includes('Возврат')) statusClass = 'status-sold';
+                // Распознавание статусов (включая польский из CSV)
+                const lowerStatus = statusText.toLowerCase();
+                if (lowerStatus.includes('куплено') || lowerStatus.includes('zrealizowane') || lowerStatus.includes('заказано')) {
+                    statusClass = 'status-done';
+                } else if (lowerStatus.includes('возврат') || lowerStatus.includes('anulowano') || lowerStatus.includes('продано')) {
+                    statusClass = 'status-sold';
+                }
 
-                // Заглушка, если фото нет
-                const photoSrc = (order.photo && order.photo.startsWith('http')) 
-                    ? order.photo 
-                    : 'https://via.placeholder.com/50?text=V';
+                // Фотография из базы или заглушка
+                let photoSrc = 'https://via.placeholder.com/150?text=V';
+                if (order.photo && order.photo !== 'None' && order.photo !== 'nan' && order.photo.startsWith('http')) {
+                    photoSrc = order.photo;
+                }
 
                 const item = document.createElement('div');
                 item.className = 'order-item';
                 item.innerHTML = `
-                    <img src="${photoSrc}" class="order-img" onerror="this.src='https://via.placeholder.com/50?text=?'">
+                    <img src="${photoSrc}" class="order-img" onerror="this.src='https://via.placeholder.com/150?text=?'">
                     <div class="order-info">
                         <a href="${order.link}" class="order-link" target="_blank">Заказ #${order.id}</a>
                         <div class="order-price">${order.price} BYN</div>
@@ -211,4 +217,3 @@
     </script>
 </body>
 </html>
-
