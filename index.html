@@ -33,12 +33,7 @@
             box-shadow: 0 10px 20px rgba(0,122,255,0.15);
         }
 
-        .balance-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .balance-wrapper { display: flex; justify-content: space-between; align-items: center; }
         .balance-info { text-align: left; }
         .balance-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-bottom: 4px; }
         .balance-amount { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
@@ -57,29 +52,15 @@
             -webkit-appearance: none;
             appearance: none;
         }
-        .top-up-btn:active { background: rgba(255, 255, 255, 0.4); transform: scale(0.96); }
 
         /* Навигация */
-        .tabs { 
-            display: flex; background: var(--tab-bg); padding: 3px; 
-            border-radius: 14px; margin-bottom: 24px; 
-        }
-        .tab-btn { 
-            flex: 1; padding: 10px 0; border: none; border-radius: 11px; 
-            background: none; font-size: 14px; font-weight: 600; 
-            color: var(--text-main); transition: all 0.2s ease;
-            -webkit-appearance: none;
-            appearance: none;
-        }
+        .tabs { display: flex; background: var(--tab-bg); padding: 3px; border-radius: 14px; margin-bottom: 24px; }
+        .tab-btn { flex: 1; padding: 10px 0; border: none; border-radius: 11px; background: none; font-size: 14px; font-weight: 600; color: var(--text-main); transition: all 0.2s ease; }
         .tab-btn.active { background: white; box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
 
         /* Карточки */
-        .card { 
-            background: var(--card-bg); border-radius: 22px; padding: 24px 20px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: none; 
-        }
+        .card { background: var(--card-bg); border-radius: 22px; padding: 24px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: none; }
         .card.active { display: block; animation: fadeIn 0.3s ease; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Форма */
@@ -90,69 +71,69 @@
         input { 
             width: 100%; border: 1px solid #E5E5EA; background: #FAFAFA; padding: 16px; 
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
-            color: var(--text-main);
-            -webkit-appearance: none;
-            appearance: none;
-            transition: all 0.2s;
+            color: var(--text-main); transition: all 0.2s;
         }
         input:focus { border-color: var(--accent-color); background: #fff; }
 
-        /* Сетка категорий (вместо select) */
+        /* КВАДРАТНАЯ СЕТКА КАТЕГОРИЙ */
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(3, 1fr); /* 3 колонки */
+            gap: 8px;
         }
 
         .cat-item {
             background: #FAFAFA;
             border: 1px solid #E5E5EA;
-            padding: 14px;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-main);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1; /* Делает кнопку квадратной */
             transition: all 0.2s ease;
             cursor: pointer;
-            -webkit-appearance: none;
-            appearance: none;
             user-select: none;
+            -webkit-appearance: none;
+        }
+
+        .cat-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .cat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
         }
 
         .cat-item.selected {
             background: var(--accent-color);
             border-color: var(--accent-color);
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,122,255,0.25);
+            box-shadow: 0 4px 12px rgba(0,122,255,0.3);
         }
 
-        .cat-item:active { transform: scale(0.96); }
+        .cat-item.selected .cat-label { color: white; }
+        .cat-item:active { transform: scale(0.95); }
 
         .main-btn { 
             width: 100%; background: var(--accent-color); color: white; border: none; 
             padding: 18px; border-radius: 16px; font-size: 17px; font-weight: 700; 
-            margin-top: 20px; cursor: pointer; transition: transform 0.1s;
-            -webkit-appearance: none;
-            appearance: none;
+            margin-top: 20px; cursor: pointer; transition: 0.1s;
         }
         .main-btn:active { transform: scale(0.98); opacity: 0.9; }
 
         /* История */
-        .order-item {
-            display: flex; gap: 14px; background: white; padding: 12px; 
-            border-radius: 18px; margin-bottom: 12px; align-items: center;
-            border: 1px solid #F2F2F7; position: relative;
-        }
+        .order-item { display: flex; gap: 14px; background: white; padding: 12px; border-radius: 18px; margin-bottom: 12px; align-items: center; border: 1px solid #F2F2F7; }
         .order-img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; background: #F2F2F7; flex-shrink: 0; }
         .order-info { flex: 1; min-width: 0; }
-        .order-title { font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 4px; }
-        .order-price { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+        .order-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
         .status-badge { font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 8px; text-transform: uppercase; margin-top: 6px; display: inline-block; }
         .status-wait { background: #FFF9E6; color: #D48806; }
         .status-done { background: #E6F9ED; color: #1E7E34; }
         .status-sold { background: #FEEBEB; color: #CC2D2D; }
-        .link-icon { text-decoration: none; font-size: 18px; padding: 10px; opacity: 0.7; }
         #no-orders { text-align: center; color: var(--text-secondary); padding: 40px 20px; font-size: 15px; }
     </style>
 </head>
@@ -184,12 +165,30 @@
         <div class="input-group">
             <label>Категория товара</label>
             <div class="category-grid" id="category-container">
-                <div class="cat-item" onclick="selectCategory('Одежда', this)">Одежда</div>
-                <div class="cat-item" onclick="selectCategory('Сумка', this)">Сумка</div>
-                <div class="cat-item" onclick="selectCategory('Обувь', this)">Обувь</div>
-                <div class="cat-item" onclick="selectCategory('Куртка', this)">Куртка</div>
-                <div class="cat-item" onclick="selectCategory('GGL', this)">GGL</div>
-                <div class="cat-item" onclick="selectCategory('Другое', this)">Другое</div>
+                <div class="cat-item" onclick="selectCategory('Одежда', this)">
+                    <span class="cat-icon">👕</span>
+                    <span class="cat-label">Одежда</span>
+                </div>
+                <div class="cat-item" onclick="selectCategory('Сумка', this)">
+                    <span class="cat-icon">👜</span>
+                    <span class="cat-label">Сумка</span>
+                </div>
+                <div class="cat-item" onclick="selectCategory('Обувь', this)">
+                    <span class="cat-icon">👟</span>
+                    <span class="cat-label">Обувь</span>
+                </div>
+                <div class="cat-item" onclick="selectCategory('Куртка', this)">
+                    <span class="cat-icon">🧥</span>
+                    <span class="cat-label">Куртка</span>
+                </div>
+                <div class="cat-item" onclick="selectCategory('GGL', this)">
+                    <span class="cat-icon">🕶</span>
+                    <span class="cat-label">GGL</span>
+                </div>
+                <div class="cat-item" onclick="selectCategory('Другое', this)">
+                    <span class="cat-icon">📦</span>
+                    <span class="cat-label">Другое</span>
+                </div>
             </div>
             <input type="hidden" id="selected-category" value="">
         </div>
@@ -203,9 +202,7 @@
     </div>
 
     <div id="history" class="card">
-        <div id="orders-list">
-            <div id="no-orders">Загрузка...</div>
-        </div>
+        <div id="orders-list"><div id="no-orders">Загрузка...</div></div>
     </div>
 
     <script>
@@ -214,9 +211,7 @@
         tg.ready();
 
         function selectCategory(name, element) {
-            document.querySelectorAll('.cat-item').forEach(item => {
-                item.classList.remove('selected');
-            });
+            document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('selected'));
             element.classList.add('selected');
             document.getElementById('selected-category').value = name;
         }
@@ -227,9 +222,7 @@
             if (dataParam) {
                 try {
                     const decodedData = JSON.parse(decodeURIComponent(dataParam));
-                    if (decodedData.b !== undefined) {
-                        document.getElementById('user-balance').innerText = parseFloat(decodedData.b).toFixed(2);
-                    }
+                    if (decodedData.b !== undefined) document.getElementById('user-balance').innerText = parseFloat(decodedData.b).toFixed(2);
                     window.userOrders = decodedData.o || [];
                 } catch (e) { console.error("Ошибка данных:", e); }
             }
@@ -258,18 +251,15 @@
                 const sLow = statusText.toLowerCase();
                 if (sLow.includes('куплено') || sLow.includes('выкуплен') || sLow.includes('заверш')) statusClass = 'status-done';
                 if (sLow.includes('возврат') || sLow.includes('отмена')) statusClass = 'status-sold';
-
-                let photo = order.f || 'https://via.placeholder.com/150?text=No+Photo';
-
                 return `
                     <div class="order-item">
-                        <img src="${photo}" class="order-img" onerror="this.src='https://via.placeholder.com/150?text=Error'">
+                        <img src="${order.f || ''}" class="order-img" onerror="this.src='https://via.placeholder.com/150?text=Error'">
                         <div class="order-info">
                             <div class="order-title">Заказ #${order.i}</div>
                             <div class="order-price">${order.p} BYN</div>
                             <div class="status-badge ${statusClass}">${statusText}</div>
                         </div>
-                        <a href="${order.l}" target="_blank" class="link-icon">🔗</a>
+                        <a href="${order.l}" target="_blank" style="text-decoration:none; padding:10px;">🔗</a>
                     </div>
                 `;
             }).join('');
@@ -279,16 +269,10 @@
             const link = document.getElementById('link').value;
             const price = document.getElementById('price').value;
             const category = document.getElementById('selected-category').value;
-
-            if (!link || !price) {
-                tg.showAlert("Заполните ссылку и цену!");
+            if (!link || !price || !category) {
+                tg.showAlert("Заполните все поля и выберите категорию!");
                 return;
             }
-            if (!category) {
-                tg.showAlert("Выберите категорию товара!");
-                return;
-            }
-
             tg.sendData(JSON.stringify({ link, price, category }));
             tg.close();
         }
