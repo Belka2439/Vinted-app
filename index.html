@@ -23,7 +23,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Блок баланса с кнопкой пополнения */
+        /* Блок баланса */
         .balance-section {
             background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
             border-radius: 22px;
@@ -40,15 +40,9 @@
         }
 
         .balance-info { text-align: left; }
-        
-        .balance-label { 
-            font-size: 13px; font-weight: 600; text-transform: uppercase; 
-            letter-spacing: 0.5px; opacity: 0.8; margin-bottom: 4px; 
-        }
-        
+        .balance-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-bottom: 4px; }
         .balance-amount { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* Дизайнерская кнопка пополнения */
         .top-up-btn {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -60,12 +54,12 @@
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
-            -webkit-appearance: none; /* Убираем системные стили */
+            -webkit-appearance: none;
             appearance: none;
         }
         .top-up-btn:active { background: rgba(255, 255, 255, 0.4); transform: scale(0.96); }
 
-        /* Навигация Segments */
+        /* Навигация */
         .tabs { 
             display: flex; background: var(--tab-bg); padding: 3px; 
             border-radius: 14px; margin-bottom: 24px; 
@@ -79,7 +73,7 @@
         }
         .tab-btn.active { background: white; box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
 
-        /* Карточки контента */
+        /* Карточки */
         .card { 
             background: var(--card-bg); border-radius: 22px; padding: 24px 20px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: none; 
@@ -88,64 +82,77 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Форма калькулятора */
+        /* Форма */
         h2 { margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
-
         .input-group { margin-bottom: 18px; }
-        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; margin-left: 4px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; margin-left: 4px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
-        input, select { 
+        input { 
             width: 100%; border: 1px solid #E5E5EA; background: #FAFAFA; padding: 16px; 
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
             color: var(--text-main);
-            /* Совместимость и отключение системного дизайна Safari/Android */
             -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
             transition: all 0.2s;
         }
-        input:focus, select:focus { border-color: var(--accent-color); background: #fff; }
+        input:focus { border-color: var(--accent-color); background: #fff; }
 
-        /* Кастомная стрелочка для select, так как appearance:none её удаляет */
-        select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238E8E93' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
+        /* Сетка категорий (вместо select) */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
+
+        .cat-item {
+            background: #FAFAFA;
+            border: 1px solid #E5E5EA;
+            padding: 14px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            user-select: none;
+        }
+
+        .cat-item.selected {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,122,255,0.25);
+        }
+
+        .cat-item:active { transform: scale(0.96); }
 
         .main-btn { 
             width: 100%; background: var(--accent-color); color: white; border: none; 
             padding: 18px; border-radius: 16px; font-size: 17px; font-weight: 700; 
-            margin-top: 10px; cursor: pointer; transition: transform 0.1s;
+            margin-top: 20px; cursor: pointer; transition: transform 0.1s;
             -webkit-appearance: none;
             appearance: none;
         }
         .main-btn:active { transform: scale(0.98); opacity: 0.9; }
 
-        /* Стили списка заказов */
+        /* История */
         .order-item {
             display: flex; gap: 14px; background: white; padding: 12px; 
             border-radius: 18px; margin-bottom: 12px; align-items: center;
             border: 1px solid #F2F2F7; position: relative;
         }
-        .order-img { 
-            width: 64px; height: 64px; border-radius: 14px; object-fit: cover; 
-            background: #F2F2F7; flex-shrink: 0;
-        }
+        .order-img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; background: #F2F2F7; flex-shrink: 0; }
         .order-info { flex: 1; min-width: 0; }
         .order-title { font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 4px; }
         .order-price { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
-        
-        .status-badge {
-            font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 8px;
-            text-transform: uppercase; margin-top: 6px; display: inline-block;
-        }
+        .status-badge { font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 8px; text-transform: uppercase; margin-top: 6px; display: inline-block; }
         .status-wait { background: #FFF9E6; color: #D48806; }
         .status-done { background: #E6F9ED; color: #1E7E34; }
         .status-sold { background: #FEEBEB; color: #CC2D2D; }
-
         .link-icon { text-decoration: none; font-size: 18px; padding: 10px; opacity: 0.7; }
-
         #no-orders { text-align: center; color: var(--text-secondary); padding: 40px 20px; font-size: 15px; }
     </style>
 </head>
@@ -176,14 +183,15 @@
 
         <div class="input-group">
             <label>Категория товара</label>
-            <select id="cat">
-                <option value="Одежда">Одежда</option>
-                <option value="Сумка">Сумка</option>
-                <option value="Обувь">Обувь</option>
-                <option value="Куртка">Куртка</option>
-                <option value="GGL">GGL</option>
-                <option value="Другое">Другое</option>
-            </select>
+            <div class="category-grid" id="category-container">
+                <div class="cat-item" onclick="selectCategory('Одежда', this)">Одежда</div>
+                <div class="cat-item" onclick="selectCategory('Сумка', this)">Сумка</div>
+                <div class="cat-item" onclick="selectCategory('Обувь', this)">Обувь</div>
+                <div class="cat-item" onclick="selectCategory('Куртка', this)">Куртка</div>
+                <div class="cat-item" onclick="selectCategory('GGL', this)">GGL</div>
+                <div class="cat-item" onclick="selectCategory('Другое', this)">Другое</div>
+            </div>
+            <input type="hidden" id="selected-category" value="">
         </div>
 
         <div class="input-group">
@@ -205,10 +213,17 @@
         tg.expand();
         tg.ready();
 
+        function selectCategory(name, element) {
+            document.querySelectorAll('.cat-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('selected-category').value = name;
+        }
+
         function initApp() {
             const urlParams = new URLSearchParams(window.location.search);
             const dataParam = urlParams.get('data');
-            
             if (dataParam) {
                 try {
                     const decodedData = JSON.parse(decodeURIComponent(dataParam));
@@ -216,9 +231,7 @@
                         document.getElementById('user-balance').innerText = parseFloat(decodedData.b).toFixed(2);
                     }
                     window.userOrders = decodedData.o || [];
-                } catch (e) {
-                    console.error("Ошибка данных:", e);
-                }
+                } catch (e) { console.error("Ошибка данных:", e); }
             }
         }
 
@@ -235,24 +248,18 @@
         function renderOrders() {
             const listContainer = document.getElementById('orders-list');
             const orders = window.userOrders || [];
-            
             if (orders.length === 0) {
                 listContainer.innerHTML = '<div id="no-orders">История заказов пуста</div>';
                 return;
             }
-
             listContainer.innerHTML = orders.map(order => {
                 let statusClass = 'status-wait';
                 let statusText = order.s || 'В обработке';
                 const sLow = statusText.toLowerCase();
-                
                 if (sLow.includes('куплено') || sLow.includes('выкуплен') || sLow.includes('заверш')) statusClass = 'status-done';
                 if (sLow.includes('возврат') || sLow.includes('отмена')) statusClass = 'status-sold';
 
-                let photo = order.f;
-                if (!photo || photo.length < 10 || photo.includes('no_ph')) {
-                    photo = 'https://via.placeholder.com/150?text=No+Photo';
-                }
+                let photo = order.f || 'https://via.placeholder.com/150?text=No+Photo';
 
                 return `
                     <div class="order-item">
@@ -271,10 +278,14 @@
         function sendDataToBot() {
             const link = document.getElementById('link').value;
             const price = document.getElementById('price').value;
-            const category = document.getElementById('cat').value;
+            const category = document.getElementById('selected-category').value;
 
             if (!link || !price) {
                 tg.showAlert("Заполните ссылку и цену!");
+                return;
+            }
+            if (!category) {
+                tg.showAlert("Выберите категорию товара!");
                 return;
             }
 
