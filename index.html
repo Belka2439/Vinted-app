@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -132,6 +133,17 @@
         .status-wait { background: #FFF9E6; color: #D48806; }
         .status-done { background: #E6F9ED; color: #1E7E34; }
         .status-sold { background: #FEEBEB; color: #CC2D2D; }
+        /* Увеличение иконки GGL на 15% */
+        .cat-item.ggl .cat-icon {
+            width: calc(28px * 1.15); /* 28 * 1.15 = 32.2px */
+            height: calc(28px * 1.15);
+            margin-bottom: 4px; /* Немного уменьшил отступ, чтобы текст поместился */
+        }
+
+        /* Если нужно скорректировать padding в cat-item для GGL */
+        .cat-item.ggl {
+            padding: 6px; /* Немного уменьшил, чтобы всё уместилось */
+        }
     </style>
 </head>
 <body>
@@ -188,7 +200,7 @@
                     </span>
                     <span class="cat-label">Сумка</span>
                 </div>
-                <div class="cat-item" onclick="selectCategory('GGL', this)">
+                <div class="cat-item ggl" onclick="selectCategory('GGL', this)">
                     <span class="cat-icon">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <text x="16" y="9" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GEORGE</text>
@@ -289,3 +301,4 @@
     </script>
 </body>
 </html>
+```
