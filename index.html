@@ -249,12 +249,14 @@
         tg.expand();
         tg.ready();
 
-        // Форматирование числа с пробелом между тысячами
+        // 1. Форматирование числа: 10500.50 -> 10 500.50
         function formatBalance(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            let parts = num.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            return parts.join(".");
         }
 
-        // Адаптация шрифта под размер баланса
+        // 2. Уменьшение шрифта если число слишком длинное
         function adjustFontSize(value) {
             const amountEl = document.getElementById('balance-display');
             if (value >= 100000) {
@@ -270,7 +272,6 @@
             const menu = document.getElementById('sideMenu');
             const overlay = document.querySelector('.menu-overlay');
             const isActive = menu.classList.contains('active');
-            
             if (!isActive) {
                 const currentBalance = document.getElementById('user-balance').innerText;
                 document.getElementById('menu-balance-value').innerText = currentBalance + ' BYN';
@@ -342,9 +343,11 @@
                 try {
                     const decodedData = JSON.parse(decodeURIComponent(dataParam));
                     if (decodedData.b !== undefined) {
-                        const balance = parseFloat(decodedData.b);
-                        document.getElementById('user-balance').innerText = formatBalance(balance.toFixed(2));
-                        adjustFontSize(balance);
+                        const rawBalance = parseFloat(decodedData.b);
+                        // Обновляем текст в основном поле баланса
+                        document.getElementById('user-balance').innerText = formatBalance(rawBalance.toFixed(2));
+                        // Применяем динамический размер шрифта
+                        adjustFontSize(rawBalance);
                     }
                     window.userOrders = decodedData.o || [];
                 } catch (e) { console.error("Ошибка данных:", e); }
