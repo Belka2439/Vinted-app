@@ -79,8 +79,11 @@
         .profile-widget {
             display: flex; align-items: center; gap: 12px;
             padding: 12px; margin-bottom: 20px; margin-top: 10px;
-            background: #F2F2F7; border-radius: 16px;
+            background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
+            color: white;
+            border-radius: 20px;
             cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0,122,255,0.12);
         }
         .profile-widget:active { opacity: 0.7; }
         
@@ -89,12 +92,13 @@
             background-color: #E5E5EA; object-fit: cover;
             display: flex; align-items: center; justify-content: center;
             font-size: 22px; color: var(--text-secondary); flex-shrink: 0; overflow: hidden;
+            border: 2px solid white;
         }
         .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
         
         .profile-info { display: flex; flex-direction: column; }
-        .profile-name { font-weight: 700; font-size: 15px; color: var(--text-main); }
-        .profile-hint { font-size: 11px; color: var(--accent-color); font-weight: 500; margin-top: 2px; }
+        .profile-name { font-weight: 700; font-size: 15px; color: white; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .profile-hint { font-size: 11px; color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 2px; }
 
         .close-menu-absolute {
             position: absolute; top: 15px; right: 15px;
@@ -110,9 +114,16 @@
         .menu-item-value { font-weight: 700; color: var(--accent-color); }
 
         /* --- ЭКРАН РЕДАКТИРОВАНИЯ --- */
-        .profile-edit-view { display: none; flex-direction: column; height: 100%; }
+        .profile-edit-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--card-bg); z-index: 1000;
+            display: none; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding: 40px 20px; box-sizing: border-box; overflow-y: auto;
+            transition: opacity 0.3s ease;
+        }
+        .profile-edit-overlay.active { display: flex; opacity: 1; }
         
-        .edit-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .edit-header { display: flex; align-items: center; margin-bottom: 20px; width: 100%; max-width: 400px; }
         .back-btn {
             background: none; border: none; padding: 0; cursor: pointer; color: var(--accent-color);
             font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 4px;
@@ -133,7 +144,7 @@
 
         .save-btn {
             background: var(--accent-color); color: white; border: none;
-            width: 100%; padding: 14px; border-radius: 14px;
+            width: 100%; max-width: 400px; padding: 14px; border-radius: 14px;
             font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px;
             transition: 0.2s;
         }
@@ -154,7 +165,7 @@
         
         h2 { margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
         
-        .input-group { margin-bottom: 18px; position: relative; }
+        .input-group { margin-bottom: 18px; position: relative; width: 100%; max-width: 400px; }
         label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; margin-left: 4px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         
         /* Стиль инпутов с иконкой */
@@ -232,49 +243,49 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="profile-edit-view" class="profile-edit-view">
-            <div class="edit-header">
-                <button class="back-btn" onclick="backToMenu()">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                    Назад
-                </button>
-            </div>
-
-            <div class="avatar-upload-container">
-                <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(this)">
-                <div class="avatar-wrapper-large" onclick="document.getElementById('avatar-input').click()">
-                    <img id="edit-avatar-preview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                    <div id="edit-avatar-placeholder" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px; color:#C7C7CC;">👤</div>
-                    <div class="camera-badge">
-                        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                    </div>
-                </div>
-                <div style="font-size:12px; color:var(--accent-color); margin-top:8px;">Изменить фото</div>
-            </div>
-
-            <div class="input-group icon-input-wrapper">
-                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
-                <input type="text" id="prof-name" placeholder="ФИО">
-            </div>
-
-            <div class="input-group icon-input-wrapper">
-                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
-                <input type="tel" id="prof-phone" placeholder="Телефон">
-            </div>
-
-            <div class="input-group icon-input-wrapper">
-                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-                <input type="text" id="prof-city" placeholder="Город">
-            </div>
-
-            <div class="input-group icon-input-wrapper">
-                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
-                <input type="text" id="prof-post" placeholder="Отделение (Европочта/СДЭК)">
-            </div>
-
-            <button id="save-btn" class="save-btn" onclick="saveProfile()">Сохранить</button>
+    <div id="profile-edit-overlay" class="profile-edit-overlay">
+        <div class="edit-header">
+            <button class="back-btn" onclick="closeProfileEdit()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                Назад
+            </button>
         </div>
+
+        <div class="avatar-upload-container">
+            <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(this)">
+            <div class="avatar-wrapper-large" onclick="document.getElementById('avatar-input').click()">
+                <img id="edit-avatar-preview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                <div id="edit-avatar-placeholder" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px; color:#C7C7CC;">👤</div>
+                <div class="camera-badge">
+                    <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                </div>
+            </div>
+            <div style="font-size:12px; color:var(--accent-color); margin-top:8px;">Изменить фото</div>
+        </div>
+
+        <div class="input-group icon-input-wrapper">
+            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+            <input type="text" id="prof-name" placeholder="ФИО">
+        </div>
+
+        <div class="input-group icon-input-wrapper">
+            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+            <input type="tel" id="prof-phone" placeholder="Телефон">
+        </div>
+
+        <div class="input-group icon-input-wrapper">
+            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+            <input type="text" id="prof-city" placeholder="Город">
+        </div>
+
+        <div class="input-group icon-input-wrapper">
+            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+            <input type="text" id="prof-post" placeholder="Отделение (Европочта/СДЭК)">
+        </div>
+
+        <button id="save-btn" class="save-btn" onclick="saveProfile()">Сохранить</button>
     </div>
 
     <div class="balance-section">
@@ -368,7 +379,6 @@
                 
                 // Всегда показываем главное меню при открытии, а не редактирование
                 document.getElementById('menu-main-view').style.display = 'block';
-                document.getElementById('profile-edit-view').style.display = 'none';
                 
                 tg.HapticFeedback.impactOccurred('light');
             } else {
@@ -379,17 +389,17 @@
         }
 
         function openProfileEdit() {
-            document.getElementById('menu-main-view').style.display = 'none';
-            document.getElementById('profile-edit-view').style.display = 'flex';
+            const editOverlay = document.getElementById('profile-edit-overlay');
+            editOverlay.classList.add('active');
             tg.BackButton.show();
-            tg.BackButton.onClick(backToMenu);
+            tg.BackButton.onClick(closeProfileEdit);
         }
 
-        function backToMenu() {
-            document.getElementById('profile-edit-view').style.display = 'none';
-            document.getElementById('menu-main-view').style.display = 'block';
+        function closeProfileEdit() {
+            const editOverlay = document.getElementById('profile-edit-overlay');
+            editOverlay.classList.remove('active');
             tg.BackButton.hide();
-            tg.BackButton.offClick(backToMenu);
+            tg.BackButton.offClick(closeProfileEdit);
         }
 
         // 2. ЛОГИКА СОХРАНЕНИЯ ПРОФИЛЯ
@@ -535,6 +545,16 @@
 
         // 4. ИНИЦИАЛИЗАЦИЯ
         (function initApp() {
+            // Инициализация никнейма из Telegram
+            const user = tg.initDataUnsafe.user;
+            if (user) {
+                let username = user.username || (user.first_name ? user.first_name + (user.last_name ? ' ' + user.last_name : '') : 'Гость');
+                if (username.length > 20) {
+                    username = username.substring(0, 17) + '...';
+                }
+                document.getElementById('menu-username').innerText = username;
+            }
+
             // Загрузка профиля из облака или памяти
             tg.CloudStorage.getItem('user_profile', (err, value) => {
                 if (!err && value) {
