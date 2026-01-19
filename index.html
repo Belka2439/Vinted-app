@@ -45,6 +45,16 @@
             font-weight: 800; 
             letter-spacing: -0.5px; 
             white-space: nowrap; /* Гарантирует одну строку */
+            display: flex;
+            align-items: baseline;
+        }
+
+        .balance-amount.large {
+            font-size: 20px; /* Уменьшенный размер для больших значений */
+        }
+
+        #user-balance {
+            margin-right: 4px; /* Интервал между цифрами и BYN */
         }
 
         .header-actions {
@@ -353,7 +363,14 @@
             if (dataParam) {
                 try {
                     const decodedData = JSON.parse(decodeURIComponent(dataParam));
-                    if (decodedData.b !== undefined) document.getElementById('user-balance').innerText = parseFloat(decodedData.b).toFixed(2);
+                    if (decodedData.b !== undefined) {
+                        const balanceValue = parseFloat(decodedData.b);
+                        const formattedBalance = balanceValue.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        document.getElementById('user-balance').innerText = formattedBalance;
+                        if (balanceValue >= 10000) {
+                            document.querySelector('.balance-amount').classList.add('large');
+                        }
+                    }
                     window.userOrders = decodedData.o || [];
                 } catch (e) { console.error("Ошибка данных:", e); }
             }
