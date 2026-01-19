@@ -365,7 +365,7 @@
                     const decodedData = JSON.parse(decodeURIComponent(dataParam));
                     if (decodedData.b !== undefined) {
                         const balanceValue = parseFloat(decodedData.b);
-                        const formattedBalance = balanceValue.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        let formattedBalance = balanceValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, ' ');
                         document.getElementById('user-balance').innerText = formattedBalance;
                         if (balanceValue >= 10000) {
                             document.querySelector('.balance-amount').classList.add('large');
