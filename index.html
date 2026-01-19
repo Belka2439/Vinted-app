@@ -132,16 +132,20 @@
         .status-wait { background: #FFF9E6; color: #D48806; }
         .status-done { background: #E6F9ED; color: #1E7E34; }
         .status-sold { background: #FEEBEB; color: #CC2D2D; }
-        /* Увеличение иконки GGL на 15% */
+        /* Увеличение иконки GGL на 20% */
         .cat-item.ggl .cat-icon {
-            width: calc(28px * 1.15); /* 28 * 1.15 = 32.2px */
-            height: calc(28px * 1.15);
+            width: calc(28px * 1.2); /* 28 * 1.2 = 33.6px */
+            height: calc(28px * 1.2);
             margin-bottom: 4px; /* Немного уменьшил отступ, чтобы текст поместился */
         }
 
         /* Если нужно скорректировать padding в cat-item для GGL */
         .cat-item.ggl {
             padding: 6px; /* Немного уменьшил, чтобы всё уместилось */
+        }
+
+        .cat-item.ggl .cat-label {
+            font-size: 10px; /* Такой же размер, как у остальных (увеличение не требуется, но подтверждено для consistency) */
         }
     </style>
 </head>
@@ -300,4 +304,3 @@
     </script>
 </body>
 </html>
-
