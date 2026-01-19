@@ -24,11 +24,11 @@
             overflow-x: hidden;
         }
 
-        /* Блок баланса — УМЕНЬШЕНА ВЫСОТА */
+        /* --- БЛОК БАЛАНСА (Твой стиль) --- */
         .balance-section {
             background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
             border-radius: 20px;
-            padding: 16px 20px; /* Уменьшены отступы сверху и снизу */
+            padding: 16px 20px;
             color: white;
             margin-bottom: 20px;
             box-shadow: 0 8px 16px rgba(0,122,255,0.12);
@@ -39,111 +39,107 @@
         .balance-info { display: flex; flex-direction: column; }
         .balance-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-bottom: 2px; }
         
-        /* ЦИФРЫ БАЛАНСА — УМЕНЬШЕН РАЗМЕР И ЗАПРЕЩЕН ПЕРЕНОС */
         .balance-amount { 
-            font-size: 24px; 
-            font-weight: 800; 
-            letter-spacing: -0.5px; 
-            white-space: nowrap; /* Гарантирует одну строку */
-            display: flex;
-            align-items: baseline;
+            font-size: 24px; font-weight: 800; letter-spacing: -0.5px; 
+            white-space: nowrap; display: flex; align-items: baseline;
         }
+        .balance-amount.large { font-size: 20px; }
+        #user-balance { margin-right: 4px; }
 
-        .balance-amount.large {
-            font-size: 20px; /* Уменьшенный размер для больших значений */
-        }
-
-        #user-balance {
-            margin-right: 4px; /* Интервал между цифрами и BYN */
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .header-actions { display: flex; align-items: center; gap: 10px; }
         .top-up-btn {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 8px 14px; /* Немного компактнее */
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            appearance: none;
-            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3); color: white;
+            padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 700;
+            cursor: pointer; transition: 0.2s; appearance: none; white-space: nowrap;
         }
-        
         .menu-btn {
-            background: none;
-            border: none;
-            padding: 4px;
-            cursor: pointer;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: none; border: none; padding: 4px; cursor: pointer; color: white;
+            display: flex; align-items: center; justify-content: center;
         }
-        .menu-btn svg { width: 26px; height: 26px; fill: white; }
+        .menu-btn svg { width: 26px; height: 26px; fill: white; stroke: white; }
 
-        /* ВЫЕЗЖАЮЩЕЕ МЕНЮ */
+        /* --- МЕНЮ И ПРОФИЛЬ --- */
         .menu-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.5); z-index: 998; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease; backdrop-filter: blur(2px);
         }
         .menu-overlay.active { opacity: 1; visibility: visible; }
 
         .side-menu {
-            position: fixed; top: 0; right: -280px;
-            width: 260px; height: 100%;
-            background: var(--card-bg);
-            z-index: 999;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 24px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
+            position: fixed; top: 0; right: -100%; width: 280px; height: 100%;
+            background: var(--card-bg); z-index: 999; box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 20px; box-sizing: border-box;
+            display: flex; flex-direction: column; overflow-y: auto;
         }
         .side-menu.active { right: 0; }
 
-        .menu-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #E5E5EA;
+        /* Виджет профиля в меню */
+        .profile-widget {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px; margin-bottom: 20px; margin-top: 10px;
+            background: #F2F2F7; border-radius: 16px;
+            cursor: pointer; transition: 0.2s;
         }
-        .menu-title { font-size: 18px; font-weight: 800; color: var(--text-main); }
-        .close-menu-btn {
-            background: #F2F2F7;
-            border: none;
-            width: 32px; height: 32px;
-            border-radius: 50%;
+        .profile-widget:active { opacity: 0.7; }
+        
+        .avatar-circle {
+            width: 48px; height: 48px; border-radius: 50%;
+            background-color: #E5E5EA; object-fit: cover;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            color: var(--text-secondary);
+            font-size: 22px; color: var(--text-secondary); flex-shrink: 0; overflow: hidden;
+        }
+        .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .profile-info { display: flex; flex-direction: column; }
+        .profile-name { font-weight: 700; font-size: 15px; color: var(--text-main); }
+        .profile-hint { font-size: 11px; color: var(--accent-color); font-weight: 500; margin-top: 2px; }
+
+        .close-menu-absolute {
+            position: absolute; top: 15px; right: 15px;
+            background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 5px;
         }
 
         .menu-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid #F2F2F7;
-            font-size: 16px;
-            font-weight: 500;
+            padding: 16px 0; border-bottom: 1px solid #F2F2F7;
+            font-size: 15px; font-weight: 500;
         }
         .menu-item-label { color: var(--text-main); }
         .menu-item-value { font-weight: 700; color: var(--accent-color); }
 
-        /* ОСТАЛЬНЫЕ СТИЛИ */
+        /* --- ЭКРАН РЕДАКТИРОВАНИЯ --- */
+        .profile-edit-view { display: none; flex-direction: column; height: 100%; }
+        
+        .edit-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn {
+            background: none; border: none; padding: 0; cursor: pointer; color: var(--accent-color);
+            font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 4px;
+        }
+
+        .avatar-upload-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; }
+        .avatar-wrapper-large {
+            width: 100px; height: 100px; border-radius: 50%;
+            background: #F2F2F7; position: relative; cursor: pointer; overflow: hidden;
+            border: 3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .camera-badge {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.4); height: 30px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .camera-badge svg { width: 16px; height: 16px; fill: white; }
+
+        .save-btn {
+            background: var(--accent-color); color: white; border: none;
+            width: 100%; padding: 14px; border-radius: 14px;
+            font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px;
+            transition: 0.2s;
+        }
+        .save-btn.saved { background: #34C759; pointer-events: none; }
+
+        /* --- ОБЩИЕ ЭЛЕМЕНТЫ --- */
         .tabs { display: flex; background: var(--tab-bg); padding: 3px; border-radius: 14px; margin-bottom: 24px; }
         .tab-btn {
             flex: 1; padding: 10px 0; border: none; border-radius: 11px;
@@ -151,13 +147,25 @@
             color: var(--text-main); transition: all 0.2s ease;
         }
         .tab-btn.active { background: white; box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+        
         .card { background: var(--card-bg); border-radius: 22px; padding: 24px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: none; }
         .card.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
         h2 { margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
         
-        .input-group { margin-bottom: 18px; }
+        .input-group { margin-bottom: 18px; position: relative; }
         label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; margin-left: 4px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
+        
+        /* Стиль инпутов с иконкой */
+        .icon-input-wrapper { position: relative; }
+        .icon-input-wrapper input { padding-left: 44px; }
+        .input-icon {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            width: 20px; height: 20px; color: #C7C7CC; display: flex; align-items: center; justify-content: center;
+        }
+        .input-icon svg { width: 100%; height: 100%; stroke-width: 2; }
+        
         input {
             width: 100%; border: 1px solid #E5E5EA; background: #FAFAFA; padding: 16px;
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
@@ -177,6 +185,10 @@
         .cat-item.selected { background: var(--accent-color); border-color: var(--accent-color); }
         .cat-item.selected .cat-label, .cat-item.selected .cat-icon { color: white; }
         
+        /* Увеличение GGL (твой стиль) */
+        .cat-item.ggl .cat-icon { width: calc(28px * 1.2); height: calc(28px * 1.2); margin-bottom: 3px; }
+        .cat-item.ggl { padding: 6px; }
+
         .main-btn {
             width: 100%; background: var(--accent-color); color: white; border: none;
             padding: 18px; border-radius: 16px; font-size: 17px; font-weight: 700;
@@ -191,25 +203,77 @@
         .status-wait { background: #FFF9E6; color: #D48806; }
         .status-done { background: #E6F9ED; color: #1E7E34; }
         .status-sold { background: #FEEBEB; color: #CC2D2D; }
-
-        /* Увеличение иконки GGL */
-        .cat-item.ggl .cat-icon { width: calc(28px * 1.2); height: calc(28px * 1.2); margin-bottom: 3px; }
-        .cat-item.ggl { padding: 6px; }
     </style>
 </head>
 <body>
     <div class="menu-overlay" onclick="toggleMenu()"></div>
 
     <div class="side-menu" id="sideMenu">
-        <div class="menu-header">
-            <div class="menu-title">Мой профиль</div>
-            <button class="close-menu-btn" onclick="toggleMenu()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <div id="menu-main-view" style="display: block;">
+            <button class="close-menu-absolute" onclick="toggleMenu()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
+
+            <div class="profile-widget" onclick="openProfileEdit()">
+                <div class="avatar-circle">
+                    <img id="menu-avatar-img" src="" style="display:none;">
+                    <span id="menu-avatar-placeholder">👤</span>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name" id="menu-username">Гость</div>
+                    <div class="profile-hint">Настроить профиль</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <div class="menu-item">
+                    <span class="menu-item-label">Баланс</span>
+                    <span class="menu-item-value" id="menu-balance-value">0.00 BYN</span>
+                </div>
+            </div>
         </div>
-        <div class="menu-item">
-            <span class="menu-item-label">Баланс</span>
-            <span class="menu-item-value" id="menu-balance-value">0.00 BYN</span>
+
+        <div id="profile-edit-view" class="profile-edit-view">
+            <div class="edit-header">
+                <button class="back-btn" onclick="backToMenu()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    Назад
+                </button>
+            </div>
+
+            <div class="avatar-upload-container">
+                <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(this)">
+                <div class="avatar-wrapper-large" onclick="document.getElementById('avatar-input').click()">
+                    <img id="edit-avatar-preview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                    <div id="edit-avatar-placeholder" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px; color:#C7C7CC;">👤</div>
+                    <div class="camera-badge">
+                        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    </div>
+                </div>
+                <div style="font-size:12px; color:var(--accent-color); margin-top:8px;">Изменить фото</div>
+            </div>
+
+            <div class="input-group icon-input-wrapper">
+                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                <input type="text" id="prof-name" placeholder="ФИО">
+            </div>
+
+            <div class="input-group icon-input-wrapper">
+                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                <input type="tel" id="prof-phone" placeholder="Телефон">
+            </div>
+
+            <div class="input-group icon-input-wrapper">
+                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                <input type="text" id="prof-city" placeholder="Город">
+            </div>
+
+            <div class="input-group icon-input-wrapper">
+                <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                <input type="text" id="prof-post" placeholder="Отделение (Европочта/СДЭК)">
+            </div>
+
+            <button id="save-btn" class="save-btn" onclick="saveProfile()">Сохранить</button>
         </div>
     </div>
 
@@ -224,9 +288,7 @@
                 <button class="top-up-btn" onclick="tg.close()">Пополнить</button>
                 <button class="menu-btn" onclick="toggleMenu()">
                     <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </button>
             </div>
@@ -290,29 +352,128 @@
         tg.expand();
         tg.ready();
 
+        // 1. УПРАВЛЕНИЕ МЕНЮ И ПРОФИЛЕМ
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
             const overlay = document.querySelector('.menu-overlay');
             const isActive = menu.classList.contains('active');
             
             if (!isActive) {
+                // Открываем меню
                 const currentBalance = document.getElementById('user-balance').innerText;
                 document.getElementById('menu-balance-value').innerText = currentBalance + ' BYN';
+                
                 menu.classList.add('active');
                 overlay.classList.add('active');
+                
+                // Всегда показываем главное меню при открытии, а не редактирование
+                document.getElementById('menu-main-view').style.display = 'block';
+                document.getElementById('profile-edit-view').style.display = 'none';
+                
                 tg.HapticFeedback.impactOccurred('light');
             } else {
+                // Закрываем меню
                 menu.classList.remove('active');
                 overlay.classList.remove('active');
             }
         }
 
+        function openProfileEdit() {
+            document.getElementById('menu-main-view').style.display = 'none';
+            document.getElementById('profile-edit-view').style.display = 'flex';
+            tg.BackButton.show();
+            tg.BackButton.onClick(backToMenu);
+        }
+
+        function backToMenu() {
+            document.getElementById('profile-edit-view').style.display = 'none';
+            document.getElementById('menu-main-view').style.display = 'block';
+            tg.BackButton.hide();
+            tg.BackButton.offClick(backToMenu);
+        }
+
+        // 2. ЛОГИКА СОХРАНЕНИЯ ПРОФИЛЯ
+        function fillProfileFields(data) {
+            if (data.name) {
+                document.getElementById('prof-name').value = data.name;
+                document.getElementById('menu-username').innerText = data.name;
+            }
+            if (data.phone) document.getElementById('prof-phone').value = data.phone;
+            if (data.city) document.getElementById('prof-city').value = data.city;
+            if (data.post) document.getElementById('prof-post').value = data.post;
+            
+            if (data.avatar) {
+                const imgMenu = document.getElementById('menu-avatar-img');
+                const placeMenu = document.getElementById('menu-avatar-placeholder');
+                const imgEdit = document.getElementById('edit-avatar-preview');
+                const placeEdit = document.getElementById('edit-avatar-placeholder');
+                
+                imgMenu.src = data.avatar; imgMenu.style.display = 'block'; placeMenu.style.display = 'none';
+                imgEdit.src = data.avatar; imgEdit.style.display = 'block'; placeEdit.style.display = 'none';
+            }
+        }
+
+        function handleAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Img = e.target.result;
+                    const imgEdit = document.getElementById('edit-avatar-preview');
+                    const placeEdit = document.getElementById('edit-avatar-placeholder');
+                    imgEdit.src = base64Img;
+                    imgEdit.style.display = 'block';
+                    placeEdit.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProfile() {
+            const btn = document.getElementById('save-btn');
+            const originalText = btn.innerText;
+
+            const name = document.getElementById('prof-name').value;
+            const phone = document.getElementById('prof-phone').value;
+            const city = document.getElementById('prof-city').value;
+            const post = document.getElementById('prof-post').value;
+            
+            // Берем текущую картинку из превью (она там есть либо старая, либо новая)
+            const imgElement = document.getElementById('edit-avatar-preview');
+            const avatar = (imgElement.style.display === 'block') ? imgElement.src : null;
+
+            const profileData = { name, phone, city, post, avatar };
+            const jsonStr = JSON.stringify(profileData);
+
+            // 1. Сохраняем локально (быстро)
+            localStorage.setItem('user_profile', jsonStr);
+            
+            // 2. Сохраняем в облако Telegram (фоном)
+            tg.CloudStorage.setItem('user_profile', jsonStr);
+
+            // 3. Обновляем вид в меню
+            fillProfileFields(profileData);
+
+            // 4. Визуальный эффект "Успех"
+            btn.innerText = 'Сохранено ✓';
+            btn.classList.add('saved');
+            tg.HapticFeedback.notificationOccurred('success');
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('saved');
+            }, 2000);
+            
+            // Мы НЕ закрываем приложение (tg.close не вызывается)
+        }
+
+        // 3. ЛОГИКА КАЛЬКУЛЯТОРА
         function selectCategory(name, element) {
             document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('selected'));
             element.classList.add('selected');
             document.getElementById('selected-category').value = name;
             tg.HapticFeedback.impactOccurred('light');
         }
+
         function showTab(tabId, btn) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -320,6 +481,7 @@
             btn.classList.add('active');
             if (tabId === 'history') renderOrders();
         }
+
         function renderOrders() {
             const listContainer = document.getElementById('orders-list');
             const orders = window.userOrders || [];
@@ -346,18 +508,44 @@
                 `;
             }).join('');
         }
+
         function sendDataToBot() {
             const link = document.getElementById('link').value;
             const price = document.getElementById('price').value;
             const category = document.getElementById('selected-category').value;
+            
             if (!link || !price || !category) {
                 tg.showAlert("Заполните все поля и выберите категорию!");
                 return;
             }
-            tg.sendData(JSON.stringify({ link, price, category }));
+            
+            let dataToSend = { link, price, category };
+            
+            // Если профиль сохранен, прикрепляем его к заказу
+            const savedProfile = localStorage.getItem('user_profile');
+            if(savedProfile) {
+                const p = JSON.parse(savedProfile);
+                // Отправляем только текстовые данные, аватар слишком тяжелый для sendData
+                dataToSend.user = { name: p.name, phone: p.phone, city: p.city, post: p.post };
+            }
+
+            tg.sendData(JSON.stringify(dataToSend));
             tg.close();
         }
+
+        // 4. ИНИЦИАЛИЗАЦИЯ
         (function initApp() {
+            // Загрузка профиля из облака или памяти
+            tg.CloudStorage.getItem('user_profile', (err, value) => {
+                if (!err && value) {
+                    fillProfileFields(JSON.parse(value));
+                } else {
+                    const localData = localStorage.getItem('user_profile');
+                    if (localData) fillProfileFields(JSON.parse(localData));
+                }
+            });
+
+            // Обработка входящих данных (баланс, заказы)
             const urlParams = new URLSearchParams(window.location.search);
             const dataParam = urlParams.get('data');
             if (dataParam) {
@@ -367,9 +555,7 @@
                         const balanceValue = parseFloat(decodedData.b);
                         let formattedBalance = balanceValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, ' ');
                         document.getElementById('user-balance').innerText = formattedBalance;
-                        if (balanceValue >= 10000) {
-                            document.querySelector('.balance-amount').classList.add('large');
-                        }
+                        if (balanceValue >= 10000) document.querySelector('.balance-amount').classList.add('large');
                     }
                     window.userOrders = decodedData.o || [];
                 } catch (e) { console.error("Ошибка данных:", e); }
