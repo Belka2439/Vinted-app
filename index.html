@@ -221,6 +221,124 @@
         .status-done { background: #E6F9ED; color: #1E7E34; }
         .status-sold { background: #FEEBEB; color: #CC2D2D; }
 
+        /* --- НАВИГАЦИЯ В МЕНЮ --- */
+        .menu-nav-list {
+            margin-top: 20px;
+            border-top: 1px solid #F2F2F7;
+            padding-top: 10px;
+        }
+        .menu-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .menu-nav-item:active {
+            background: #F2F2F7;
+        }
+        .menu-nav-icon {
+            width: 22px;
+            height: 22px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-nav-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .menu-nav-label {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        /* --- ЭКРАН ПРОФИЛЯ НА ГЛАВНОЙ --- */
+        .profile-screen {
+            display: none;
+        }
+        .profile-screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 22px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .profile-avatar-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #F2F2F7;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-avatar-large .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #C7C7CC;
+        }
+        .profile-avatar-large .camera-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.4);
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-avatar-large .camera-badge svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+        .change-photo-text {
+            font-size: 12px;
+            color: var(--accent-color);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Скрытие табов на других экранах */
+        .tabs-section {
+            display: block;
+        }
+        .tabs-section.hidden {
+            display: none;
+        }
+        .main-content {
+            display: block;
+        }
+        .main-content.hidden {
+            display: none;
+        }
+
         @media (min-width: 768px) {
             .app-container {
                 max-width: 600px;
@@ -243,14 +361,14 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
-            <div class="profile-widget" onclick="openProfileEdit()">
+            <div class="profile-widget" onclick="navigateTo('profile')">
                 <div class="avatar-circle">
                     <img id="menu-avatar-img" src="" style="display:none;">
                     <span id="menu-avatar-placeholder">👤</span>
                 </div>
                 <div class="profile-info">
                     <div class="profile-name" id="menu-username">Гость</div>
-                    <div class="profile-hint">Настроить профиль</div>
+                    <div class="profile-hint">Мой профиль</div>
                 </div>
             </div>
 
@@ -258,6 +376,51 @@
                 <div class="menu-item">
                     <span class="menu-item-label">Баланс</span>
                     <span class="menu-item-value" id="menu-balance-value">0.00 BYN</span>
+                </div>
+            </div>
+
+            <div class="menu-nav-list">
+                <div class="menu-nav-item" onclick="navigateTo('home')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </span>
+                    <span class="menu-nav-label">Главная</span>
+                </div>
+                <div class="menu-nav-item" onclick="navigateTo('profile')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </span>
+                    <span class="menu-nav-label">Мой профиль</span>
+                </div>
+                <div class="menu-nav-item" onclick="navigateTo('addresses')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    </span>
+                    <span class="menu-nav-label">Адреса доставки</span>
+                </div>
+                <div class="menu-nav-item" onclick="navigateTo('support')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </span>
+                    <span class="menu-nav-label">Поддержка</span>
+                </div>
+                <div class="menu-nav-item" onclick="navigateTo('howto')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </span>
+                    <span class="menu-nav-label">Как это работает</span>
+                </div>
+                <div class="menu-nav-item" onclick="navigateTo('tariffs')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    </span>
+                    <span class="menu-nav-label">Тарифы</span>
+                </div>
+                <div class="menu-nav-item" onclick="navigateTo('settings')">
+                    <span class="menu-nav-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    </span>
+                    <span class="menu-nav-label">Настройки</span>
                 </div>
             </div>
         </div>
@@ -325,12 +488,14 @@
             </div>
         </div>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('calc', this)">Калькулятор</button>
-            <button class="tab-btn" onclick="showTab('history', this)">Мои заказы</button>
-        </div>
+        <!-- Главный экран с табами -->
+        <div id="home-screen" class="screen-section">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('calc', this)">Калькулятор</button>
+                <button class="tab-btn" onclick="showTab('history', this)">Мои заказы</button>
+            </div>
 
-        <div id="calc" class="card active">
+            <div id="calc" class="card active">
             <h2>Рассчитать стоимость</h2>
             <div class="input-group">
                 <label>Ссылка на товар</label>
@@ -373,8 +538,90 @@
             <button class="main-btn" onclick="sendDataToBot()">Рассчитать</button>
         </div>
 
-        <div id="history" class="card">
-            <div id="orders-list"><div id="no-orders">Загрузка...</div></div>
+            <div id="history" class="card">
+                <div id="orders-list"><div id="no-orders">Загрузка...</div></div>
+            </div>
+        </div>
+
+        <!-- Экран профиля -->
+        <div id="profile-screen" class="screen-section" style="display: none;">
+            <div class="profile-card">
+                <h2>Мой профиль</h2>
+                
+                <div class="profile-avatar-section">
+                    <input type="file" id="profile-avatar-input" accept="image/*" style="display: none;" onchange="handleProfileAvatarUpload(this)">
+                    <div class="profile-avatar-large" onclick="document.getElementById('profile-avatar-input').click()">
+                        <img id="profile-avatar-preview" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                        <div id="profile-avatar-placeholder" class="avatar-placeholder">👤</div>
+                        <div class="camera-badge">
+                            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        </div>
+                    </div>
+                    <div class="change-photo-text">Изменить фото</div>
+                </div>
+
+                <div class="input-group icon-input-wrapper">
+                    <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                    <input type="text" id="profile-name" placeholder="ФИО">
+                </div>
+
+                <div class="input-group icon-input-wrapper">
+                    <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                    <input type="tel" id="profile-phone" placeholder="Телефон">
+                </div>
+
+                <div class="input-group icon-input-wrapper">
+                    <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                    <input type="text" id="profile-city" placeholder="Город">
+                </div>
+
+                <div class="input-group icon-input-wrapper">
+                    <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                    <input type="text" id="profile-post" placeholder="Отделение (Европочта/СДЭК)">
+                </div>
+
+                <button id="profile-save-btn" class="main-btn" onclick="saveProfileFromScreen()">Сохранить</button>
+            </div>
+        </div>
+
+        <!-- Экран адресов доставки -->
+        <div id="addresses-screen" class="screen-section" style="display: none;">
+            <div class="profile-card">
+                <h2>Адреса доставки</h2>
+                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+            </div>
+        </div>
+
+        <!-- Экран поддержки -->
+        <div id="support-screen" class="screen-section" style="display: none;">
+            <div class="profile-card">
+                <h2>Поддержка</h2>
+                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+            </div>
+        </div>
+
+        <!-- Экран "Как это работает" -->
+        <div id="howto-screen" class="screen-section" style="display: none;">
+            <div class="profile-card">
+                <h2>Как это работает</h2>
+                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+            </div>
+        </div>
+
+        <!-- Экран тарифов -->
+        <div id="tariffs-screen" class="screen-section" style="display: none;">
+            <div class="profile-card">
+                <h2>Тарифы</h2>
+                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+            </div>
+        </div>
+
+        <!-- Экран настроек -->
+        <div id="settings-screen" class="screen-section" style="display: none;">
+            <div class="profile-card">
+                <h2>Настройки</h2>
+                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+            </div>
         </div>
     </div>
 
@@ -563,7 +810,130 @@
             tg.close();
         }
 
-        // 4. ИНИЦИАЛИЗАЦИЯ
+        // 4. НАВИГАЦИЯ МЕЖДУ ЭКРАНАМИ
+        let currentScreen = 'home';
+
+        function navigateTo(screenName) {
+            // Закрываем меню
+            toggleMenu();
+            
+            // Скрываем все экраны
+            document.querySelectorAll('.screen-section').forEach(s => s.style.display = 'none');
+            
+            // Показываем нужный экран
+            const screenId = screenName + '-screen';
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                screen.style.display = 'block';
+                currentScreen = screenName;
+                
+                // Если переходим на профиль - загружаем данные
+                if (screenName === 'profile') {
+                    loadProfileToScreen();
+                }
+                
+                // Показываем/скрываем кнопку "Назад" в Telegram
+                if (screenName !== 'home') {
+                    tg.BackButton.show();
+                    tg.BackButton.onClick(goHome);
+                } else {
+                    tg.BackButton.hide();
+                    tg.BackButton.offClick(goHome);
+                }
+            }
+            
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        function goHome() {
+            navigateTo('home');
+            // Восстанавливаем меню, чтобы можно было открыть снова
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.querySelector('.menu-overlay');
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        function loadProfileToScreen() {
+            const savedProfile = localStorage.getItem('user_profile');
+            if (savedProfile) {
+                const data = JSON.parse(savedProfile);
+                if (data.name) document.getElementById('profile-name').value = data.name;
+                if (data.phone) document.getElementById('profile-phone').value = data.phone;
+                if (data.city) document.getElementById('profile-city').value = data.city;
+                if (data.post) document.getElementById('profile-post').value = data.post;
+                if (data.avatar) {
+                    const img = document.getElementById('profile-avatar-preview');
+                    const placeholder = document.getElementById('profile-avatar-placeholder');
+                    img.src = data.avatar;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+            }
+        }
+
+        function handleProfileAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Img = e.target.result;
+                    const img = document.getElementById('profile-avatar-preview');
+                    const placeholder = document.getElementById('profile-avatar-placeholder');
+                    img.src = base64Img;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProfileFromScreen() {
+            const btn = document.getElementById('profile-save-btn');
+            const originalText = btn.innerText;
+
+            const name = document.getElementById('profile-name').value;
+            const phone = document.getElementById('profile-phone').value;
+            const city = document.getElementById('profile-city').value;
+            const post = document.getElementById('profile-post').value;
+            
+            const imgElement = document.getElementById('profile-avatar-preview');
+            const avatar = (imgElement.style.display === 'block') ? imgElement.src : null;
+
+            const profileData = { name, phone, city, post, avatar };
+            const jsonStr = JSON.stringify(profileData);
+
+            // Сохраняем
+            localStorage.setItem('user_profile', jsonStr);
+            tg.CloudStorage.setItem('user_profile', jsonStr);
+
+            // Обновляем данные везде
+            fillProfileFields(profileData);
+            
+            // Также обновляем старый overlay если он используется
+            if (document.getElementById('prof-name')) {
+                document.getElementById('prof-name').value = name;
+                document.getElementById('prof-phone').value = phone;
+                document.getElementById('prof-city').value = city;
+                document.getElementById('prof-post').value = post;
+                if (avatar) {
+                    document.getElementById('edit-avatar-preview').src = avatar;
+                    document.getElementById('edit-avatar-preview').style.display = 'block';
+                    document.getElementById('edit-avatar-placeholder').style.display = 'none';
+                }
+            }
+
+            // Визуальный эффект
+            btn.innerText = 'Сохранено ✓';
+            btn.style.background = '#34C759';
+            tg.HapticFeedback.notificationOccurred('success');
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        // 5. ИНИЦИАЛИЗАЦИЯ
         (function initApp() {
             // Инициализация никнейма из Telegram
             const user = tg.initDataUnsafe.user;
