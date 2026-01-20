@@ -287,7 +287,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .profile-header-icon {
             width: 32px;
@@ -296,21 +296,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            align-self: flex-start;
+            margin-top: 2px;
         }
         .profile-header-icon svg {
             width: 100%;
             height: 100%;
+        }
+        .profile-header-text {
+            display: flex;
+            flex-direction: column;
         }
         .profile-title {
             font-size: 28px;
             font-weight: 700;
             color: var(--text-main);
             margin: 0;
+            line-height: 1.2;
         }
         .profile-subtitle {
             font-size: 13px;
             color: var(--text-secondary);
-            margin: 0 0 20px 44px;
+            margin: 2px 0 20px 0;
             line-height: 1.4;
         }
         /* Лейбл с иконкой над полем ввода */
@@ -790,9 +797,11 @@
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                     </div>
-                    <h2 class="profile-title">Мой профиль</h2>
+                    <div class="profile-header-text">
+                        <h2 class="profile-title">Мой профиль</h2>
+                        <p class="profile-subtitle">Данные ниже - куда и кому будет отправляться товар</p>
+                    </div>
                 </div>
-                <p class="profile-subtitle">Данные ниже - куда и кому будет отправляться товар</p>
                 
                 <div class="input-group">
                     <div class="field-label-with-icon">
@@ -1065,6 +1074,31 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
+        
+        // Функция для закрытия клавиатуры при нажатии Enter или клике вне поля ввода
+        function setupInputBlur() {
+            // Обработка нажатия Enter
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        e.preventDefault();
+                        this.blur(); // Убираем фокус с поля ввода
+                    }
+                });
+            });
+            
+            // Обработка клика вне полей ввода
+            document.addEventListener('click', function(e) {
+                if (!e.target.matches('input, select, textarea')) {
+                    // Убираем фокус со всех активных полей ввода
+                    const activeElement = document.activeElement;
+                    if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT' || activeElement.tagName === 'TEXTAREA')) {
+                        activeElement.blur();
+                    }
+                }
+            });
+        }
         
         // Функция обновления текста поля "Номер отделения" в зависимости от страны
         function updatePostLabel() {
@@ -1394,6 +1428,9 @@
                     toggle.addEventListener('change', saveSettings);
                 }
             });
+            
+            // Инициализируем функцию закрытия клавиатуры
+            setupInputBlur();
         });
         
         // 7. ИНИЦИАЛИЗАЦИЯ
