@@ -134,7 +134,7 @@
             border: 2px solid white;
         }
         .profile-info { display: flex; flex-direction: column; }
-        .profile-name { font-weight: 700; font-size: 15px; color: white; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .profile-name { font-weight: 700; font-size: 18px; color: white; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .profile-hint { font-size: 11px; color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 2px; }
         .close-menu-absolute {
             position: absolute; top: 15px; right: 15px;
@@ -184,18 +184,28 @@
         label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; margin-left: 4px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
         /* Стиль инпутов с иконкой */
         .icon-input-wrapper { position: relative; }
-        .icon-input-wrapper input { padding-left: 44px; }
+        .icon-input-wrapper input, .icon-input-wrapper select { padding-left: 44px; }
         .input-icon {
             position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
             width: 20px; height: 20px; color: #C7C7CC; display: flex; align-items: center; justify-content: center;
         }
         .input-icon svg { width: 100%; height: 100%; stroke-width: 2; }
-        input {
+        input, select {
             width: 100%; border: 1px solid #E5E5EA; background: #FAFAFA; padding: 16px;
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
             color: var(--text-main); transition: all 0.2s; appearance: none;
         }
-        input:focus { border-color: var(--accent-color); background: #fff; }
+        input:focus, select:focus { border-color: var(--accent-color); background: #fff; }
+        
+        /* Стили для select с флагами */
+        select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C7C7CC' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+        
         .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .cat-item {
             background: #FAFAFA; border: 1px solid #E5E5EA; border-radius: 18px;
@@ -272,16 +282,16 @@
             padding: 24px 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
-        /* Заголовок профиля с иконкой */
+        /* Заголовок профиля с иконкой - увеличенный размер */
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 8px;
         }
         .profile-header-icon {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             color: var(--accent-color);
             display: flex;
             align-items: center;
@@ -292,7 +302,7 @@
             height: 100%;
         }
         .profile-title {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--text-main);
             margin: 0;
@@ -471,18 +481,13 @@
         
         /* --- СТИЛИ ДЛЯ АДРЕСОВ ДОСТАВКИ --- */
         .addresses-header {
-            margin-bottom: 8px;
+            margin-bottom: 20px;
         }
         .addresses-title {
             font-size: 28px;
             font-weight: 700;
             color: var(--text-main);
             margin: 0 0 4px 4px;
-        }
-        .addresses-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin: 0 0 20px 4px;
         }
         .addresses-card {
             background: var(--card-bg);
@@ -639,8 +644,7 @@
                         <span id="menu-avatar-placeholder">👤</span>
                     </div>
                     <div class="profile-info">
-                        <div class="profile-name" id="menu-username">Гость</div>
-                        <div class="profile-hint">Мой профиль</div>
+                        <div class="profile-name">Мой профиль</div>
                     </div>
                 </div>
                 <!-- Разделитель -->
@@ -825,6 +829,33 @@
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </div>
+                        <span class="field-label-text">Страна</span>
+                    </div>
+                    <div class="icon-input-wrapper">
+                        <div class="input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <select id="profile-country" class="profile-input" onchange="updatePostLabel()">
+                            <option value="belarus">🇧🇾 Беларусь</option>
+                            <option value="russia">🇷🇺 Россия</option>
+                            <option value="europe">🇪🇺 Европа</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <div class="field-label-with-icon">
+                        <div class="field-label-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>
                             </svg>
@@ -842,7 +873,7 @@
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </div>
-                        <span class="field-label-text">Номер отделения Европочты или СДЭК</span>
+                        <span class="field-label-text" id="post-label">Номер отделения Европочты</span>
                     </div>
                     <input type="text" id="profile-post" class="profile-input" placeholder="Введите номер отделения">
                 </div>
@@ -854,7 +885,6 @@
         <div id="addresses-screen" class="screen-section" style="display: none;">
             <div class="addresses-header">
                 <h1 class="addresses-title">Адреса доставки</h1>
-                <p class="addresses-subtitle">Используйте при самостоятельных покупках</p>
             </div>
             
             <div class="addresses-card">
@@ -1054,6 +1084,29 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
+        
+        // Функция обновления текста поля "Номер отделения" в зависимости от страны
+        function updatePostLabel() {
+            const country = document.getElementById('profile-country').value;
+            const postLabel = document.getElementById('post-label');
+            const postInput = document.getElementById('profile-post');
+            
+            switch(country) {
+                case 'belarus':
+                    postLabel.textContent = 'Номер отделения Европочты';
+                    postInput.placeholder = 'Введите номер отделения Европочты';
+                    break;
+                case 'russia':
+                    postLabel.textContent = 'Адрес отделения СДЭК';
+                    postInput.placeholder = 'Введите адрес отделения СДЭК';
+                    break;
+                case 'europe':
+                    postLabel.textContent = 'Адрес и транспортная компания';
+                    postInput.placeholder = 'Введите адрес и транспортную компанию';
+                    break;
+            }
+        }
+        
         // 1. УПРАВЛЕНИЕ МЕНЮ И ПРОФИЛЕМ
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
@@ -1100,11 +1153,11 @@
         function fillProfileFields(data) {
             if (data.name) {
                 document.getElementById('prof-name').value = data.name;
-                document.getElementById('menu-username').innerText = data.name;
             }
             if (data.phone) document.getElementById('prof-phone').value = data.phone;
             if (data.city) document.getElementById('prof-city').value = data.city;
             if (data.post) document.getElementById('prof-post').value = data.post;
+            if (data.country) document.getElementById('profile-country').value = data.country;
         }
         function saveProfile() {
             const btn = document.getElementById('save-btn');
@@ -1185,7 +1238,7 @@
             if(savedProfile) {
                 const p = JSON.parse(savedProfile);
                 // Отправляем только текстовые данные, аватар слишком тяжелый для sendData
-                dataToSend.user = { name: p.name, phone: p.phone, city: p.city, post: p.post };
+                dataToSend.user = { name: p.name, phone: p.phone, city: p.city, post: p.post, country: p.country };
             }
             tg.sendData(JSON.stringify(dataToSend));
             tg.close();
@@ -1238,6 +1291,10 @@
                 if (data.phone) document.getElementById('profile-phone').value = data.phone;
                 if (data.city) document.getElementById('profile-city').value = data.city;
                 if (data.post) document.getElementById('profile-post').value = data.post;
+                if (data.country) {
+                    document.getElementById('profile-country').value = data.country;
+                    updatePostLabel(); // Обновляем текст поля при загрузке
+                }
             }
         }
         function saveProfileFromScreen() {
@@ -1247,7 +1304,8 @@
             const phone = document.getElementById('profile-phone').value;
             const city = document.getElementById('profile-city').value;
             const post = document.getElementById('profile-post').value;
-            const profileData = { name, phone, city, post };
+            const country = document.getElementById('profile-country').value;
+            const profileData = { name, phone, city, post, country };
             const jsonStr = JSON.stringify(profileData);
             // Сохраняем
             localStorage.setItem('user_profile', jsonStr);
@@ -1361,13 +1419,7 @@
         (function initApp() {
             // Инициализация никнейма из Telegram
             const user = tg.initDataUnsafe.user;
-            if (user) {
-                let username = user.username || (user.first_name ? user.first_name + (user.last_name ? ' ' + user.last_name : '') : 'Гость');
-                if (username.length > 20) {
-                    username = username.substring(0, 17) + '...';
-                }
-                document.getElementById('menu-username').innerText = username;
-            }
+            
             // Загрузка профиля из облака или памяти
             tg.CloudStorage.getItem('user_profile', (err, value) => {
                 if (!err && value) {
