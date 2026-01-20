@@ -285,6 +285,118 @@
         .main-content.hidden {
             display: none;
         }
+        
+        /* --- СТИЛИ ДЛЯ НАСТРОЕК --- */
+        .settings-header {
+            margin-bottom: 8px;
+        }
+        .settings-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 4px 4px;
+        }
+        .settings-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 20px 4px;
+        }
+        .settings-section {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .settings-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .settings-section-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .settings-section-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .settings-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+        .settings-item:not(:last-child) {
+            border-bottom: 1px solid #F2F2F7;
+        }
+        .settings-item-text {
+            flex: 1;
+        }
+        .settings-item-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin: 0 0 4px 0;
+        }
+        .settings-item-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        /* Тумблер */
+        .toggle-switch {
+            position: relative;
+            width: 51px;
+            height: 31px;
+            flex-shrink: 0;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E5EA;
+            transition: 0.3s;
+            border-radius: 31px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .toggle-slider {
+            background-color: #34C759;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
         @media (min-width: 768px) {
             .app-container {
                 max-width: 600px;
@@ -508,9 +620,67 @@
         </div>
         <!-- Экран настроек -->
         <div id="settings-screen" class="screen-section" style="display: none;">
-            <div class="profile-card">
-                <h2>Настройки</h2>
-                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+            <div class="settings-header">
+                <h1 class="settings-title">Настройки</h1>
+                <p class="settings-subtitle">Персонализируйте работу приложения</p>
+            </div>
+            
+            <!-- Секция уведомлений -->
+            <div class="settings-section">
+                <div class="settings-section-header">
+                    <div class="settings-section-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <h3 class="settings-section-title">Уведомления</h3>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <div class="settings-item-label">Обновление заказов</div>
+                        <div class="settings-item-description">Статусы доставки и изменения</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-order-updates" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <div class="settings-item-label">Telegram уведомления</div>
+                        <div class="settings-item-description">Отправлять в Telegram</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-telegram-notifications" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Секция внешнего вида -->
+            <div class="settings-section">
+                <div class="settings-section-header">
+                    <div class="settings-section-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="settings-section-title">Внешний вид</h3>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <div class="settings-item-label">Темная тема</div>
+                        <div class="settings-item-description">Включить темное оформление</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-dark-theme">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -671,6 +841,10 @@
                 if (screenName === 'profile') {
                     loadProfileToScreen();
                 }
+                // Если переходим на настройки - загружаем сохраненные настройки
+                if (screenName === 'settings') {
+                    loadSettings();
+                }
                 // Показываем/скрываем кнопку "Назад" в Telegram
                 if (screenName !== 'home') {
                     tg.BackButton.show();
@@ -730,7 +904,61 @@
                 btn.style.background = '';
             }, 2000);
         }
-        // 5. ИНИЦИАЛИЗАЦИЯ
+        
+        // 5. ЛОГИКА НАСТРОЕК
+        function loadSettings() {
+            // Загружаем сохраненные настройки из localStorage
+            const settings = JSON.parse(localStorage.getItem('app_settings') || '{}');
+            
+            // Применяем сохраненные значения к тумблерам
+            if (settings.orderUpdates !== undefined) {
+                document.getElementById('toggle-order-updates').checked = settings.orderUpdates;
+            }
+            if (settings.telegramNotifications !== undefined) {
+                document.getElementById('toggle-telegram-notifications').checked = settings.telegramNotifications;
+            }
+            if (settings.darkTheme !== undefined) {
+                document.getElementById('toggle-dark-theme').checked = settings.darkTheme;
+            }
+        }
+        
+        function saveSettings() {
+            // Собираем текущие значения всех настроек
+            const settings = {
+                orderUpdates: document.getElementById('toggle-order-updates').checked,
+                telegramNotifications: document.getElementById('toggle-telegram-notifications').checked,
+                darkTheme: document.getElementById('toggle-dark-theme').checked
+            };
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('app_settings', JSON.stringify(settings));
+            
+            // Сохраняем в облако Telegram
+            tg.CloudStorage.setItem('app_settings', JSON.stringify(settings));
+            
+            // Применяем темную тему если включена
+            if (settings.darkTheme) {
+                // Здесь можно добавить логику применения темной темы
+                console.log('Темная тема включена');
+            } else {
+                console.log('Темная тема выключена');
+            }
+            
+            tg.HapticFeedback.impactOccurred('light');
+        }
+        
+        // Добавляем обработчики изменений для всех тумблеров
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = ['toggle-order-updates', 'toggle-telegram-notifications', 'toggle-dark-theme'];
+            toggles.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (toggle) {
+                    toggle.addEventListener('change', saveSettings);
+                }
+            });
+        });
+        
+        // 6. ИНИЦИАЛИЗАЦИЯ
         (function initApp() {
             // Инициализация никнейма из Telegram
             const user = tg.initDataUnsafe.user;
@@ -756,6 +984,19 @@
                     }
                 }
             });
+            
+            // Загрузка настроек из облака или памяти
+            tg.CloudStorage.getItem('app_settings', (err, value) => {
+                if (!err && value) {
+                    localStorage.setItem('app_settings', value);
+                } else {
+                    const localSettings = localStorage.getItem('app_settings');
+                    if (localSettings) {
+                        tg.CloudStorage.setItem('app_settings', localSettings);
+                    }
+                }
+            });
+            
             // Обработка входящих данных (баланс, заказы)
             const urlParams = new URLSearchParams(window.location.search);
             const dataParam = urlParams.get('data');
@@ -775,4 +1016,3 @@
     </script>
 </body>
 </html>
-
