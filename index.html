@@ -287,11 +287,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .profile-header-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             color: var(--accent-color);
             display: flex;
             align-items: center;
@@ -310,7 +310,7 @@
         .profile-subtitle {
             font-size: 13px;
             color: var(--text-secondary);
-            margin: 0 0 20px 0;
+            margin: 0 0 20px 44px;
             line-height: 1.4;
         }
         /* Лейбл с иконкой над полем ввода */
@@ -482,12 +482,6 @@
         /* --- СТИЛИ ДЛЯ АДРЕСОВ ДОСТАВКИ --- */
         .addresses-header {
             margin-bottom: 20px;
-        }
-        .addresses-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 0 0 4px 4px;
         }
         .addresses-card {
             background: var(--card-bg);
@@ -798,7 +792,7 @@
                     </div>
                     <h2 class="profile-title">Мой профиль</h2>
                 </div>
-                <p class="profile-subtitle">Впишите данные ниже — куда и кому будет отправляться товар</p>
+                <p class="profile-subtitle">Данные ниже - куда и кому будет отправляться товар</p>
                 
                 <div class="input-group">
                     <div class="field-label-with-icon">
@@ -829,27 +823,18 @@
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                <line x1="8" y1="21" x2="16" y2="21"></line>
-                                <line x1="12" y1="17" x2="12" y2="21"></line>
-                            </svg>
-                        </div>
-                        <span class="field-label-text">Страна</span>
-                    </div>
-                    <div class="icon-input-wrapper">
-                        <div class="input-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="2" y1="12" x2="22" y2="12"></line>
                                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                             </svg>
                         </div>
-                        <select id="profile-country" class="profile-input" onchange="updatePostLabel()">
-                            <option value="belarus">🇧🇾 Беларусь</option>
-                            <option value="russia">🇷🇺 Россия</option>
-                            <option value="europe">🇪🇺 Европа</option>
-                        </select>
+                        <span class="field-label-text">Страна</span>
                     </div>
+                    <select id="profile-country" class="profile-input" onchange="updatePostLabel()" style="padding-left: 16px;">
+                        <option value="belarus">🇧🇾 Беларусь</option>
+                        <option value="russia">🇷🇺 Россия</option>
+                        <option value="europe">🇪🇺 Европа</option>
+                    </select>
                 </div>
                 
                 <div class="input-group">
@@ -883,10 +868,6 @@
         </div>
         <!-- Экран адресов доставки -->
         <div id="addresses-screen" class="screen-section" style="display: none;">
-            <div class="addresses-header">
-                <h1 class="addresses-title">Адреса доставки</h1>
-            </div>
-            
             <div class="addresses-card">
                 <div class="addresses-card-header">
                     <div class="addresses-card-icon">
