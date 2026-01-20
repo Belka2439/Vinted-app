@@ -675,8 +675,18 @@
             
             if (!isActive) {
                 // Открываем меню
-                const currentBalance = document.getElementById('user-balance').innerText;
-                document.getElementById('menu-balance-value').innerText = currentBalance + ' BYN';
+                const currentBalanceText = document.getElementById('user-balance').innerText;
+                const currentBalanceValue = parseFloat(currentBalanceText.replace(' ', '')); // Удаляем пробелы и парсим число
+                const menuBalanceElement = document.getElementById('menu-balance-value');
+
+                menuBalanceElement.innerText = currentBalanceText + ' BYN';
+
+                // Уменьшаем шрифт, если баланс большой
+                if (currentBalanceValue >= 10000) {
+                    menuBalanceElement.style.fontSize = '14px'; // Меньший размер шрифта
+                } else {
+                    menuBalanceElement.style.fontSize = '18px'; // Исходный размер шрифта
+                }
                 
                 menu.classList.add('active');
                 overlay.classList.add('active');
