@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -744,10 +745,16 @@
             // Загрузка профиля из облака или памяти
             tg.CloudStorage.getItem('user_profile', (err, value) => {
                 if (!err && value) {
-                    fillProfileFields(JSON.parse(value));
+                    const profileData = JSON.parse(value);
+                    fillProfileFields(profileData);
+                    localStorage.setItem('user_profile', value); // Синхронизируем локальное хранилище с облаком
                 } else {
                     const localData = localStorage.getItem('user_profile');
-                    if (localData) fillProfileFields(JSON.parse(localData));
+                    if (localData) {
+                        fillProfileFields(JSON.parse(localData));
+                        // Если в облаке нет данных, но есть локально - загружаем в облако
+                        tg.CloudStorage.setItem('user_profile', localData);
+                    }
                 }
             });
             // Обработка входящих данных (баланс, заказы)
@@ -769,3 +776,4 @@
     </script>
 </body>
 </html>
+```
