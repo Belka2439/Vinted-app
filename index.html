@@ -81,10 +81,10 @@
         }
         .side-menu.active { right: 0; }
 
-        /* Виджет профиля в меню */
-        .profile-widget {
+        /* Виджет профиля и баланса в меню */
+        .profile-widget, .balance-widget {
             display: flex; align-items: center; gap: 12px;
-            padding: 12px; margin-bottom: 20px; margin-top: 10px;
+            padding: 12px; margin-bottom: 12px; margin-top: 10px;
             background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
             color: white;
             border-radius: 20px;
@@ -372,10 +372,13 @@
                 </div>
             </div>
 
-            <div style="margin-top: 10px;">
-                <div class="menu-item">
-                    <span class="menu-item-label">Баланс</span>
-                    <span class="menu-item-value" id="menu-balance-value">0.00 BYN</span>
+            <div class="balance-widget">
+                <div class="avatar-circle" style="background: rgba(255,255,255,0.2); border: none;">
+                    <span style="color: white;">💰</span>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-hint" style="color: rgba(255,255,255,0.8);">Текущий баланс</div>
+                    <div class="profile-name" id="menu-balance-value" style="font-size: 17px;">0.00 BYN</div>
                 </div>
             </div>
 
