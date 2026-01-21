@@ -3,7 +3,7 @@
     const CONFIG = {
         exchangeRate: 25.0,   // Курс злотого к рублю (пример)
         defaultShipping: 15,  // Стоимость доставки (пока фиксируем Польшу)
-        botUsername: "YOUR_BOT_NAME", // Имя твоего бота (без @)
+        botUsername: "MyVintedShop_bot", // Имя твоего бота (без @)
         
         // Коэффициенты для формул (если понадобятся)
         feeFixed: 2.90,       // Фикс. часть Protection Fee (если нужно считать)
