@@ -285,7 +285,7 @@
         /* Заголовок профиля с иконкой - увеличенный размер */
         .profile-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             margin-bottom: 2px;
         }
@@ -296,8 +296,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            align-self: flex-start;
-            margin-top: 2px;
+            flex-shrink: 0;
+            margin-top: 8px;
         }
         .profile-header-icon svg {
             width: 100%;
@@ -551,6 +551,15 @@
             font-size: 15px;
             color: var(--text-secondary);
             margin: 0;
+        }
+        /* Стиль для выделенных заголовков секций */
+        .address-section-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0 0 6px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E5E5EA;
         }
         .delivery-list {
             margin-top: 4px;
@@ -903,7 +912,7 @@
                     </div>
                     
                     <div class="address-field">
-                        <p class="address-field-label">Способы доставки</p>
+                        <p class="address-section-header">Способы доставки</p>
                         <div class="delivery-list">
                             <div class="delivery-item">
                                 <div class="delivery-info">
@@ -973,7 +982,7 @@
                     </div>
                     
                     <div class="address-field">
-                        <p class="address-field-label">Получатель</p>
+                        <p class="address-section-header">Получатель</p>
                         <p class="address-field-value">Вписываем свои данные</p>
                     </div>
                 </div>
