@@ -9,19 +9,23 @@
             --bg-color: #F2F2F7;
             --card-bg: #FFFFFF;
             --accent-color: #007AFF;
+            --accent-color-secondary: #0056b3;
             --text-main: #1C1C1E;
             --text-secondary: #8E8E93;
             --tab-bg: #7676801f;
+            --input-bg: #FAFAFA;
+            --input-border: #E5E5EA;
         }
         
         /* Темная тема */
         [data-theme="dark"] {
             --bg-color: #000000;
             --card-bg: #1C1C1E;
-            --accent-color: #0A84FF;
             --text-main: #FFFFFF;
             --text-secondary: #8E8E93;
             --tab-bg: #2C2C2E;
+            --input-bg: #2C2C2E;
+            --input-border: #3A3A3C;
         }
         
         body {
@@ -42,7 +46,7 @@
         }
         /* --- БЛОК БАЛАНСА (Твой стиль) --- */
         .balance-section {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-secondary) 100%);
             border-radius: 20px;
             padding: 16px 20px;
             color: white;
@@ -90,7 +94,7 @@
         .side-menu.active { right: 0; }
         /* Объединенный виджет в меню */
         .combined-user-widget {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-secondary) 100%);
             border-radius: 24px;
             margin-bottom: 20px;
             margin-top: 10px;
@@ -223,7 +227,7 @@
         }
         .input-icon svg { width: 100%; height: 100%; stroke-width: 2; }
         input, select {
-            width: 100%; border: 1px solid #E5E5EA; background: #FAFAFA; padding: 16px;
+            width: 100%; border: 1px solid var(--input-border); background: var(--input-bg); padding: 16px;
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
             color: var(--text-main); transition: all 0.2s; appearance: none;
         }
@@ -240,11 +244,11 @@
         
         .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .cat-item {
-            background: #FAFAFA; border: 1px solid #E5E5EA; border-radius: 18px;
+            background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 18px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             aspect-ratio: 1 / 1; transition: all 0.2s ease; cursor: pointer; padding: 8px; box-sizing: border-box;
         }
-        .cat-icon { width: 28px; height: 28px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+        .cat-icon { width: 28px; height: 28px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; color: var(--accent-color); }
         .cat-icon svg { width: 100%; height: 100%; }
         .cat-label { font-size: 10px; font-weight: 700; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
         .cat-item.selected { background: var(--accent-color); border-color: var(--accent-color); }
@@ -378,8 +382,8 @@
         }
         .profile-input {
             width: 100%;
-            border: 1px solid #E5E5EA;
-            background: #FAFAFA;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
             padding: 16px;
             border-radius: 14px;
             font-size: 17px;
@@ -540,6 +544,53 @@
             position: absolute;
             width: 0;
             height: 0;
+            pointer-events: none;
+        }
+        
+        /* Градиентный пикер */
+        .gradient-picker-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .gradient-preview-bar {
+            width: 100%;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid #E5E5EA;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .gradient-preview-bar:hover {
+            transform: scale(1.02);
+        }
+        .gradient-colors-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .gradient-color-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+        .gradient-color-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .gradient-color-preview {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            border: 2px solid #E5E5EA;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .gradient-color-preview:hover {
+            transform: scale(1.05);
         }
         
         /* --- СТИЛИ ДЛЯ АДРЕСОВ ДОСТАВКИ --- */
@@ -587,7 +638,7 @@
             margin: 0;
         }
         .addresses-inner-card {
-            background: #F8F8F8;
+            background: var(--input-bg);
             border-radius: 14px;
             padding: 16px;
         }
@@ -614,8 +665,8 @@
             font-weight: 600;
             color: var(--text-main);
             margin: 0 0 6px 0;
-            padding-top: 8px;
-            border-top: 1px solid #E5E5EA;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--input-border);
         }
         .delivery-list {
             margin-top: 4px;
@@ -625,11 +676,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            border-bottom: 1px solid #E5E5EA;
         }
-        .delivery-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
+        .delivery-item:not(:last-child) {
+            border-bottom: 1px solid var(--input-border);
         }
         .delivery-item:first-child {
             padding-top: 0;
@@ -679,7 +728,7 @@
             line-height: 1.5;
             margin-top: 16px;
             padding: 12px;
-            background: #F8F8F8;
+            background: var(--input-bg);
             border-radius: 12px;
         }
         
@@ -1135,14 +1184,25 @@
                     </label>
                 </div>
                 
-                <div class="settings-item">
-                    <div class="settings-item-text">
+                <div class="settings-item" style="flex-direction: column; align-items: flex-start; padding: 16px 0;">
+                    <div class="settings-item-text" style="margin-bottom: 12px;">
                         <div class="settings-item-label">Цвет интерфейса</div>
-                        <div class="settings-item-description">Выберите основной цвет</div>
+                        <div class="settings-item-description">Настройте градиент основного цвета</div>
                     </div>
-                    <div class="color-picker-wrapper">
-                        <label for="color-picker" class="color-preview" id="color-preview" style="background-color: #007AFF;"></label>
-                        <input type="color" id="color-picker" value="#007AFF">
+                    <div class="gradient-picker-container">
+                        <div class="gradient-preview-bar" id="gradient-preview" onclick="document.getElementById('color-picker-primary').click()"></div>
+                        <div class="gradient-colors-row">
+                            <div class="gradient-color-item">
+                                <span class="gradient-color-label">Основной</span>
+                                <label for="color-picker-primary" class="gradient-color-preview" id="color-preview-primary" style="background-color: #007AFF;"></label>
+                                <input type="color" id="color-picker-primary" value="#007AFF">
+                            </div>
+                            <div class="gradient-color-item">
+                                <span class="gradient-color-label">Вторичный</span>
+                                <label for="color-picker-secondary" class="gradient-color-preview" id="color-preview-secondary" style="background-color: #0056b3;"></label>
+                                <input type="color" id="color-picker-secondary" value="#0056b3">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1472,10 +1532,16 @@
                 document.getElementById('toggle-dark-theme').checked = settings.darkTheme;
                 applyTheme(settings.darkTheme);
             }
-            if (settings.accentColor !== undefined) {
-                document.getElementById('color-picker').value = settings.accentColor;
-                document.getElementById('color-preview').style.backgroundColor = settings.accentColor;
-                applyAccentColor(settings.accentColor);
+            if (settings.accentColorPrimary !== undefined) {
+                document.getElementById('color-picker-primary').value = settings.accentColorPrimary;
+                document.getElementById('color-preview-primary').style.backgroundColor = settings.accentColorPrimary;
+            }
+            if (settings.accentColorSecondary !== undefined) {
+                document.getElementById('color-picker-secondary').value = settings.accentColorSecondary;
+                document.getElementById('color-preview-secondary').style.backgroundColor = settings.accentColorSecondary;
+            }
+            if (settings.accentColorPrimary && settings.accentColorSecondary) {
+                applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
             }
         }
         
@@ -1485,7 +1551,8 @@
                 orderUpdates: document.getElementById('toggle-order-updates').checked,
                 telegramNotifications: document.getElementById('toggle-telegram-notifications').checked,
                 darkTheme: document.getElementById('toggle-dark-theme').checked,
-                accentColor: document.getElementById('color-picker').value
+                accentColorPrimary: document.getElementById('color-picker-primary').value,
+                accentColorSecondary: document.getElementById('color-picker-secondary').value
             };
             
             // Сохраняем в localStorage
@@ -1493,8 +1560,6 @@
             
             // Сохраняем в облако Telegram
             tg.CloudStorage.setItem('app_settings', JSON.stringify(settings));
-            
-            tg.HapticFeedback.impactOccurred('light');
         }
         
         function applyTheme(isDark) {
@@ -1505,8 +1570,15 @@
             }
         }
         
-        function applyAccentColor(color) {
-            document.documentElement.style.setProperty('--accent-color', color);
+        function applyAccentColors(primaryColor, secondaryColor) {
+            document.documentElement.style.setProperty('--accent-color', primaryColor);
+            document.documentElement.style.setProperty('--accent-color-secondary', secondaryColor);
+            
+            // Обновляем градиент превью
+            const gradientPreview = document.getElementById('gradient-preview');
+            if (gradientPreview) {
+                gradientPreview.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+            }
         }
         
         // 6. ЛОГИКА АДРЕСОВ ДОСТАВКИ
@@ -1557,15 +1629,28 @@
                 }
             });
             
-            // Обработчик для пикера цвета
-            const colorPicker = document.getElementById('color-picker');
-            const colorPreview = document.getElementById('color-preview');
-            if (colorPicker && colorPreview) {
-                colorPicker.addEventListener('input', function() {
-                    colorPreview.style.backgroundColor = this.value;
-                    applyAccentColor(this.value);
+            // Обработчики для пикеров цвета
+            const colorPickerPrimary = document.getElementById('color-picker-primary');
+            const colorPreviewPrimary = document.getElementById('color-preview-primary');
+            const colorPickerSecondary = document.getElementById('color-picker-secondary');
+            const colorPreviewSecondary = document.getElementById('color-preview-secondary');
+            
+            if (colorPickerPrimary && colorPreviewPrimary) {
+                colorPickerPrimary.addEventListener('input', function() {
+                    colorPreviewPrimary.style.backgroundColor = this.value;
+                    const secondaryColor = document.getElementById('color-picker-secondary').value;
+                    applyAccentColors(this.value, secondaryColor);
                 });
-                colorPicker.addEventListener('change', saveSettings);
+                colorPickerPrimary.addEventListener('change', saveSettings);
+            }
+            
+            if (colorPickerSecondary && colorPreviewSecondary) {
+                colorPickerSecondary.addEventListener('input', function() {
+                    colorPreviewSecondary.style.backgroundColor = this.value;
+                    const primaryColor = document.getElementById('color-picker-primary').value;
+                    applyAccentColors(primaryColor, this.value);
+                });
+                colorPickerSecondary.addEventListener('change', saveSettings);
             }
             
             // Инициализируем функцию закрытия клавиатуры
@@ -1601,8 +1686,8 @@
                     if (settings.darkTheme) {
                         applyTheme(settings.darkTheme);
                     }
-                    if (settings.accentColor) {
-                        applyAccentColor(settings.accentColor);
+                    if (settings.accentColorPrimary && settings.accentColorSecondary) {
+                        applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
                     }
                 } else {
                     const localSettings = localStorage.getItem('app_settings');
@@ -1612,8 +1697,8 @@
                         if (settings.darkTheme) {
                             applyTheme(settings.darkTheme);
                         }
-                        if (settings.accentColor) {
-                            applyAccentColor(settings.accentColor);
+                        if (settings.accentColorPrimary && settings.accentColorSecondary) {
+                            applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
                         }
                     }
                 }
