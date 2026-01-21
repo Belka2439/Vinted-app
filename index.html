@@ -13,6 +13,17 @@
             --text-secondary: #8E8E93;
             --tab-bg: #7676801f;
         }
+        
+        /* Темная тема */
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --card-bg: #1C1C1E;
+            --accent-color: #0A84FF;
+            --text-main: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --tab-bg: #2C2C2E;
+        }
+        
         body {
             font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
@@ -22,6 +33,7 @@
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .app-container {
             max-width: 480px;
@@ -30,7 +42,7 @@
         }
         /* --- БЛОК БАЛАНСА (Твой стиль) --- */
         .balance-section {
-            background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
             border-radius: 20px;
             padding: 16px 20px;
             color: white;
@@ -45,8 +57,10 @@
         .balance-amount {
             font-size: 24px; font-weight: 800; letter-spacing: -0.5px;
             white-space: nowrap; display: flex; align-items: baseline;
+            transition: font-size 0.3s ease;
         }
-        .balance-amount.large { font-size: 20px; }
+        .balance-amount.medium { font-size: 20px; }
+        .balance-amount.large { font-size: 18px; }
         #user-balance { margin-right: 4px; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
         .top-up-btn {
@@ -76,7 +90,7 @@
         .side-menu.active { right: 0; }
         /* Объединенный виджет в меню */
         .combined-user-widget {
-            background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
             border-radius: 24px;
             margin-bottom: 20px;
             margin-top: 10px;
@@ -104,23 +118,41 @@
             padding: 16px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
+            position: relative;
         }
         .balance-content {
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-width: 0;
+        }
+        .menu-balance-wrapper {
+            position: relative;
+            z-index: 1;
         }
         .menu-top-up-btn {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 10px;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 2;
+            margin-top: -8px;
+        }
+        .menu-top-up-btn.medium {
+            padding: 10px 16px;
+            margin-top: -12px;
+        }
+        .menu-top-up-btn.large {
+            padding: 12px 18px;
+            margin-top: -16px;
         }
         .menu-top-up-btn:active {
             transform: scale(0.95);
@@ -175,7 +207,7 @@
             background: none; font-size: 14px; font-weight: 600;
             color: var(--text-main); transition: all 0.2s ease;
         }
-        .tab-btn.active { background: white; box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+        .tab-btn.active { background: var(--card-bg); box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
         .card { background: var(--card-bg); border-radius: 22px; padding: 24px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: none; }
         .card.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -195,7 +227,7 @@
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
             color: var(--text-main); transition: all 0.2s; appearance: none;
         }
-        input:focus, select:focus { border-color: var(--accent-color); background: #fff; }
+        input:focus, select:focus { border-color: var(--accent-color); background: var(--card-bg); }
         
         /* Стили для select с флагами */
         select {
@@ -226,7 +258,7 @@
             margin-top: 20px; cursor: pointer; transition: 0.1s; appearance: none;
         }
         .main-btn:active { transform: scale(0.98); opacity: 0.9; }
-        .order-item { display: flex; gap: 14px; background: white; padding: 12px; border-radius: 18px; margin-bottom: 12px; align-items: center; border: 1px solid #F2F2F7; }
+        .order-item { display: flex; gap: 14px; background: var(--card-bg); padding: 12px; border-radius: 18px; margin-bottom: 12px; align-items: center; border: 1px solid #F2F2F7; }
         .order-img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; background: #F2F2F7; flex-shrink: 0; }
         .order-info { flex: 1; min-width: 0; }
         .status-badge { font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 8px; text-transform: uppercase; margin-top: 6px; display: inline-block; }
@@ -359,7 +391,7 @@
         }
         .profile-input:focus {
             border-color: var(--accent-color);
-            background: #fff;
+            background: var(--card-bg);
         }
         /* Скрытие табов на других экранах */
         .tabs-section {
@@ -486,6 +518,30 @@
             transform: translateX(20px);
         }
         
+        /* Пикер цвета */
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 2px solid #E5E5EA;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .color-preview:hover {
+            transform: scale(1.05);
+        }
+        input[type="color"] {
+            opacity: 0;
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+        
         /* --- СТИЛИ ДЛЯ АДРЕСОВ ДОСТАВКИ --- */
         .addresses-header {
             margin-bottom: 20px;
@@ -558,8 +614,8 @@
             font-weight: 600;
             color: var(--text-main);
             margin: 0 0 6px 0;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #E5E5EA;
+            padding-top: 8px;
+            border-top: 1px solid #E5E5EA;
         }
         .delivery-list {
             margin-top: 4px;
@@ -663,7 +719,9 @@
                 <div class="widget-section-balance">
                     <div class="balance-content">
                         <div class="profile-hint" style="color: rgba(255,255,255,0.8);">Баланс</div>
-                        <div class="profile-name" id="menu-balance-value" style="font-size: 18px;">0.00 BYN</div>
+                        <div class="menu-balance-wrapper">
+                            <div class="profile-name" id="menu-balance-value" style="font-size: 18px;">0.00 BYN</div>
+                        </div>
                     </div>
                     <button class="menu-top-up-btn" onclick="tg.close()">Пополнить</button>
                 </div>
@@ -1076,6 +1134,17 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
+                
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <div class="settings-item-label">Цвет интерфейса</div>
+                        <div class="settings-item-description">Выберите основной цвет</div>
+                    </div>
+                    <div class="color-picker-wrapper">
+                        <label for="color-picker" class="color-preview" id="color-preview" style="background-color: #007AFF;"></label>
+                        <input type="color" id="color-picker" value="#007AFF">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1131,6 +1200,43 @@
             }
         }
         
+        // Функция обновления баланса с адаптивным размером шрифта
+        function updateBalanceDisplay(balanceValue) {
+            const balanceElement = document.querySelector('.balance-amount');
+            const menuBalanceElement = document.getElementById('menu-balance-value');
+            const menuTopUpBtn = document.querySelector('.menu-top-up-btn');
+            
+            // Обновляем главный баланс
+            balanceElement.classList.remove('medium', 'large');
+            if (balanceValue >= 10000) {
+                balanceElement.classList.add('large');
+            } else if (balanceValue >= 1000) {
+                balanceElement.classList.add('medium');
+            }
+            
+            // Обновляем баланс в меню
+            if (menuBalanceElement) {
+                menuBalanceElement.classList.remove('medium', 'large');
+                if (balanceValue >= 10000) {
+                    menuBalanceElement.style.fontSize = '14px';
+                } else if (balanceValue >= 1000) {
+                    menuBalanceElement.style.fontSize = '16px';
+                } else {
+                    menuBalanceElement.style.fontSize = '18px';
+                }
+            }
+            
+            // Обновляем размер кнопки "Пополнить" в меню
+            if (menuTopUpBtn) {
+                menuTopUpBtn.classList.remove('medium', 'large');
+                if (balanceValue >= 10000) {
+                    menuTopUpBtn.classList.add('large');
+                } else if (balanceValue >= 1000) {
+                    menuTopUpBtn.classList.add('medium');
+                }
+            }
+        }
+        
         // 1. УПРАВЛЕНИЕ МЕНЮ И ПРОФИЛЕМ
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
@@ -1139,17 +1245,14 @@
             if (!isActive) {
                 // Открываем меню
                 const currentBalance = document.getElementById('user-balance').innerText;
-                document.getElementById('menu-balance-value').innerText = currentBalance + ' BYN';
-                const currentBalanceText = document.getElementById('user-balance').innerText;
-                const currentBalanceValue = parseFloat(currentBalanceText.replace(' ', '')); // Удаляем пробелы и парсим число
+                const currentBalanceText = currentBalance;
+                const currentBalanceValue = parseFloat(currentBalanceText.replace(/\s/g, '')); // Удаляем пробелы и парсим число
                 const menuBalanceElement = document.getElementById('menu-balance-value');
                 menuBalanceElement.innerText = currentBalanceText + ' BYN';
-                // Уменьшаем шрифт, если баланс большой
-                if (currentBalanceValue >= 10000) {
-                    menuBalanceElement.style.fontSize = '14px'; // Меньший размер шрифта
-                } else {
-                    menuBalanceElement.style.fontSize = '18px'; // Исходный размер шрифта
-                }
+                
+                // Обновляем размер шрифта и кнопки
+                updateBalanceDisplay(currentBalanceValue);
+                
                 menu.classList.add('active');
                 overlay.classList.add('active');
                 // Всегда показываем главное меню при открытии, а не редактирование
@@ -1367,6 +1470,12 @@
             }
             if (settings.darkTheme !== undefined) {
                 document.getElementById('toggle-dark-theme').checked = settings.darkTheme;
+                applyTheme(settings.darkTheme);
+            }
+            if (settings.accentColor !== undefined) {
+                document.getElementById('color-picker').value = settings.accentColor;
+                document.getElementById('color-preview').style.backgroundColor = settings.accentColor;
+                applyAccentColor(settings.accentColor);
             }
         }
         
@@ -1375,7 +1484,8 @@
             const settings = {
                 orderUpdates: document.getElementById('toggle-order-updates').checked,
                 telegramNotifications: document.getElementById('toggle-telegram-notifications').checked,
-                darkTheme: document.getElementById('toggle-dark-theme').checked
+                darkTheme: document.getElementById('toggle-dark-theme').checked,
+                accentColor: document.getElementById('color-picker').value
             };
             
             // Сохраняем в localStorage
@@ -1384,15 +1494,19 @@
             // Сохраняем в облако Telegram
             tg.CloudStorage.setItem('app_settings', JSON.stringify(settings));
             
-            // Применяем темную тему если включена
-            if (settings.darkTheme) {
-                // Здесь можно добавить логику применения темной темы
-                console.log('Темная тема включена');
-            } else {
-                console.log('Темная тема выключена');
-            }
-            
             tg.HapticFeedback.impactOccurred('light');
+        }
+        
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+        
+        function applyAccentColor(color) {
+            document.documentElement.style.setProperty('--accent-color', color);
         }
         
         // 6. ЛОГИКА АДРЕСОВ ДОСТАВКИ
@@ -1434,9 +1548,25 @@
             toggles.forEach(id => {
                 const toggle = document.getElementById(id);
                 if (toggle) {
-                    toggle.addEventListener('change', saveSettings);
+                    toggle.addEventListener('change', function() {
+                        if (id === 'toggle-dark-theme') {
+                            applyTheme(this.checked);
+                        }
+                        saveSettings();
+                    });
                 }
             });
+            
+            // Обработчик для пикера цвета
+            const colorPicker = document.getElementById('color-picker');
+            const colorPreview = document.getElementById('color-preview');
+            if (colorPicker && colorPreview) {
+                colorPicker.addEventListener('input', function() {
+                    colorPreview.style.backgroundColor = this.value;
+                    applyAccentColor(this.value);
+                });
+                colorPicker.addEventListener('change', saveSettings);
+            }
             
             // Инициализируем функцию закрытия клавиатуры
             setupInputBlur();
@@ -1467,10 +1597,24 @@
             tg.CloudStorage.getItem('app_settings', (err, value) => {
                 if (!err && value) {
                     localStorage.setItem('app_settings', value);
+                    const settings = JSON.parse(value);
+                    if (settings.darkTheme) {
+                        applyTheme(settings.darkTheme);
+                    }
+                    if (settings.accentColor) {
+                        applyAccentColor(settings.accentColor);
+                    }
                 } else {
                     const localSettings = localStorage.getItem('app_settings');
                     if (localSettings) {
                         tg.CloudStorage.setItem('app_settings', localSettings);
+                        const settings = JSON.parse(localSettings);
+                        if (settings.darkTheme) {
+                            applyTheme(settings.darkTheme);
+                        }
+                        if (settings.accentColor) {
+                            applyAccentColor(settings.accentColor);
+                        }
                     }
                 }
             });
@@ -1485,7 +1629,7 @@
                         const balanceValue = parseFloat(decodedData.b);
                         let formattedBalance = balanceValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, ' ');
                         document.getElementById('user-balance').innerText = formattedBalance;
-                        if (balanceValue >= 10000) document.querySelector('.balance-amount').classList.add('large');
+                        updateBalanceDisplay(balanceValue);
                     }
                     window.userOrders = decodedData.o || [];
                 } catch (e) { console.error("Ошибка данных:", e); }
