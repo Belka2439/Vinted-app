@@ -1,50 +1,53 @@
 function getVintedData() {
         try {
-            // 1. Ищем цену
+            // 1. Ищем цену (стандартный селектор)
             const priceEl = document.querySelector('[data-testid$="item-price"]');
             if (!priceEl) return { error: "Цена не найдена" };
             const rawPrice = parseFloat(priceEl.innerText.replace(/[^0-9,.]/g, '').replace(',', '.'));
 
-            // 2. Улучшенный поиск местоположения
+            // 2. Ищем блок с локацией через SVG (иконку метки)
             let locationText = "";
             
-            // Пробуем разные варианты поиска (Vinted часто меняет их)
-            const selectors = [
-                '[data-testid$="item-location"]', 
-                '.details-list__item-value--location',
-                '.u-flex-align-items-center span',
-                '.details-list__item--location div'
-            ];
-
-            for (let selector of selectors) {
-                const el = document.querySelector(selector);
-                if (el && el.innerText.includes(',')) {
-                    locationText = el.innerText;
-                    break;
+            // Находим все SVG на странице
+            const allSvgs = document.querySelectorAll('svg');
+            for (let svg of allSvgs) {
+                // Проверяем, что это иконка локации (в ней специфический путь d="M8 0a6.5...")
+                if (svg.innerHTML.includes('M8 0a6.5')) {
+                    // Находим родительский контейнер (u-flexbox) и берем последний div в нем
+                    const container = svg.closest('.u-flexbox');
+                    if (container) {
+                        // Ищем div, в котором нет вложенных элементов (чистый текст локации)
+                        const textDiv = container.querySelector('div:last-child');
+                        if (textDiv && textDiv.innerText.includes(',')) {
+                            locationText = textDiv.innerText;
+                            break;
+                        }
+                    }
                 }
             }
 
-            // Если селекторы не сработали, ищем по иконке локации (самый надежный способ)
+            // Запасной вариант, если через SVG не вышло
             if (!locationText) {
-                const allSpans = document.querySelectorAll('span');
-                for (let span of allSpans) {
-                    if (span.innerText.includes(',') && (span.innerText.includes('Polska') || span.innerText.includes('Czech'))) {
-                        locationText = span.innerText;
+                const els = document.querySelectorAll('div, span');
+                for (let el of els) {
+                    if (el.children.length === 0 && el.innerText.includes(',') && 
+                       (el.innerText.includes('Polska') || el.innerText.includes('Republic') || el.innerText.includes('România'))) {
+                        locationText = el.innerText;
                         break;
                     }
                 }
             }
 
-            if (!locationText) return { error: "Местоположение не найдено. Попробуйте обновить страницу." };
+            if (!locationText) return { error: "Местоположение не найдено" };
             
-            // Берем название страны (последнее слово после запятой)
+            // Вырезаем страну (все что после последней запятой)
             const parts = locationText.split(',');
             const countryName = parts[parts.length - 1].trim();
 
             const countryInfo = countryData[countryName];
             
             if (!countryInfo) {
-                return { error: "Заказ из этой страны пока не поддерживается: " + countryName };
+                return { error: "Страна пока не поддерживается: " + countryName };
             }
 
             return {
@@ -55,6 +58,7 @@ function getVintedData() {
                 img: document.querySelector('[data-testid$="item-photo"] img')?.src || ""
             };
         } catch (e) {
-            return { error: "Произошла ошибка при чтении данных" };
+            console.error(e);
+            return { error: "Ошибка при чтении данных" };
         }
     }
