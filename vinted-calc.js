@@ -1,160 +1,115 @@
 (function() {
-    // --- 1. НАСТРОЙКИ И ДАННЫЕ ---
-    const countryData = {
-        // Польша
-        "Polska": { price: 11.75, flag: "🇵🇱" },
-        "Poland": { price: 11.75, flag: "🇵🇱" },
-        // Чехия
-        "Česko": { price: 15.87, flag: "🇨🇿" },
-        "Czechy": { price: 15.87, flag: "🇨🇿" },
-        "Czech Republic": { price: 15.87, flag: "🇨🇿" },
-        "Czechia": { price: 15.87, flag: "🇨🇿" },
-        // Литва
-        "Lietuva": { price: 14.29, flag: "🇱🇹" },
-        "Lithuania": { price: 14.29, flag: "🇱🇹" },
-        "Litwa": { price: 14.29, flag: "🇱🇹" },
-        // Румыния
-        "România": { price: 17.91, flag: "🇷🇴" },
-        "Romania": { price: 17.91, flag: "🇷🇴" },
-        "Rumunia": { price: 17.91, flag: "🇷🇴" },
-        // Словакия
-        "Slovensko": { price: 15.14, flag: "🇸🇰" },
-        "Slovakia": { price: 15.14, flag: "🇸🇰" },
-        "Słowacja": { price: 15.14, flag: "🇸🇰" },
-        // Венгрия
-        "Magyarország": { price: 16.65, flag: "🇭🇺" },
-        "Hungary": { price: 16.65, flag: "🇭🇺" },
-        "Węgry": { price: 16.65, flag: "🇭🇺" },
-        // Швеция
-        "Sverige": { price: 22.35, flag: "🇸🇪" },
-        "Sweden": { price: 22.35, flag: "🇸🇪" },
-        "Szwecja": { price: 22.35, flag: "🇸🇪" },
-        // Другие страны
-        "Finland": { price: 24.32, flag: "🇫🇮" },
-        "Suomi": { price: 24.32, flag: "🇫🇮" },
-        "Denmark": { price: 21.42, flag: "🇩🇰" },
-        "Danmark": { price: 21.42, flag: "🇩🇰" },
-        "Croatia": { price: 16.21, flag: "🇭🇷" },
-        "Hrvatska": { price: 16.21, flag: "🇭🇷" },
-        "Estonia": { price: 6.36, flag: "🇪🇪" },
-        "Eesti": { price: 6.36, flag: "🇪🇪" },
-        "Latvia": { price: 6.36, flag: "🇱🇻" },
-        "Latvija": { price: 6.36, flag: "🇱🇻" }
-    };
-
+    // --- 1. НАСТРОЙКИ ---
     const CONFIG = {
         exchangeRate: 25.0, 
-        botUsername: "YOUR_BOT_NAME" // !!! ВПИШИТЕ ИМЯ ВАШЕГО БОТА ЗДЕСЬ
+        botUsername: "YOUR_BOT_NAME", // <-- Впишите имя бота
+        defaultCountry: "Polska"       // Страна по умолчанию, если не нашли
     };
 
-    // --- 2. ЛОГИКА ПОИСКА ---
-    function getVintedData() {
-        try {
-            // А. ИЩЕМ ЦЕНУ (По заголовку или data-testid)
-            let price = 0;
-            const priceSelectors = [
-                '.web_ui__Text__title', // Ваш класс
-                '[data-testid$="item-price"]',
-                'h1 ~ div', // Часто цена идет рядом с заголовком
-            ];
+    // База данных стран
+    const countryData = {
+        "Polska": { price: 11.75, flag: "🇵🇱" },
+        "Poland": { price: 11.75, flag: "🇵🇱" },
+        "Česko": { price: 15.87, flag: "🇨🇿" },
+        "Czech Republic": { price: 15.87, flag: "🇨🇿" },
+        "Czechia": { price: 15.87, flag: "🇨🇿" },
+        "Lietuva": { price: 14.29, flag: "🇱🇹" },
+        "Lithuania": { price: 14.29, flag: "🇱🇹" },
+        "România": { price: 17.91, flag: "🇷🇴" },
+        "Romania": { price: 17.91, flag: "🇷🇴" },
+        "Slovensko": { price: 15.14, flag: "🇸🇰" },
+        "Slovakia": { price: 15.14, flag: "🇸🇰" },
+        "Magyarország": { price: 16.65, flag: "🇭🇺" },
+        "Hungary": { price: 16.65, flag: "🇭🇺" },
+        "Sverige": { price: 22.35, flag: "🇸🇪" },
+        "Sweden": { price: 22.35, flag: "🇸🇪" },
+        "Suomi": { price: 24.32, flag: "🇫🇮" },
+        "Finland": { price: 24.32, flag: "🇫🇮" },
+        "Danmark": { price: 21.42, flag: "🇩🇰" },
+        "Denmark": { price: 21.42, flag: "🇩🇰" },
+        "Hrvatska": { price: 16.21, flag: "🇭🇷" },
+        "Croatia": { price: 16.21, flag: "🇭🇷" },
+        "Eesti": { price: 6.36, flag: "🇪🇪" },
+        "Estonia": { price: 6.36, flag: "🇪🇪" },
+        "Latvija": { price: 6.36, flag: "🇱🇻" },
+        "Latvia": { price: 6.36, flag: "🇱🇻" }
+    };
 
+    // --- 2. ПОПЫТКА АВТО-ПОИСКА ---
+    function tryFindData() {
+        let foundPrice = 0;
+        let foundCountry = null;
+
+        try {
+            // 1. Ищем цену (перебор всех возможных вариантов)
+            const priceSelectors = [
+                '[data-testid$="item-price"]',
+                '.web_ui__Text__title', 
+                'h1 ~ div',
+                '.item-price'
+            ];
+            
             for (let sel of priceSelectors) {
                 const els = document.querySelectorAll(sel);
                 for (let el of els) {
                     if (el.innerText.match(/[0-9]/) && (el.innerText.includes('zł') || el.innerText.includes('€'))) {
                         let clean = el.innerText.replace(/[^0-9,.]/g, '').replace(',', '.');
-                        price = parseFloat(clean);
-                        if (price > 0) break;
+                        foundPrice = parseFloat(clean);
+                        if (foundPrice > 0) break;
                     }
                 }
-                if (price > 0) break;
+                if (foundPrice > 0) break;
             }
-            if (price === 0) return { error: "Не удалось найти цену." };
 
-            // Б. ИЩЕМ СТРАНУ ПО SVG ИКОНКЕ (САМЫЙ НАДЕЖНЫЙ СПОСОБ)
-            let rawLocationText = "";
+            // 2. Ищем страну (Сканируем весь текст страницы на совпадения)
+            // Это "грубый", но эффективный метод
+            const pageText = document.body.innerText;
+            const knownCountries = Object.keys(countryData);
             
-            // Уникальный "отпечаток" иконки локации (начало пути d="...")
-            const locationIconPathStart = "M8 0a6.5 6.5 0 0 0-6.5 6.5"; 
-
-            const allPaths = document.querySelectorAll('path');
-            for (let path of allPaths) {
-                // Если мы нашли путь, который начинается с кода иконки локации
-                if (path.getAttribute('d') && path.getAttribute('d').startsWith(locationIconPathStart)) {
-                    
-                    // Начинаем подниматься вверх по дереву, чтобы найти общий контейнер
-                    // Ищем ближайший родительский div с классом u-flexbox (как в вашем примере)
-                    const container = path.closest('.u-flexbox');
-                    
-                    if (container) {
-                        // В этом контейнере ищем текстовый блок.
-                        // Обычно структура: Иконка -> Spacer -> Текст
-                        // Берем текст всего контейнера
-                        const text = container.innerText; 
-                        
-                        // Проверяем, похоже ли это на локацию (не пустое)
-                        if (text && text.trim().length > 2) {
-                            rawLocationText = text.trim();
-                            break; // Нашли! Останавливаемся.
-                        }
+            // Ищем блоки, похожие на локацию (рядом со словом Lokalizacja или просто совпадение)
+            // Приоритет отдаем тексту, где страна идет после запятой
+            
+            // Попытка найти конкретный div с запятой
+            const divs = document.querySelectorAll('div');
+            for (let div of divs) {
+                if (div.innerText.includes(',') && div.children.length === 0) {
+                    const parts = div.innerText.split(',');
+                    const candidate = parts[parts.length - 1].trim();
+                    if (countryData[candidate]) {
+                        foundCountry = candidate;
+                        break;
                     }
                 }
             }
-
-            if (!rawLocationText) {
-                return { error: "Не удалось найти блок локации (иконка не найдена)." };
-            }
-
-            // В. ОБРАБОТКА ТЕКСТА (ВЫТАСКИВАЕМ СТРАНУ)
-            // Пример: "Tuszyma, Polska" -> parts = ["Tuszyma", " Polska"]
-            let countryName = "";
-            
-            if (rawLocationText.includes(',')) {
-                const parts = rawLocationText.split(',');
-                countryName = parts[parts.length - 1].trim(); // Берем последнее слово
-            } else {
-                countryName = rawLocationText.trim(); // Если запятой нет, берем всё слово
-            }
-
-            // Г. ПРОВЕРЯЕМ ПО БАЗЕ
-            const countryInfo = countryData[countryName];
-            
-            if (!countryInfo) {
-                return { error: `Страна "${countryName}" не найдена в списке доступных.` };
-            }
-
-            return {
-                price: price,
-                shipping: countryInfo.price,
-                flag: countryInfo.flag,
-                countryName: countryName,
-                img: document.querySelector('img')?.src || ""
-            };
 
         } catch (e) {
-            console.error(e);
-            return { error: "Ошибка: " + e.message };
+            console.log("Auto-detection error:", e);
         }
+
+        return { price: foundPrice, country: foundCountry };
     }
 
-    // --- 3. ЗАПУСК ---
-    const data = getVintedData();
-
-    if (data.error) {
-        alert("⚠️ " + data.error);
-        return;
+    // --- 3. ИНИЦИАЛИЗАЦИЯ ---
+    const detected = tryFindData();
+    
+    // Если цену не нашли вообще - просим ввести, иначе берем найденную
+    let currentPrice = detected.price || 0;
+    
+    // Если страну не нашли - ставим Польшу
+    let currentCountryKey = detected.country || CONFIG.defaultCountry;
+    
+    function calculate(price, countryKey) {
+        const shipping = countryData[countryKey].price;
+        const total = Math.ceil((price + shipping) * CONFIG.exchangeRate);
+        return { total, shipping, flag: countryData[countryKey].flag };
     }
 
-    // Расчет
-    const totalRUB = Math.ceil((data.price + data.shipping) * CONFIG.exchangeRate);
-
-    // Удаляем старый
-    const old = document.getElementById('vinted-calc-v3');
+    // --- 4. РИСУЕМ ВИДЖЕТ ---
+    const old = document.getElementById('vinted-hybrid-widget');
     if (old) old.remove();
 
-    // Рисуем новый
     const widget = document.createElement('div');
-    widget.id = 'vinted-calc-v3';
+    widget.id = 'vinted-hybrid-widget';
     widget.style = `
         position: fixed; top: 80px; right: 20px; width: 280px;
         background: linear-gradient(135deg, #007AFF, #0056b3);
@@ -163,21 +118,44 @@
         font-family: -apple-system, sans-serif;
     `;
 
+    // Генерируем HTML для выпадающего списка
+    let optionsHTML = "";
+    // Сортируем страны по алфавиту для удобства
+    const sortedKeys = Object.keys(countryData).sort();
+    // Убираем дубликаты (Polska/Poland) для списка, оставляем уникальные
+    const uniqueCountries = [...new Set(sortedKeys.map(k => countryData[k].flag + " " + k))];
+    
+    for (let key of sortedKeys) {
+        const isSelected = (key === currentCountryKey) ? "selected" : "";
+        optionsHTML += `<option value="${key}" ${isSelected} style="color:#000;">${countryData[key].flag} ${key}</option>`;
+    }
+
     widget.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-            <span style="font-size:12px; opacity:0.8;">КАЛЬКУЛЯТОР</span>
-            <span style="cursor:pointer; font-weight:bold;" onclick="this.parentElement.parentElement.remove()">✕</span>
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+            <span style="font-weight:700;">Калькулятор</span>
+            <span style="cursor:pointer;" onclick="this.parentElement.parentElement.remove()">✕</span>
         </div>
         
-        <div style="font-size:16px; margin-bottom:5px;">
-            ${data.flag} <b>${data.countryName}</b>
-        </div>
-        <div style="font-size:13px; opacity:0.8; margin-bottom:15px;">
-            Цена: ${data.price} zł + Доставка: ${data.shipping} zł
+        <div style="margin-bottom:10px;">
+            <label style="font-size:12px; opacity:0.8;">Страна отправления:</label>
+            <select id="v-country-select" style="
+                width:100%; margin-top:5px; padding:8px; border-radius:8px; border:none;
+                font-size:14px; color:#333;
+            ">
+                ${optionsHTML}
+            </select>
         </div>
 
-        <div style="font-size:32px; font-weight:800; margin-bottom:15px;">
-            ${totalRUB.toLocaleString()} ₽
+        <div style="margin-bottom:15px;">
+             <label style="font-size:12px; opacity:0.8;">Цена товара (zl):</label>
+             <input type="number" id="v-price-input" value="${currentPrice}" style="
+                width:100%; margin-top:5px; padding:8px; border-radius:8px; border:none;
+                font-size:14px; color:#333; font-weight:bold;
+             ">
+        </div>
+
+        <div id="v-result-area" style="font-size:32px; font-weight:800; margin-bottom:15px; text-align:center;">
+            0 ₽
         </div>
 
         <button id="v-btn-order" style="
@@ -190,12 +168,40 @@
 
     document.body.appendChild(widget);
 
+    // --- 5. ЛОГИКА ОБНОВЛЕНИЯ ---
+    const selectEl = document.getElementById('v-country-select');
+    const inputEl = document.getElementById('v-price-input');
+    const resultEl = document.getElementById('v-result-area');
+
+    function updateResult() {
+        const p = parseFloat(inputEl.value);
+        const c = selectEl.value;
+        if (!p) {
+            resultEl.innerText = "---";
+            return;
+        }
+        const res = calculate(p, c);
+        resultEl.innerText = res.total.toLocaleString() + " ₽";
+        return res; // Возвращаем для кнопки
+    }
+
+    // Слушаем изменения
+    selectEl.onchange = updateResult;
+    inputEl.oninput = updateResult;
+
+    // Сразу считаем при запуске
+    updateResult();
+
+    // Кнопка заказа
     document.getElementById('v-btn-order').onclick = function() {
+        const res = updateResult();
+        if (!res) return;
+        
         const payload = {
             link: window.location.href,
-            price: data.price,
-            country: data.countryName,
-            total: totalRUB
+            price: inputEl.value,
+            country: selectEl.value,
+            total: res.total
         };
         const msg = btoa(JSON.stringify(payload));
         window.open(`https://t.me/${CONFIG.botUsername}?start=${msg}`, '_blank');
