@@ -1,0 +1,24 @@
+{
+  "rates": {
+    "usd_pln": 3.95,
+    "byn_usd": 3.25
+  },
+  "shipping_costs": {
+    "Polska": 11.75,
+    "Czechy": 15.87,
+    "Litwa": 14.29,
+    "Rumunia": 17.91,
+    "Słowacja": 15.14,
+    "Węgry": 16.65,
+    "Szwecja": 22.35,
+    "Finlandia": 24.32,
+    "Dania": 21.42,
+    "Chorwacja": 16.21,
+    "Estonia": 6.36,
+    "Łotwa": 6.36,
+    "Słowenia": 4.22
+  },
+  "default_shipping": 25.00,
+  "vinted_fee_base": 2.90,
+  "vinted_fee_percent": 0.05
+}
