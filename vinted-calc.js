@@ -1,64 +1,69 @@
 (function() {
-    // Получаем данные из URL скрипта
-    const scriptSrc = document.currentScript ? document.currentScript.src : Array.from(document.getElementsByTagName('script')).pop().src;
-    const urlParams = new URLSearchParams(scriptSrc.split('?')[1]);
-    
-    let incomingPrice = parseFloat(urlParams.get('p')) || 0;
-    let incomingCountry = decodeURIComponent(urlParams.get('c') || "Polska");
+    // 1. Проверка наличия данных от закладки
+    if (!window.vintedData) {
+        alert("Ошибка: Данные не переданы из закладки.");
+        return;
+    }
 
-    // Актуальная база цен доставки
+    const price = parseFloat(window.vintedData.p) || 0;
+    const country = window.vintedData.c || "Polska";
+
+    // 2. Твои формулы и настройки
+    const CONFIG = {
+        exchangeRate: 25.0, // Курс злотый -> рубль
+        botUsername: "YOUR_BOT_NAME" // ЗАМЕНИ НА СВОЕГО БОТА
+    };
+
     const countryData = {
         "Polska": 11.75, "Poland": 11.75,
-        "Czechy": 15.87, "Czech Republic": 15.87, "Czechia": 15.87, "Česko": 15.87,
-        "Litwa": 14.29, "Lithuania": 14.29, "Lietuva": 14.29, "Litwa": 14.29,
+        "Czechy": 15.87, "Czech Republic": 15.87, "Česko": 15.87,
+        "Litwa": 14.29, "Lithuania": 14.29, "Lietuva": 14.29,
         "Rumunia": 17.91, "Romania": 17.91, "România": 17.91,
         "Słowacja": 15.14, "Slovakia": 15.14, "Slovensko": 15.14,
         "Węgry": 16.65, "Hungary": 16.65, "Magyarország": 16.65
     };
 
-    const CONFIG = { 
-        exchangeRate: 25.0, 
-        botUsername: "YOUR_BOT_NAME" // ЗАМЕНИТЕ НА ИМЯ ВАШЕГО БОТА
+    // 3. Логика расчета
+    const shipping = countryData[country] || 15.00;
+    const totalRUB = Math.ceil((price + shipping) * CONFIG.exchangeRate);
+
+    // 4. Визуал (создание окна на сайте)
+    const old = document.getElementById('vinted-fast-ui');
+    if (old) old.remove();
+
+    const ui = document.createElement('div');
+    ui.id = 'vinted-fast-ui';
+    ui.style = `
+        position: fixed; top: 20px; right: 20px; width: 280px; 
+        background: #09b6bc; color: white; padding: 25px; 
+        border-radius: 18px; z-index: 9999999; font-family: sans-serif; 
+        box-shadow: 0 12px 40px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
+    `;
+
+    ui.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; opacity:0.7; font-size:11px; font-weight:bold; letter-spacing:1px;">
+            <span>VINTED HELPER</span>
+            <span style="cursor:pointer; font-size:20px;" onclick="this.parentElement.parentElement.remove()">×</span>
+        </div>
+        <div style="font-size:14px; margin-bottom:5px;">Локация: <b>${country}</b></div>
+        <div style="font-size:38px; font-weight:900; margin-bottom:10px;">${totalRUB.toLocaleString()} ₽</div>
+        <div style="font-size:12px; opacity:0.9; margin-bottom:20px; background:rgba(0,0,0,0.1); padding:10px; border-radius:8px;">
+            ${price} zł + доставка ${shipping} zł
+        </div>
+        <button id="v-order-btn" style="
+            width:100%; padding:14px; border:none; border-radius:10px; 
+            background:white; color:#09b6bc; font-weight:bold; font-size:16px; cursor:pointer;
+        ">ЗАКАЗАТЬ</button>
+    `;
+
+    document.body.appendChild(ui);
+
+    // 5. Действие кнопки
+    document.getElementById('v-order-btn').onclick = function() {
+        const text = `Товар: ${window.location.href}\nЦена: ${totalRUB} руб.`;
+        window.open(`https://t.me/${CONFIG.botUsername}?start=${btoa(unescape(encodeURIComponent(text)))}`);
     };
 
-    function renderWidget(price, country) {
-        const old = document.getElementById('vinted-fast-ui');
-        if (old) old.remove();
-
-        const shipping = countryData[country] || 15.00;
-        const total = Math.ceil((price + shipping) * CONFIG.exchangeRate);
-
-        const ui = document.createElement('div');
-        ui.id = 'vinted-fast-ui';
-        ui.style = `
-            position: fixed; top: 20px; right: 20px; width: 260px; 
-            background: #09b6bc; color: white; padding: 20px; 
-            border-radius: 12px; z-index: 9999999; font-family: sans-serif; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        `;
-
-        ui.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <span style="font-size:10px; font-weight:bold; letter-spacing:1px;">VINTED HELPER</span>
-                <span style="cursor:pointer; font-size:18px;" onclick="this.parentElement.parentElement.remove()">×</span>
-            </div>
-            <div style="font-size:12px; opacity:0.8; margin-bottom:5px;">ЛОКАЦИЯ: ${country}</div>
-            <div style="font-size:32px; font-weight:bold; margin-bottom:10px;">${total.toLocaleString()} ₽</div>
-            <div style="font-size:11px; opacity:0.8; margin-bottom:15px;">Товар: ${price} + Доставка: ${shipping} (zł)</div>
-            <button id="v-order" style="
-                width:100%; padding:12px; border:none; border-radius:6px; 
-                background:white; color:#09b6bc; font-weight:bold; cursor:pointer;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            ">ЗАКАЗАТЬ</button>
-        `;
-
-        document.body.appendChild(ui);
-
-        document.getElementById('v-order').onclick = function() {
-            const info = btoa(`URL: ${window.location.href} | Total: ${total} RUB`);
-            window.open(`https://t.me/${CONFIG.botUsername}?start=${info}`);
-        };
-    }
-
-    renderWidget(incomingPrice, incomingCountry);
+    // Очистка данных из памяти
+    delete window.vintedData;
 })();
