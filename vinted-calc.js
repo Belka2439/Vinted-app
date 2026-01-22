@@ -1,76 +1,58 @@
 (function() {
-    // 1. Получаем данные из URL скрипта
     const scriptSrc = document.currentScript ? document.currentScript.src : Array.from(document.getElementsByTagName('script')).pop().src;
     const urlParams = new URLSearchParams(scriptSrc.split('?')[1]);
     
-    const incomingPrice = parseFloat(urlParams.get('p')) || 0;
-    const incomingCountry = urlParams.get('c') || "Polska";
+    let incomingPrice = parseFloat(urlParams.get('p')) || 0;
+    let incomingCountry = decodeURIComponent(urlParams.get('c') || "Polska");
 
-    // 2. База данных (цены из вашей таблицы)
     const countryData = {
-        "Polska": { price: 11.75, flag: "🇵🇱" },
-        "Poland": { price: 11.75, flag: "🇵🇱" },
-        "Czechy": { price: 15.87, flag: "🇨🇿" },
-        "Czech Republic": { price: 15.87, flag: "🇨🇿" },
-        "Czechia": { price: 15.87, flag: "🇨🇿" },
-        "Česko": { price: 15.87, flag: "🇨🇿" },
-        "Litwa": { price: 14.29, flag: "🇱🇹" },
-        "Lithuania": { price: 14.29, flag: "🇱🇹" },
-        "Lietuva": { price: 14.29, flag: "🇱🇹" },
-        "Rumunia": { price: 17.91, flag: "🇷🇴" },
-        "Romania": { price: 17.91, flag: "🇷🇴" },
-        "România": { price: 17.91, flag: "🇷🇴" },
-        "Słowacja": { price: 15.14, flag: "🇸🇰" },
-        "Slovakia": { price: 15.14, flag: "🇸🇰" },
-        "Slovensko": { price: 15.14, flag: "🇸🇰" },
-        "Węgry": { price: 16.65, flag: "🇭🇺" },
-        "Hungary": { price: 16.65, flag: "🇭🇺" },
-        "Magyarország": { price: 16.65, flag: "🇭🇺" },
-        "Estonia": { price: 6.36, flag: "🇪🇪" },
-        "Eesti": { price: 6.36, flag: "🇪🇪" }
+        "Polska": 11.75, "Poland": 11.75,
+        "Czechy": 15.87, "Czech Republic": 15.87, "Czechia": 15.87, "Česko": 15.87,
+        "Litwa": 14.29, "Lithuania": 14.29, "Lietuva": 14.29,
+        "Rumunia": 17.91, "Romania": 17.91, "România": 17.91,
+        "Słowacja": 15.14, "Slovakia": 15.14, "Slovensko": 15.14,
+        "Węgry": 16.65, "Hungary": 16.65, "Magyarország": 16.65
     };
 
-    const CONFIG = {
-        exchangeRate: 25.0, // Курс злотый -> рубль
-        botUsername: "YOUR_BOT_NAME" // ЗАМЕНИТЕ НА ВАШЕГО БОТА
-    };
+    const CONFIG = { exchangeRate: 25.0, botUsername: "YOUR_BOT_NAME" };
 
-    // 3. Логика расчета
-    const info = countryData[incomingCountry] || { price: 18.00, flag: "🌍" };
-    const totalRUB = Math.ceil((incomingPrice + info.price) * CONFIG.exchangeRate);
+    function renderWidget(price, country) {
+        const old = document.getElementById('v-final-calc');
+        if (old) old.remove();
 
-    // 4. Отрисовка виджета
-    const oldWidget = document.getElementById('vinted-final-calc');
-    if (oldWidget) oldWidget.remove();
+        const shipping = countryData[country] || 15.00;
+        const total = Math.ceil((price + shipping) * CONFIG.exchangeRate);
 
-    const widget = document.createElement('div');
-    widget.id = 'vinted-final-calc';
-    widget.style = `
-        position: fixed; top: 20px; right: 20px; width: 280px;
-        background: #09b6bc; color: white; padding: 20px; border-radius: 12px;
-        z-index: 1000000; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        font-family: sans-serif; text-align: left;
-    `;
+        const widget = document.createElement('div');
+        widget.id = 'v-final-calc';
+        widget.style = `position:fixed;top:20px;right:20px;width:280px;background:#09b6bc;color:white;padding:20px;border-radius:15px;z-index:10000000;box-shadow:0 10px 30px rgba(0,0,0,0.3);font-family:sans-serif;`;
 
-    widget.innerHTML = `
-        <div style="font-size: 14px; margin-bottom: 8px; display: flex; justify-content: space-between;">
-            <span>${info.flag} ${incomingCountry}</span>
-            <span style="cursor:pointer;" onclick="this.parentElement.parentElement.remove()">✕</span>
-        </div>
-        <div style="font-size: 32px; font-weight: bold; margin-bottom: 10px;">${totalRUB.toLocaleString()} ₽</div>
-        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 15px;">
-            ${incomingPrice} zł + доставка ${info.price} zł
-        </div>
-        <button id="v-order-btn" style="
-            width: 100%; padding: 12px; border: none; border-radius: 6px;
-            background: white; color: #09b6bc; font-weight: bold; cursor: pointer;
-        ">Оформить в Telegram</button>
-    `;
+        widget.innerHTML = `
+            <div style="display:flex;justify-content:space-between;font-size:12px;opacity:0.8;margin-bottom:10px;">
+                <span>VINTED HELPER</span>
+                <span style="cursor:pointer" onclick="this.parentElement.parentElement.remove()">✕</span>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="v-change-country" style="background:rgba(255,255,255,0.2);color:white;border:none;border-radius:5px;padding:3px;font-size:14px;width:100%;">
+                    ${Object.keys(countryData).filter(k => !["Poland","Czechia","Slovakia"].includes(k)).map(k => `<option value="${k}" ${k===country?'selected':''} style="color:black">${k}</option>`).join('')}
+                </select>
+            </div>
+            <div style="font-size:36px;font-weight:bold;margin-bottom:5px;">${total.toLocaleString()} ₽</div>
+            <div style="font-size:13px;opacity:0.9;margin-bottom:15px;">Товар: ${price} + Доставка: ${shipping} zł</div>
+            <button id="v-send-btn" style="width:100%;padding:12px;border:none;border-radius:8px;background:white;color:#09b6bc;font-weight:bold;cursor:pointer;">Оформить заказ</button>
+        `;
 
-    document.body.appendChild(widget);
+        document.body.appendChild(widget);
 
-    document.getElementById('v-order-btn').onclick = function() {
-        const text = `Заказ: ${window.location.href}\nЦена: ${totalRUB} ₽`;
-        window.open(`https://t.me/${CONFIG.botUsername}?start=${btoa(text)}`);
-    };
+        document.getElementById('v-change-country').onchange = function(e) {
+            renderWidget(price, e.target.value);
+        };
+
+        document.getElementById('v-send-btn').onclick = function() {
+            const msg = btoa(`URL: ${window.location.href}\nTotal: ${total} RUB`);
+            window.open(`https://t.me/${CONFIG.botUsername}?start=${msg}`);
+        };
+    }
+
+    renderWidget(incomingPrice, incomingCountry);
 })();
