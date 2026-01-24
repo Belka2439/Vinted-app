@@ -16,19 +16,18 @@
             --input-bg: #FAFAFA;
             --input-border: #E5E5EA;
         }
-
+        
         /* Темная тема */
         [data-theme="dark"] {
             --bg-color: #000000;
             --card-bg: #1C1C1E;
-            --accent-color: #0A84FF;
             --text-main: #FFFFFF;
             --text-secondary: #8E8E93;
             --tab-bg: #2C2C2E;
             --input-bg: #2C2C2E;
             --input-border: #3A3A3C;
         }
-
+        
         body {
             font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
@@ -47,7 +46,6 @@
         }
         /* --- БЛОК БАЛАНСА (Твой стиль) --- */
         .balance-section {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
             background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-secondary) 100%);
             border-radius: 20px;
             padding: 16px 20px;
@@ -96,7 +94,6 @@
         .side-menu.active { right: 0; }
         /* Объединенный виджет в меню */
         .combined-user-widget {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
             background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-secondary) 100%);
             border-radius: 24px;
             margin-bottom: 20px;
@@ -230,13 +227,12 @@
         }
         .input-icon svg { width: 100%; height: 100%; stroke-width: 2; }
         input, select {
-            width: 100%; border: 1px solid #E5E5EA; background: #FAFAFA; padding: 16px;
             width: 100%; border: 1px solid var(--input-border); background: var(--input-bg); padding: 16px;
             border-radius: 14px; font-size: 17px; box-sizing: border-box; outline: none;
             color: var(--text-main); transition: all 0.2s; appearance: none;
         }
         input:focus, select:focus { border-color: var(--accent-color); background: var(--card-bg); }
-
+        
         /* Стили для select с флагами */
         select {
             cursor: pointer;
@@ -245,15 +241,13 @@
             background-position: right 16px center;
             padding-right: 40px;
         }
-
+        
         .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .cat-item {
-            background: #FAFAFA; border: 1px solid #E5E5EA; border-radius: 18px;
             background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 18px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             aspect-ratio: 1 / 1; transition: all 0.2s ease; cursor: pointer; padding: 8px; box-sizing: border-box;
         }
-        .cat-icon { width: 28px; height: 28px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
         .cat-icon { width: 28px; height: 28px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; color: var(--accent-color); }
         .cat-icon svg { width: 100%; height: 100%; }
         .cat-label { font-size: 10px; font-weight: 700; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
@@ -388,8 +382,6 @@
         }
         .profile-input {
             width: 100%;
-            border: 1px solid #E5E5EA;
-            background: #FAFAFA;
             border: 1px solid var(--input-border);
             background: var(--input-bg);
             padding: 16px;
@@ -418,7 +410,7 @@
         .main-content.hidden {
             display: none;
         }
-
+        
         /* --- СТИЛИ ДЛЯ НАСТРОЕК --- */
         .settings-header {
             margin-bottom: 8px;
@@ -529,7 +521,7 @@
         input:checked + .toggle-slider:before {
             transform: translateX(20px);
         }
-
+        
         /* Пикер цвета */
         .color-picker-wrapper {
             display: flex;
@@ -600,7 +592,7 @@
         .gradient-color-preview:hover {
             transform: scale(1.05);
         }
-
+        
         /* --- СТИЛИ ДЛЯ АДРЕСОВ ДОСТАВКИ --- */
         .addresses-header {
             margin-bottom: 20px;
@@ -646,7 +638,6 @@
             margin: 0;
         }
         .addresses-inner-card {
-            background: #F8F8F8;
             background: var(--input-bg);
             border-radius: 14px;
             padding: 16px;
@@ -674,8 +665,6 @@
             font-weight: 600;
             color: var(--text-main);
             margin: 0 0 6px 0;
-            padding-top: 8px;
-            border-top: 1px solid #E5E5EA;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--input-border);
         }
@@ -687,11 +676,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            border-bottom: 1px solid #E5E5EA;
         }
-        .delivery-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
         .delivery-item:not(:last-child) {
             border-bottom: 1px solid var(--input-border);
         }
@@ -743,11 +728,10 @@
             line-height: 1.5;
             margin-top: 16px;
             padding: 12px;
-            background: #F8F8F8;
             background: var(--input-bg);
             border-radius: 12px;
         }
-
+        
         @media (min-width: 768px) {
             .app-container {
                 max-width: 600px;
@@ -934,7 +918,7 @@
                         <p class="profile-subtitle">Данные ниже - куда и кому будет отправляться товар</p>
                     </div>
                 </div>
-
+                
                 <div class="input-group">
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
@@ -947,7 +931,7 @@
                     </div>
                     <input type="text" id="profile-name" class="profile-input" placeholder="Введите ФИО">
                 </div>
-
+                
                 <div class="input-group">
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
@@ -959,7 +943,7 @@
                     </div>
                     <input type="tel" id="profile-phone" class="profile-input" placeholder="Введите телефон">
                 </div>
-
+                
                 <div class="input-group">
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
@@ -977,7 +961,7 @@
                         <option value="europe">🇪🇺 Европа</option>
                     </select>
                 </div>
-
+                
                 <div class="input-group">
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
@@ -990,7 +974,7 @@
                     </div>
                     <input type="text" id="profile-city" class="profile-input" placeholder="Введите город">
                 </div>
-
+                
                 <div class="input-group">
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
@@ -1003,7 +987,7 @@
                     </div>
                     <input type="text" id="profile-post" class="profile-input" placeholder="Введите номер отделения">
                 </div>
-
+                
                 <button id="profile-save-btn" class="main-btn" onclick="saveProfileFromScreen()">Сохранить</button>
             </div>
         </div>
@@ -1022,18 +1006,18 @@
                         <p class="addresses-card-subtitle">Используйте при самостоятельных покупках</p>
                     </div>
                 </div>
-
+                
                 <div class="addresses-inner-card">
                     <div class="address-field">
                         <p class="address-field-label">Страна</p>
                         <p class="address-field-value">Польша</p>
                     </div>
-
+                    
                     <div class="address-field">
                         <p class="address-field-label">Город</p>
                         <p class="address-field-value">Тересполь</p>
                     </div>
-
+                    
                     <div class="address-field">
                         <p class="address-section-header">Способы доставки</p>
                         <div class="delivery-list">
@@ -1049,7 +1033,7 @@
                                     </svg>
                                 </button>
                             </div>
-
+                            
                             <div class="delivery-item">
                                 <div class="delivery-info">
                                     <p class="delivery-name">DPD</p>
@@ -1062,7 +1046,7 @@
                                     </svg>
                                 </button>
                             </div>
-
+                            
                             <div class="delivery-item">
                                 <div class="delivery-info">
                                     <p class="delivery-name">GLS</p>
@@ -1075,7 +1059,7 @@
                                     </svg>
                                 </button>
                             </div>
-
+                            
                             <div class="delivery-item">
                                 <div class="delivery-info">
                                     <p class="delivery-name">DHL</p>
@@ -1088,7 +1072,7 @@
                                     </svg>
                                 </button>
                             </div>
-
+                            
                             <div class="delivery-item">
                                 <div class="delivery-info">
                                     <p class="delivery-name">Orlen</p>
@@ -1103,14 +1087,14 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="address-field">
                         <p class="address-section-header">Получатель</p>
                         <p class="address-field-value">Вписываем свои данные</p>
                     </div>
                 </div>
             </div>
-
+            
             <div class="addresses-note">
                 <strong>Важно:</strong> Перед оформлением заказа обязательно сообщите нам о покупке. Укажите, что именно вы заказали и стоимость товара. После прибытия посылки предоставьте необходимые данные для получения.
             </div>
@@ -1142,7 +1126,7 @@
                 <h1 class="settings-title">Настройки</h1>
                 <p class="settings-subtitle">Персонализируйте работу приложения</p>
             </div>
-
+            
             <!-- Секция уведомлений -->
             <div class="settings-section">
                 <div class="settings-section-header">
@@ -1154,7 +1138,7 @@
                     </div>
                     <h3 class="settings-section-title">Уведомления</h3>
                 </div>
-
+                
                 <div class="settings-item">
                     <div class="settings-item-text">
                         <div class="settings-item-label">Обновление заказов</div>
@@ -1165,7 +1149,7 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-
+                
                 <div class="settings-item">
                     <div class="settings-item-text">
                         <div class="settings-item-label">Telegram уведомления</div>
@@ -1177,7 +1161,7 @@
                     </label>
                 </div>
             </div>
-
+            
             <!-- Секция внешнего вида -->
             <div class="settings-section">
                 <div class="settings-section-header">
@@ -1188,7 +1172,7 @@
                     </div>
                     <h3 class="settings-section-title">Внешний вид</h3>
                 </div>
-
+                
                 <div class="settings-item">
                     <div class="settings-item-text">
                         <div class="settings-item-label">Темная тема</div>
@@ -1199,18 +1183,12 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-
-                <div class="settings-item">
-                    <div class="settings-item-text">
+                
                 <div class="settings-item" style="flex-direction: column; align-items: flex-start; padding: 16px 0;">
                     <div class="settings-item-text" style="margin-bottom: 12px;">
                         <div class="settings-item-label">Цвет интерфейса</div>
-                        <div class="settings-item-description">Выберите основной цвет</div>
                         <div class="settings-item-description">Настройте градиент основного цвета</div>
                     </div>
-                    <div class="color-picker-wrapper">
-                        <label for="color-picker" class="color-preview" id="color-preview" style="background-color: #007AFF;"></label>
-                        <input type="color" id="color-picker" value="#007AFF">
                     <div class="gradient-picker-container">
                         <div class="gradient-preview-bar" id="gradient-preview" onclick="document.getElementById('color-picker-primary').click()"></div>
                         <div class="gradient-colors-row">
@@ -1234,7 +1212,7 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
-
+        
         // Функция для закрытия клавиатуры при нажатии Enter или клике вне поля ввода
         function setupInputBlur() {
             // Обработка нажатия Enter
@@ -1247,7 +1225,7 @@
                     }
                 });
             });
-
+            
             // Обработка клика вне полей ввода
             document.addEventListener('click', function(e) {
                 if (!e.target.matches('input, select, textarea')) {
@@ -1259,13 +1237,13 @@
                 }
             });
         }
-
+        
         // Функция обновления текста поля "Номер отделения" в зависимости от страны
         function updatePostLabel() {
             const country = document.getElementById('profile-country').value;
             const postLabel = document.getElementById('post-label');
             const postInput = document.getElementById('profile-post');
-
+            
             switch(country) {
                 case 'belarus':
                     postLabel.textContent = 'Номер отделения Европочты';
@@ -1281,13 +1259,13 @@
                     break;
             }
         }
-
+        
         // Функция обновления баланса с адаптивным размером шрифта
         function updateBalanceDisplay(balanceValue) {
             const balanceElement = document.querySelector('.balance-amount');
             const menuBalanceElement = document.getElementById('menu-balance-value');
             const menuTopUpBtn = document.querySelector('.menu-top-up-btn');
-
+            
             // Обновляем главный баланс
             balanceElement.classList.remove('medium', 'large');
             if (balanceValue >= 10000) {
@@ -1295,7 +1273,7 @@
             } else if (balanceValue >= 1000) {
                 balanceElement.classList.add('medium');
             }
-
+            
             // Обновляем баланс в меню
             if (menuBalanceElement) {
                 menuBalanceElement.classList.remove('medium', 'large');
@@ -1307,7 +1285,7 @@
                     menuBalanceElement.style.fontSize = '18px';
                 }
             }
-
+            
             // Обновляем размер кнопки "Пополнить" в меню
             if (menuTopUpBtn) {
                 menuTopUpBtn.classList.remove('medium', 'large');
@@ -1318,7 +1296,7 @@
                 }
             }
         }
-
+        
         // 1. УПРАВЛЕНИЕ МЕНЮ И ПРОФИЛЕМ
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
@@ -1331,10 +1309,10 @@
                 const currentBalanceValue = parseFloat(currentBalanceText.replace(/\s/g, '')); // Удаляем пробелы и парсим число
                 const menuBalanceElement = document.getElementById('menu-balance-value');
                 menuBalanceElement.innerText = currentBalanceText + ' BYN';
-
+                
                 // Обновляем размер шрифта и кнопки
                 updateBalanceDisplay(currentBalanceValue);
-
+                
                 menu.classList.add('active');
                 overlay.classList.add('active');
                 // Всегда показываем главное меню при открытии, а не редактирование
@@ -1537,12 +1515,12 @@
                 btn.style.background = '';
             }, 2000);
         }
-
+        
         // 5. ЛОГИКА НАСТРОЕК
         function loadSettings() {
             // Загружаем сохраненные настройки из localStorage
             const settings = JSON.parse(localStorage.getItem('app_settings') || '{}');
-
+            
             // Применяем сохраненные значения к тумблерам
             if (settings.orderUpdates !== undefined) {
                 document.getElementById('toggle-order-updates').checked = settings.orderUpdates;
@@ -1554,10 +1532,6 @@
                 document.getElementById('toggle-dark-theme').checked = settings.darkTheme;
                 applyTheme(settings.darkTheme);
             }
-            if (settings.accentColor !== undefined) {
-                document.getElementById('color-picker').value = settings.accentColor;
-                document.getElementById('color-preview').style.backgroundColor = settings.accentColor;
-                applyAccentColor(settings.accentColor);
             if (settings.accentColorPrimary !== undefined) {
                 document.getElementById('color-picker-primary').value = settings.accentColorPrimary;
                 document.getElementById('color-preview-primary').style.backgroundColor = settings.accentColorPrimary;
@@ -1570,27 +1544,24 @@
                 applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
             }
         }
-
+        
         function saveSettings() {
             // Собираем текущие значения всех настроек
             const settings = {
                 orderUpdates: document.getElementById('toggle-order-updates').checked,
                 telegramNotifications: document.getElementById('toggle-telegram-notifications').checked,
                 darkTheme: document.getElementById('toggle-dark-theme').checked,
-                accentColor: document.getElementById('color-picker').value
                 accentColorPrimary: document.getElementById('color-picker-primary').value,
                 accentColorSecondary: document.getElementById('color-picker-secondary').value
             };
-
+            
             // Сохраняем в localStorage
             localStorage.setItem('app_settings', JSON.stringify(settings));
-
+            
             // Сохраняем в облако Telegram
             tg.CloudStorage.setItem('app_settings', JSON.stringify(settings));
-            
-            tg.HapticFeedback.impactOccurred('light');
         }
-
+        
         function applyTheme(isDark) {
             if (isDark) {
                 document.documentElement.setAttribute('data-theme', 'dark');
@@ -1598,9 +1569,7 @@
                 document.documentElement.removeAttribute('data-theme');
             }
         }
-
-        function applyAccentColor(color) {
-            document.documentElement.style.setProperty('--accent-color', color);
+        
         function applyAccentColors(primaryColor, secondaryColor) {
             document.documentElement.style.setProperty('--accent-color', primaryColor);
             document.documentElement.style.setProperty('--accent-color-secondary', secondaryColor);
@@ -1611,7 +1580,7 @@
                 gradientPreview.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
             }
         }
-
+        
         // 6. ЛОГИКА АДРЕСОВ ДОСТАВКИ
         function copyAddress(address) {
             // Копируем адрес в буфер обмена
@@ -1627,7 +1596,7 @@
                 fallbackCopy(address);
             }
         }
-
+        
         function fallbackCopy(text) {
             const textArea = document.createElement('textarea');
             textArea.value = text;
@@ -1644,7 +1613,7 @@
             }
             document.body.removeChild(textArea);
         }
-
+        
         // Добавляем обработчики изменений для всех тумблеров
         document.addEventListener('DOMContentLoaded', function() {
             const toggles = ['toggle-order-updates', 'toggle-telegram-notifications', 'toggle-dark-theme'];
@@ -1659,14 +1628,7 @@
                     });
                 }
             });
-
-            // Обработчик для пикера цвета
-            const colorPicker = document.getElementById('color-picker');
-            const colorPreview = document.getElementById('color-preview');
-            if (colorPicker && colorPreview) {
-                colorPicker.addEventListener('input', function() {
-                    colorPreview.style.backgroundColor = this.value;
-                    applyAccentColor(this.value);
+            
             // Обработчики для пикеров цвета
             const colorPickerPrimary = document.getElementById('color-picker-primary');
             const colorPreviewPrimary = document.getElementById('color-preview-primary');
@@ -1688,19 +1650,18 @@
                     const primaryColor = document.getElementById('color-picker-primary').value;
                     applyAccentColors(primaryColor, this.value);
                 });
-                colorPicker.addEventListener('change', saveSettings);
                 colorPickerSecondary.addEventListener('change', saveSettings);
             }
-
+            
             // Инициализируем функцию закрытия клавиатуры
             setupInputBlur();
         });
-
+        
         // 7. ИНИЦИАЛИЗАЦИЯ
         (function initApp() {
             // Инициализация никнейма из Telegram
             const user = tg.initDataUnsafe.user;
-
+            
             // Загрузка профиля из облака или памяти
             tg.CloudStorage.getItem('user_profile', (err, value) => {
                 if (!err && value) {
@@ -1716,7 +1677,7 @@
                     }
                 }
             });
-
+            
             // Загрузка настроек из облака или памяти
             tg.CloudStorage.getItem('app_settings', (err, value) => {
                 if (!err && value) {
@@ -1725,8 +1686,6 @@
                     if (settings.darkTheme) {
                         applyTheme(settings.darkTheme);
                     }
-                    if (settings.accentColor) {
-                        applyAccentColor(settings.accentColor);
                     if (settings.accentColorPrimary && settings.accentColorSecondary) {
                         applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
                     }
@@ -1738,15 +1697,13 @@
                         if (settings.darkTheme) {
                             applyTheme(settings.darkTheme);
                         }
-                        if (settings.accentColor) {
-                            applyAccentColor(settings.accentColor);
                         if (settings.accentColorPrimary && settings.accentColorSecondary) {
                             applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
                         }
                     }
                 }
             });
-
+            
             // Обработка входящих данных (баланс, заказы)
             const urlParams = new URLSearchParams(window.location.search);
             const dataParam = urlParams.get('data');
