@@ -183,27 +183,6 @@
         }
         .menu-item-label { color: var(--text-main); }
         .menu-item-value { font-weight: 700; color: var(--accent-color); }
-        /* --- ЭКРАН РЕДАКТИРОВАНИЯ --- */
-        .profile-edit-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--card-bg); z-index: 1000;
-            display: none; flex-direction: column; align-items: center; justify-content: flex-start;
-            padding: 40px 20px; box-sizing: border-box; overflow-y: auto;
-            transition: opacity 0.3s ease;
-        }
-        .profile-edit-overlay.active { display: flex; opacity: 1; }
-        .edit-header { display: flex; align-items: center; margin-bottom: 20px; width: 100%; max-width: 400px; }
-        .back-btn {
-            background: none; border: none; padding: 0; cursor: pointer; color: var(--accent-color);
-            font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 4px;
-        }
-        .save-btn {
-            background: var(--accent-color); color: white; border: none;
-            width: 100%; max-width: 400px; padding: 14px; border-radius: 14px;
-            font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px;
-            transition: 0.2s;
-        }
-        .save-btn.saved { background: #34C759; pointer-events: none; }
         /* --- ОБЩИЕ ЭЛЕМЕНТЫ --- */
         .tabs { display: flex; background: var(--tab-bg); padding: 3px; border-radius: 14px; margin-bottom: 24px; }
         .tab-btn {
@@ -958,31 +937,6 @@
             </div>
         </div>
     </div>
-    <div id="profile-edit-overlay" class="profile-edit-overlay">
-        <div class="edit-header">
-            <button class="back-btn" onclick="closeProfileEdit()">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                Назад
-            </button>
-        </div>
-        <div class="input-group icon-input-wrapper">
-            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
-            <input type="text" id="prof-name" placeholder="ФИО">
-        </div>
-        <div class="input-group icon-input-wrapper">
-            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
-            <input type="tel" id="prof-phone" placeholder="Телефон">
-        </div>
-        <div class="input-group icon-input-wrapper">
-            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-            <input type="text" id="prof-city" placeholder="Город">
-        </div>
-        <div class="input-group icon-input-wrapper">
-            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
-            <input type="text" id="prof-post" placeholder="Номер отделения Европочты или СДЭК">
-        </div>
-        <button id="save-btn" class="save-btn" onclick="saveProfile()">Сохранить</button>
-    </div>
     <div class="app-container">
         <div class="balance-section">
             <div class="balance-wrapper">
@@ -1032,7 +986,7 @@
                         <span class="cat-label">Сумка</span>
                     </div>
                     <div class="cat-item ggl" onclick="selectCategory('GGL', this)">
-                        <span class="cat-icon"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><text x="16" y="9" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GEORGE</text><text x="16" y="18" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GINA &amp;</text><text x="16" y="27" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">LUCY</text></svg></span>
+                        <span class="cat-icon"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><text x="16" y="9" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GEORGE</text><text x="16" y="18" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GINA &</text><text x="16" y="27" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">LUCY</text></svg></span>
                         <span class="cat-label">GGL</span>
                     </div>
                     <div class="cat-item" onclick="selectCategory('Другое', this)">
@@ -1128,7 +1082,7 @@
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <th d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </div>
@@ -1413,7 +1367,7 @@
                             <div class="tariff-category-icon">
                                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                     <text x="16" y="9" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GEORGE</text>
-                                    <text x="16" y="18" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GINA &amp;</text>
+                                    <text x="16" y="18" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GINA &</text>
                                     <text x="16" y="27" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">LUCY</text>
                                 </svg>
                             </div>
@@ -1675,52 +1629,26 @@
                 overlay.classList.remove('active');
             }
         }
-        function openProfileEdit() {
-            const editOverlay = document.getElementById('profile-edit-overlay');
-            editOverlay.classList.add('active');
-            tg.BackButton.show();
-            tg.BackButton.onClick(closeProfileEdit);
-        }
-        function closeProfileEdit() {
-            const editOverlay = document.getElementById('profile-edit-overlay');
-            editOverlay.classList.remove('active');
-            tg.BackButton.hide();
-            tg.BackButton.offClick(closeProfileEdit);
-        }
         // 2. ЛОГИКА СОХРАНЕНИЯ ПРОФИЛЯ
         function fillProfileFields(data) {
             if (data.name) {
-                document.getElementById('prof-name').value = data.name;
+                const menuAvatar = document.getElementById('menu-avatar-placeholder');
+                if (menuAvatar) menuAvatar.innerText = data.name.charAt(0).toUpperCase();
+                
+                const profileNameEls = document.querySelectorAll('.profile-name');
+                profileNameEls.forEach(el => {
+                    if (el.id !== 'menu-balance-value') el.innerText = data.name;
+                });
             }
-            if (data.phone) document.getElementById('prof-phone').value = data.phone;
-            if (data.city) document.getElementById('prof-city').value = data.city;
-            if (data.post) document.getElementById('prof-post').value = data.post;
-            if (data.country) document.getElementById('profile-country').value = data.country;
-        }
-        function saveProfile() {
-            const btn = document.getElementById('save-btn');
-            const originalText = btn.innerText;
-            const name = document.getElementById('prof-name').value;
-            const phone = document.getElementById('prof-phone').value;
-            const city = document.getElementById('prof-city').value;
-            const post = document.getElementById('prof-post').value;
-            const profileData = { name, phone, city, post };
-            const jsonStr = JSON.stringify(profileData);
-            // 1. Сохраняем локально (быстро)
-            localStorage.setItem('user_profile', jsonStr);
-            // 2. Сохраняем в облако Telegram (фоном)
-            tg.CloudStorage.setItem('user_profile', jsonStr);
-            // 3. Обновляем вид в меню
-            fillProfileFields(profileData);
-            // 4. Визуальный эффект "Успех"
-            btn.innerText = 'Сохранено ✓';
-            btn.classList.add('saved');
-            tg.HapticFeedback.notificationOccurred('success');
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.remove('saved');
-            }, 2000);
-            // Мы НЕ закрываем приложение (tg.close не вызывается)
+            // Update inputs in the profile screen
+            if (data.name && document.getElementById('profile-name')) document.getElementById('profile-name').value = data.name;
+            if (data.phone && document.getElementById('profile-phone')) document.getElementById('profile-phone').value = data.phone;
+            if (data.city && document.getElementById('profile-city')) document.getElementById('profile-city').value = data.city;
+            if (data.post && document.getElementById('profile-post')) document.getElementById('profile-post').value = data.post;
+            if (data.country && document.getElementById('profile-country')) {
+                document.getElementById('profile-country').value = data.country;
+                updatePostLabel();
+            }
         }
         // 3. ЛОГИКА КАЛЬКУЛЯТОРА
         function selectCategory(name, element) {
@@ -1775,7 +1703,6 @@
             const savedProfile = localStorage.getItem('user_profile');
             if(savedProfile) {
                 const p = JSON.parse(savedProfile);
-                // Отправляем только текстовые данные, аватар слишком тяжелый для sendData
                 dataToSend.user = { name: p.name, phone: p.phone, city: p.city, post: p.post, country: p.country };
             }
             tg.sendData(JSON.stringify(dataToSend));
@@ -1785,7 +1712,11 @@
         let currentScreen = 'home';
         function navigateTo(screenName) {
             // Закрываем меню
-            toggleMenu();
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.querySelector('.menu-overlay');
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
+
             // Скрываем все экраны
             document.querySelectorAll('.screen-section').forEach(s => s.style.display = 'none');
             // Показываем нужный экран
@@ -1815,11 +1746,6 @@
         }
         function goHome() {
             navigateTo('home');
-            // Восстанавливаем меню, чтобы можно было открыть снова
-            const menu = document.getElementById('sideMenu');
-            const overlay = document.querySelector('.menu-overlay');
-            menu.classList.remove('active');
-            overlay.classList.remove('active');
         }
         function loadProfileToScreen() {
             const savedProfile = localStorage.getItem('user_profile');
@@ -1831,7 +1757,7 @@
                 if (data.post) document.getElementById('profile-post').value = data.post;
                 if (data.country) {
                     document.getElementById('profile-country').value = data.country;
-                    updatePostLabel(); // Обновляем текст поля при загрузке
+                    updatePostLabel();
                 }
             }
         }
@@ -1845,19 +1771,12 @@
             const country = document.getElementById('profile-country').value;
             const profileData = { name, phone, city, post, country };
             const jsonStr = JSON.stringify(profileData);
-            // Сохраняем
+            
             localStorage.setItem('user_profile', jsonStr);
             tg.CloudStorage.setItem('user_profile', jsonStr);
-            // Обновляем данные везде
+            
             fillProfileFields(profileData);
-            // Также обновляем старый overlay если он используется
-            if (document.getElementById('prof-name')) {
-                document.getElementById('prof-name').value = name;
-                document.getElementById('prof-phone').value = phone;
-                document.getElementById('prof-city').value = city;
-                document.getElementById('prof-post').value = post;
-            }
-            // Визуальный эффект
+            
             btn.innerText = 'Сохранено ✓';
             btn.style.background = '#34C759';
             tg.HapticFeedback.notificationOccurred('success');
@@ -1869,16 +1788,9 @@
         
         // 5. ЛОГИКА НАСТРОЕК
         function loadSettings() {
-            // Загружаем сохраненные настройки из localStorage
             const settings = JSON.parse(localStorage.getItem('app_settings') || '{}');
-            
-            // Применяем сохраненные значения к тумблерам
-            if (settings.orderUpdates !== undefined) {
-                document.getElementById('toggle-order-updates').checked = settings.orderUpdates;
-            }
-            if (settings.telegramNotifications !== undefined) {
-                document.getElementById('toggle-telegram-notifications').checked = settings.telegramNotifications;
-            }
+            if (settings.orderUpdates !== undefined) document.getElementById('toggle-order-updates').checked = settings.orderUpdates;
+            if (settings.telegramNotifications !== undefined) document.getElementById('toggle-telegram-notifications').checked = settings.telegramNotifications;
             if (settings.darkTheme !== undefined) {
                 document.getElementById('toggle-dark-theme').checked = settings.darkTheme;
                 applyTheme(settings.darkTheme);
@@ -1891,13 +1803,10 @@
                 document.getElementById('color-picker-secondary').value = settings.accentColorSecondary;
                 document.getElementById('color-preview-secondary').style.backgroundColor = settings.accentColorSecondary;
             }
-            if (settings.accentColorPrimary && settings.accentColorSecondary) {
-                applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
-            }
+            if (settings.accentColorPrimary && settings.accentColorSecondary) applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
         }
         
         function saveSettings() {
-            // Собираем текущие значения всех настроек
             const settings = {
                 orderUpdates: document.getElementById('toggle-order-updates').checked,
                 telegramNotifications: document.getElementById('toggle-telegram-notifications').checked,
@@ -1905,48 +1814,133 @@
                 accentColorPrimary: document.getElementById('color-picker-primary').value,
                 accentColorSecondary: document.getElementById('color-picker-secondary').value
             };
-            
-            // Сохраняем в localStorage
             localStorage.setItem('app_settings', JSON.stringify(settings));
-            
-            // Сохраняем в облако Telegram
             tg.CloudStorage.setItem('app_settings', JSON.stringify(settings));
         }
         
         function applyTheme(isDark) {
-            if (isDark) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-            }
+            if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+            else document.documentElement.removeAttribute('data-theme');
         }
         
         function applyAccentColors(primaryColor, secondaryColor) {
             document.documentElement.style.setProperty('--accent-color', primaryColor);
             document.documentElement.style.setProperty('--accent-color-secondary', secondaryColor);
-            
-            // Обновляем градиент превью
             const gradientPreview = document.getElementById('gradient-preview');
-            if (gradientPreview) {
-                gradientPreview.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
-            }
+            if (gradientPreview) gradientPreview.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
         }
         
         // 6. ЛОГИКА АДРЕСОВ ДОСТАВКИ
         function copyAddress(address) {
-            // Копируем адрес в буфер обмена
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(address).then(() => {
                     tg.showAlert('Адрес скопирован: ' + address);
                     tg.HapticFeedback.notificationOccurred('success');
-                }).catch(() => {
-                    // Fallback для старых браузеров
-                    fallbackCopy(address);
-                });
-            } else {
-                fallbackCopy(address);
-            }
+                }).catch(() => fallbackCopy(address));
+            } else fallbackCopy(address);
         }
         
         function fallbackCopy(text) {
-            const textArea = 
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                tg.showAlert('Адрес скопирован: ' + text);
+                tg.HapticFeedback.notificationOccurred('success');
+            } catch (err) { tg.showAlert('Не удалось скопировать адрес'); }
+            document.body.removeChild(textArea);
+        }
+
+        // 7. ЛОГИКА ТАРИФОВ
+        function toggleTariffCategory(id) {
+            const content = document.getElementById('content-' + id);
+            const arrow = document.getElementById('arrow-' + id);
+            const isExpanded = content.classList.contains('expanded');
+            
+            // Сначала закрываем все остальные
+            document.querySelectorAll('.tariff-category-content').forEach(c => c.classList.remove('expanded'));
+            document.querySelectorAll('.tariff-category-arrow').forEach(a => a.classList.remove('expanded'));
+            
+            if (!isExpanded) {
+                content.classList.add('expanded');
+                arrow.classList.add('expanded');
+            }
+            tg.HapticFeedback.impactOccurred('light');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            ['toggle-order-updates', 'toggle-telegram-notifications', 'toggle-dark-theme'].forEach(id => {
+                const toggle = document.getElementById(id);
+                if (toggle) toggle.addEventListener('change', function() {
+                    if (id === 'toggle-dark-theme') applyTheme(this.checked);
+                    saveSettings();
+                });
+            });
+            
+            const cpP = document.getElementById('color-picker-primary');
+            const cpS = document.getElementById('color-picker-secondary');
+            if (cpP) {
+                cpP.addEventListener('input', function() {
+                    document.getElementById('color-preview-primary').style.backgroundColor = this.value;
+                    applyAccentColors(this.value, cpS.value);
+                });
+                cpP.addEventListener('change', saveSettings);
+            }
+            if (cpS) {
+                cpS.addEventListener('input', function() {
+                    document.getElementById('color-preview-secondary').style.backgroundColor = this.value;
+                    applyAccentColors(cpP.value, this.value);
+                });
+                cpS.addEventListener('change', saveSettings);
+            }
+            setupInputBlur();
+        });
+        
+        (function initApp() {
+            tg.CloudStorage.getItem('user_profile', (err, value) => {
+                if (!err && value) {
+                    fillProfileFields(JSON.parse(value));
+                    localStorage.setItem('user_profile', value);
+                } else {
+                    const localData = localStorage.getItem('user_profile');
+                    if (localData) fillProfileFields(JSON.parse(localData));
+                }
+            });
+            
+            tg.CloudStorage.getItem('app_settings', (err, value) => {
+                if (!err && value) {
+                    localStorage.setItem('app_settings', value);
+                    const settings = JSON.parse(value);
+                    if (settings.darkTheme) applyTheme(settings.darkTheme);
+                    if (settings.accentColorPrimary && settings.accentColorSecondary) applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
+                } else {
+                    const localSettings = localStorage.getItem('app_settings');
+                    if (localSettings) {
+                        const settings = JSON.parse(localSettings);
+                        if (settings.darkTheme) applyTheme(settings.darkTheme);
+                        if (settings.accentColorPrimary && settings.accentColorSecondary) applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
+                    }
+                }
+            });
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const dataParam = urlParams.get('data');
+            if (dataParam) {
+                try {
+                    const decodedData = JSON.parse(decodeURIComponent(dataParam));
+                    if (decodedData.b !== undefined) {
+                        const balanceValue = parseFloat(decodedData.b);
+                        document.getElementById('user-balance').innerText = balanceValue.toLocaleString('en-US', { minimumFractionDigits: 2 }).replace(/,/g, ' ');
+                        updateBalanceDisplay(balanceValue);
+                    }
+                    window.userOrders = decodedData.o || [];
+                } catch (e) { console.error("Ошибка данных:", e); }
+            }
+        })();
+    </script>
+</body>
+</html>
