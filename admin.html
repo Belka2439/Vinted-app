@@ -783,7 +783,7 @@
         }
         
         // Поиск заказа
-        async function searchOrder() {
+        function searchOrder() {
             const trackId = document.getElementById('track-input').value.trim();
             
             if (!trackId) {
@@ -797,8 +797,7 @@
             document.getElementById('order-card').classList.remove('active');
             
             try {
-                // TODO: Здесь будет запрос к Google Sheets API
-                // Сейчас используем локальную базу через бота
+                // Отправляем запрос через Telegram WebApp
                 tg.sendData(JSON.stringify({
                     action: 'search_order',
                     track_id: trackId
@@ -811,22 +810,21 @@
             }
         }
         
-        // Обработка данных от бота
+        // Обработка данных от бота (через webAppData)
         tg.onEvent('webAppData', (event) => {
             try {
                 const data = JSON.parse(event.data);
                 
-                if (data.action === 'order_found') {
-                    displayOrder(data.order);
-                } else if (data.action === 'order_not_found') {
+                if (data.success === false) {
+                    // Ошибка поиска
                     document.getElementById('loading-message').classList.remove('active');
                     document.getElementById('error-message').classList.add('active');
-                } else if (data.action === 'status_updated') {
-                    document.getElementById('success-message').classList.add('active');
-                    setTimeout(() => {
-                        document.getElementById('success-message').classList.remove('active');
-                    }, 3000);
-                } else if (data.action === 'stats_data') {
+                } else if (data.success === true && data.order) {
+                    // Заказ найден
+                    document.getElementById('loading-message').classList.remove('active');
+                    displayOrder(data.order);
+                } else if (data.success === true && data.period) {
+                    // Статистика получена
                     updateStatsDisplay(data.period, data);
                 }
             } catch (error) {
@@ -889,8 +887,6 @@
             }
             
             try {
-                // TODO: Здесь будет запрос к Google Sheets API для обновления статуса
-                // Сейчас отправляем через бота
                 tg.sendData(JSON.stringify({
                     action: 'update_status',
                     order_id: currentOrder.id,
