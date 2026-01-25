@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --accent-color: #007AFF;
+            --accent-color-secondary: #0056b3;
+            --text-main: #1C1C1E;
+            --text-secondary: #8E8E93;
+            --input-bg: #FAFAFA;
+            --input-border: #E5E5EA;
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --card-bg: #1C1C1E;
+            --text-main: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --input-bg: #2C2C2E;
+            --input-border: #3A3A3C;
+        }
+        
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 16px;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .app-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Заголовок */
+        .header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-secondary) 100%);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,122,255,0.12);
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+        .header-subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+            margin: 4px 0 0 0;
+        }
+        
+        /* Карточки меню */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid transparent;
+        }
+        .menu-item:active {
+            transform: scale(0.98);
+            background: var(--input-bg);
+        }
+        .menu-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        .menu-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        .menu-content {
+            flex: 1;
+        }
+        .menu-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: var(--text-main);
+        }
+        .menu-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        /* Экран поиска */
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Кнопка назад */
+        .back-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        .back-btn:active {
+            transform: scale(0.98);
+            background: var(--input-bg);
+        }
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Поле ввода */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+        .search-input {
+            width: 100%;
+            border: 2px solid var(--input-border);
+            background: var(--input-bg);
+            padding: 18px 20px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            box-sizing: border-box;
+            outline: none;
+            color: var(--text-main);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .search-input:focus {
+            border-color: var(--accent-color);
+            background: var(--card-bg);
+        }
+        .search-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
+        /* Кнопка поиска */
+        .search-btn {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 20px;
+        }
+        .search-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        .search-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+        }
+        
+        /* Карточка заказа */
+        .order-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            display: none;
+        }
+        .order-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--input-border);
+        }
+        .order-id {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+        .order-field {
+            margin-bottom: 14px;
+        }
+        .order-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .order-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+        .order-value a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        /* Статус заказа */
+        .status-section {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--input-border);
+        }
+        .status-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+        .status-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .status-btn {
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .status-btn:active {
+            transform: scale(0.96);
+        }
+        .status-btn.wait {
+            background: #FFF9E6;
+            color: #D48806;
+            border-color: #FFF9E6;
+        }
+        .status-btn.wait.active {
+            border-color: #D48806;
+            background: white;
+        }
+        .status-btn.processing {
+            background: #E6F4FF;
+            color: #007AFF;
+            border-color: #E6F4FF;
+        }
+        .status-btn.processing.active {
+            border-color: #007AFF;
+            background: white;
+        }
+        .status-btn.shipped {
+            background: #F0F9FF;
+            color: #0284C7;
+            border-color: #F0F9FF;
+        }
+        .status-btn.shipped.active {
+            border-color: #0284C7;
+            background: white;
+        }
+        .status-btn.delivered {
+            background: #E6F9ED;
+            color: #1E7E34;
+            border-color: #E6F9ED;
+        }
+        .status-btn.delivered.active {
+            border-color: #1E7E34;
+            background: white;
+        }
+        .status-btn.returned {
+            background: #FEEBEB;
+            color: #CC2D2D;
+            border-color: #FEEBEB;
+        }
+        .status-btn.returned.active {
+            border-color: #CC2D2D;
+            background: white;
+        }
+        
+        /* Сообщения */
+        .message {
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .message.active {
+            display: block;
+        }
+        .message.error {
+            background: #FEEBEB;
+            color: #CC2D2D;
+        }
+        .message.success {
+            background: #E6F9ED;
+            color: #1E7E34;
+        }
+        .message.loading {
+            background: #E6F4FF;
+            color: #007AFF;
+        }
+        
+        /* Информация о клиенте */
+        .client-info {
+            background: var(--input-bg);
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+        .client-field {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+        }
+        .client-field:not(:last-child) {
+            border-bottom: 1px solid var(--input-border);
+        }
+        .client-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .client-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        /* Кнопка сохранения */
+        .save-btn {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 20px;
+        }
+        .save-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        .save-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Главный экран -->
+        <div id="main-screen" class="screen active">
+            <div class="header">
+                <h1 class="header-title">🔑 Админ-панель</h1>
+                <p class="header-subtitle">Управление заказами</p>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openSearch()">
+                    <div class="menu-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Поиск по треку</h3>
+                        <p class="menu-description">Найти заказ по номеру</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Экран поиска -->
+        <div id="search-screen" class="screen">
+            <button class="back-btn" onclick="goBack()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                </svg>
+                Назад
+            </button>
+            
+            <div class="header">
+                <h1 class="header-title">🔍 Поиск заказа</h1>
+                <p class="header-subtitle">Введите номер заказа</p>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Номер заказа</label>
+                <input type="number" id="track-input" class="search-input" placeholder="Введите ID заказа" inputmode="numeric">
+            </div>
+            
+            <button class="search-btn" onclick="searchOrder()">Найти заказ</button>
+            
+            <div id="loading-message" class="message loading">
+                ⏳ Поиск заказа...
+            </div>
+            
+            <div id="error-message" class="message error">
+                ❌ Заказ не найден
+            </div>
+            
+            <div id="success-message" class="message success">
+                ✅ Статус успешно обновлен!
+            </div>
+            
+            <!-- Карточка заказа -->
+            <div id="order-card" class="order-card">
+                <div class="order-header">
+                    <span class="order-id" id="order-id">#1</span>
+                </div>
+                
+                <div class="order-field">
+                    <div class="order-label">Ссылка на товар</div>
+                    <div class="order-value" id="order-link">
+                        <a href="#" target="_blank">https://vinted.net/...</a>
+                    </div>
+                </div>
+                
+                <div class="order-field">
+                    <div class="order-label">Цена</div>
+                    <div class="order-value" id="order-price">100 BYN</div>
+                </div>
+                
+                <div class="order-field">
+                    <div class="order-label">Категория</div>
+                    <div class="order-value" id="order-category">Одежда</div>
+                </div>
+                
+                <div class="client-info">
+                    <div class="client-field">
+                        <span class="client-label">Имя клиента</span>
+                        <span class="client-value" id="client-name">Иван</span>
+                    </div>
+                    <div class="client-field">
+                        <span class="client-label">Username</span>
+                        <span class="client-value" id="client-username">@username</span>
+                    </div>
+                    <div class="client-field">
+                        <span class="client-label">Telegram ID</span>
+                        <span class="client-value" id="client-id">123456789</span>
+                    </div>
+                </div>
+                
+                <div class="status-section">
+                    <div class="status-label">Статус заказа</div>
+                    <div class="status-buttons">
+                        <button class="status-btn wait" onclick="selectStatus('В обработке')" data-status="В обработке">В обработке</button>
+                        <button class="status-btn processing" onclick="selectStatus('Куплено')" data-status="Куплено">Куплено</button>
+                        <button class="status-btn shipped" onclick="selectStatus('Отправлено')" data-status="Отправлено">Отправлено</button>
+                        <button class="status-btn delivered" onclick="selectStatus('Прибыло')" data-status="Прибыло">Прибыло</button>
+                        <button class="status-btn returned" onclick="selectStatus('Возврат')" data-status="Возврат">Возврат</button>
+                    </div>
+                </div>
+                
+                <button class="save-btn" id="save-btn" onclick="saveStatus()" disabled>Сохранить статус</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+        
+        // Применяем тему Telegram
+        if (tg.themeParams) {
+            document.documentElement.setAttribute('data-theme', tg.colorScheme);
+        }
+        
+        let currentOrder = null;
+        let selectedStatus = null;
+        
+        // Открыть экран поиска
+        function openSearch() {
+            document.getElementById('main-screen').classList.remove('active');
+            document.getElementById('search-screen').classList.add('active');
+            document.getElementById('track-input').focus();
+        }
+        
+        // Вернуться назад
+        function goBack() {
+            document.getElementById('search-screen').classList.remove('active');
+            document.getElementById('main-screen').classList.add('active');
+            resetSearch();
+        }
+        
+        // Сброс поиска
+        function resetSearch() {
+            document.getElementById('track-input').value = '';
+            document.getElementById('order-card').classList.remove('active');
+            document.getElementById('loading-message').classList.remove('active');
+            document.getElementById('error-message').classList.remove('active');
+            document.getElementById('success-message').classList.remove('active');
+            currentOrder = null;
+            selectedStatus = null;
+            document.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('save-btn').disabled = true;
+        }
+        
+        // Поиск заказа
+        async function searchOrder() {
+            const trackId = document.getElementById('track-input').value.trim();
+            
+            if (!trackId) {
+                tg.showAlert('Введите номер заказа');
+                return;
+            }
+            
+            // Показываем загрузку
+            document.getElementById('loading-message').classList.add('active');
+            document.getElementById('error-message').classList.remove('active');
+            document.getElementById('order-card').classList.remove('active');
+            
+            try {
+                // Отправляем данные в бота
+                tg.sendData(JSON.stringify({
+                    action: 'search_order',
+                    track_id: trackId
+                }));
+                
+                // Ждем ответа от бота (будет через WebAppData)
+                // В реальном приложении здесь будет API запрос
+                // Сейчас используем локальную базу данных через бота
+                
+            } catch (error) {
+                console.error('Ошибка поиска:', error);
+                document.getElementById('loading-message').classList.remove('active');
+                document.getElementById('error-message').classList.add('active');
+            }
+        }
+        
+        // Обработка данных от бота
+        tg.onEvent('webAppData', (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                
+                if (data.action === 'order_found') {
+                    displayOrder(data.order);
+                } else if (data.action === 'order_not_found') {
+                    document.getElementById('loading-message').classList.remove('active');
+                    document.getElementById('error-message').classList.add('active');
+                } else if (data.action === 'status_updated') {
+                    document.getElementById('success-message').classList.add('active');
+                    setTimeout(() => {
+                        document.getElementById('success-message').classList.remove('active');
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('Ошибка обработки данных:', error);
+            }
+        });
+        
+        // Отобразить заказ
+        function displayOrder(order) {
+            currentOrder = order;
+            
+            document.getElementById('loading-message').classList.remove('active');
+            document.getElementById('error-message').classList.remove('active');
+            
+            document.getElementById('order-id').textContent = '#' + order.id;
+            document.getElementById('order-link').innerHTML = `<a href="${order.link}" target="_blank">${order.link}</a>`;
+            document.getElementById('order-price').textContent = order.price_byn + ' BYN';
+            document.getElementById('order-category').textContent = order.category;
+            document.getElementById('client-name').textContent = order.full_name;
+            document.getElementById('client-username').textContent = '@' + (order.username || 'нет');
+            document.getElementById('client-id').textContent = order.user_id;
+            
+            // Выделяем текущий статус
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.status === order.status) {
+                    btn.classList.add('active');
+                    selectedStatus = order.status;
+                }
+            });
+            
+            document.getElementById('order-card').classList.add('active');
+            document.getElementById('save-btn').disabled = true;
+        }
+        
+        // Выбор статуса
+        function selectStatus(status) {
+            selectedStatus = status;
+            
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.status === status) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Разблокируем кнопку сохранения, если статус изменился
+            document.getElementById('save-btn').disabled = (status === currentOrder.status);
+        }
+        
+        // Сохранить статус
+        function saveStatus() {
+            if (!currentOrder || !selectedStatus) {
+                return;
+            }
+            
+            if (selectedStatus === currentOrder.status) {
+                tg.showAlert('Статус не изменился');
+                return;
+            }
+            
+            try {
+                tg.sendData(JSON.stringify({
+                    action: 'update_status',
+                    order_id: currentOrder.id,
+                    new_status: selectedStatus,
+                    user_id: currentOrder.user_id
+                }));
+                
+                // Обновляем текущий статус
+                currentOrder.status = selectedStatus;
+                document.getElementById('save-btn').disabled = true;
+                
+            } catch (error) {
+                console.error('Ошибка сохранения:', error);
+                tg.showAlert('Ошибка при сохранении статуса');
+            }
+        }
+        
+        // Обработка Enter в поле ввода
+        document.getElementById('track-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchOrder();
+            }
+        });
+    </script>
+</body>
+</html>
