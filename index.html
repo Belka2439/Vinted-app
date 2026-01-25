@@ -732,6 +732,155 @@
             border-radius: 12px;
         }
         
+        /* --- СТИЛИ ДЛЯ ТАРИФОВ --- */
+        .tariffs-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 8px;
+        }
+        .tariffs-icon {
+            width: 36px;
+            height: 36px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .tariffs-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .tariffs-text-wrapper {
+            flex: 1;
+        }
+        .tariffs-main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 4px 0;
+            line-height: 1.1;
+        }
+        .tariffs-main-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 24px 0;
+        }
+        .tariffs-section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 16px 0;
+        }
+        .tariff-category {
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .tariff-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .tariff-category-header:active {
+            background: var(--input-bg);
+        }
+        .tariff-category-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+        .tariff-category-icon {
+            width: 28px;
+            height: 28px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .tariff-category-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .tariff-category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0;
+        }
+        .tariff-category-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .tariff-category-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-color);
+            white-space: nowrap;
+        }
+        .tariff-category-arrow {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+        .tariff-category-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        .tariff-category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .tariff-category-content.expanded {
+            max-height: 1000px;
+        }
+        .tariff-items-list {
+            padding: 0 16px 16px 16px;
+        }
+        .tariff-item {
+            padding: 8px 0 8px 40px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            position: relative;
+        }
+        .tariff-item:before {
+            content: "•";
+            position: absolute;
+            left: 20px;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+        .tariff-note {
+            background: var(--input-bg);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .tariff-note-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 8px 0;
+        }
+        .tariff-note-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
         @media (min-width: 768px) {
             .app-container {
                 max-width: 600px;
@@ -959,7 +1108,7 @@
                         <option value="belarus">🇧🇾 Беларусь</option>
                         <option value="russia">🇷🇺 Россия</option>
                         <option value="europe">🇪🇺 Европа</option>
-                    </select>
+                </select>
                 </div>
                 
                 <div class="input-group">
@@ -979,7 +1128,7 @@
                     <div class="field-label-with-icon">
                         <div class="field-label-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <th d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </div>
@@ -1116,8 +1265,210 @@
         <!-- Экран тарифов -->
         <div id="tariffs-screen" class="screen-section" style="display: none;">
             <div class="profile-card">
-                <h2>Тарифы</h2>
-                <p style="color: var(--text-secondary); text-align: center;">Раздел в разработке</p>
+                <div class="tariffs-header">
+                    <div class="tariffs-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="tariffs-text-wrapper">
+                        <h1 class="tariffs-main-title">Тарифы</h1>
+                        <p class="tariffs-main-subtitle">Прозрачные цены на доставку товаров</p>
+                    </div>
+                </div>
+                
+                <h2 class="tariffs-section-title">Стоимость доставки по категориям</h2>
+                
+                <!-- Категория: Одежда -->
+                <div class="tariff-category">
+                    <div class="tariff-category-header" onclick="toggleTariffCategory('clothing')">
+                        <div class="tariff-category-left">
+                            <div class="tariff-category-icon">
+                                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M37 17V37M11 37V44H37V37M11 37H4V17C4 14 6 10.5 9 8C12 5.5 18 4 18 4H30C30 4 36 5.5 39 8C42 10.5 44 14 44 17V37H37M11 37V17" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M30 4C30 7.31371 27.3137 10 24 10C20.6863 10 18 7.31371 18 4" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="tariff-category-name">Одежда</h3>
+                        </div>
+                        <div class="tariff-category-right">
+                            <span class="tariff-category-price">от 5$</span>
+                            <svg class="tariff-category-arrow" id="arrow-clothing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="tariff-category-content" id="content-clothing">
+                        <div class="tariff-items-list">
+                            <div class="tariff-item">Футболки, майки, топы</div>
+                            <div class="tariff-item">Рубашки, блузки</div>
+                            <div class="tariff-item">Свитера, кардиганы</div>
+                            <div class="tariff-item">Платья, юбки</div>
+                            <div class="tariff-item">Брюки, джинсы, шорты</div>
+                            <div class="tariff-item">Нижнее белье</div>
+                            <div class="tariff-item">Бижутерия</div>
+                            <div class="tariff-item">Часы</div>
+                            <div class="tariff-item">Ремни</div>
+                            <div class="tariff-item">Кошельки</div>
+                            <div class="tariff-item">Зонты</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Категория: Обувь -->
+                <div class="tariff-category">
+                    <div class="tariff-category-header" onclick="toggleTariffCategory('shoes')">
+                        <div class="tariff-category-left">
+                            <div class="tariff-category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M17.944,2c-2.431,0-4.944,2.618-4.944,7,0,1.471,.707,2.98,1.456,4.58,.759,1.621,1.544,3.297,1.544,4.92v2c0,1.93,1.57,3.5,3.5,3.5s3.5-1.57,3.5-3.5v-2c0-1.732,.275-2.987,.542-4.201,.235-1.072,.458-2.085,.458-3.299,0-8.748-5.436-9-6.056-9Zm4.056,18.5c0,1.378-1.121,2.5-2.5,2.5s-2.5-1.122-2.5-2.5v-2c0-.167-.007-.334-.02-.5h5.028c-.005,.163-.008,.329-.008,.5v2Zm.565-6.415c-.187,.854-.393,1.789-.497,2.915h-5.239c-.284-1.315-.884-2.595-1.469-3.845-.7-1.495-1.361-2.907-1.361-4.155,0-3.756,2.006-6,3.944-6,.518,0,5.056,.225,5.056,8,0,1.106-.211,2.067-.435,3.085ZM6.056,0C5.436,0,0,.252,0,9c0,1.214,.223,2.227,.458,3.299,.267,1.213,.542,2.468,.542,4.201v2c0,1.93,1.57,3.5,3.5,3.5s3.5-1.57,3.5-3.5v-2c0-1.623,.785-3.299,1.544-4.92,.749-1.599,1.456-3.109,1.456-4.58C11,2.618,8.486,0,6.056,0Zm.944,18.5c0,1.378-1.121,2.5-2.5,2.5s-2.5-1.122-2.5-2.5v-2c0-.171-.003-.337-.008-.5H7.02c-.013,.166-.02,.333-.02,.5v2Zm1.639-7.345c-.585,1.25-1.185,2.53-1.469,3.845H1.931c-.104-1.126-.309-2.061-.497-2.915-.224-1.018-.435-1.979-.435-3.085C1,1.225,5.538,1,6.056,1c1.938,0,3.944,2.244,3.944,6,0,1.248-.661,2.66-1.361,4.155Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="tariff-category-name">Обувь</h3>
+                        </div>
+                        <div class="tariff-category-right">
+                            <span class="tariff-category-price">от 10$</span>
+                            <svg class="tariff-category-arrow" id="arrow-shoes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="tariff-category-content" id="content-shoes">
+                        <div class="tariff-items-list">
+                            <div class="tariff-item">Кроссовки, кеды</div>
+                            <div class="tariff-item">Ботинки, сапоги</div>
+                            <div class="tariff-item">Туфли, босоножки</div>
+                            <div class="tariff-item">Сандалии, шлепанцы</div>
+                            <div class="tariff-item">Спортивная обувь</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Категория: Куртка -->
+                <div class="tariff-category">
+                    <div class="tariff-category-header" onclick="toggleTariffCategory('jacket')">
+                        <div class="tariff-category-left">
+                            <div class="tariff-category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="m22.489,2.21c-1.164-1.008-3.062-2.21-5.489-2.21H7C4.572,0,2.675,1.202,1.511,2.21c-.96.831-1.511,2.058-1.511,3.365v11.924c0,1.93,1.57,3.5,3.5,3.5h.551c.245,1.692,1.691,3,3.449,3h9c1.758,0,3.204-1.308,3.449-3h.551c1.93,0,3.5-1.57,3.5-3.5V5.576c0-1.308-.551-2.534-1.511-3.365Zm-12.782-1.21h4.586l-2.293,6.498-2.293-6.498Zm1.635,7.637l-3.984-3.974c-.401-.438-.473-1.078-.214-1.54l1.535-2.031,2.663,7.544Zm3.98-7.545l1.499,1.977c.295.516.224,1.156-.163,1.577l-3.999,3.99,2.663-7.545Zm-10.322,14.908h2.5c.275,0,.5.225.5.5v2c0,.827-.673,1.5-1.5,1.5h-1.5v-4Zm.051,5h1.449c1.379,0,2.5-1.121,2.5-2.5v-2c0-.827-.673-1.5-1.5-1.5h-2.5v-7.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v12.5h-.5c-1.379,0-2.5-1.121-2.5-2.5V5.576c0-1.017.425-1.968,1.165-2.609,1.036-.897,2.716-1.966,4.835-1.966h.497l-1.186,1.573c-.511.895-.387,2.006.325,2.781l4.864,4.853v12.792h-4c-1.208,0-2.217-.86-2.449-2Zm13.949-1h-1.5c-.827,0-1.5-.673-1.5-1.5v-2c0-.275.225-.5.5-.5h2.5v4Zm4-2.5c0,1.379-1.121,2.5-2.5,2.5h-.5V7.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v7.5h-2.5c-.827,0-1.5.673-1.5,1.5v2c0,1.379,1.121,2.5,2.5,2.5h1.449c-.232,1.14-1.242,2-2.449,2h-4v-12.792l4.879-4.869c.697-.759.821-1.871.274-2.819l-1.149-1.52h.495c2.119,0,3.799,1.069,4.835,1.966.74.641,1.165,1.592,1.165,2.609v11.924Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="tariff-category-name">Куртка</h3>
+                        </div>
+                        <div class="tariff-category-right">
+                            <span class="tariff-category-price">от 10$</span>
+                            <svg class="tariff-category-arrow" id="arrow-jacket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="tariff-category-content" id="content-jacket">
+                        <div class="tariff-items-list">
+                            <div class="tariff-item">Куртки демисезонные</div>
+                            <div class="tariff-item">Куртки зимние, пуховики</div>
+                            <div class="tariff-item">Пальто</div>
+                            <div class="tariff-item">Ветровки</div>
+                            <div class="tariff-item">Жилеты</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Категория: Сумка -->
+                <div class="tariff-category">
+                    <div class="tariff-category-header" onclick="toggleTariffCategory('bag')">
+                        <div class="tariff-category-left">
+                            <div class="tariff-category-icon">
+                                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                    <g>
+                                        <path fill="currentColor" d="M23.52,29h-15a5.48,5.48,0,0,1-5.31-6.83L6.25,9.76a1,1,0,0,1,1-.76H24a1,1,0,0,1,1,.7l3.78,12.16a5.49,5.49,0,0,1-.83,4.91A5.41,5.41,0,0,1,23.52,29ZM8,11,5.11,22.65A3.5,3.5,0,0,0,8.48,27h15a3.44,3.44,0,0,0,2.79-1.42,3.5,3.5,0,0,0,.53-3.13L23.28,11Z"/>
+                                        <path fill="currentColor" d="M20,17a1,1,0,0,1-1-1V8a3,3,0,0,0-6,0v8a1,1,0,0,1-2,0V8A5,5,0,0,1,21,8v8A1,1,0,0,1,20,17Z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <h3 class="tariff-category-name">Сумка</h3>
+                        </div>
+                        <div class="tariff-category-right">
+                            <span class="tariff-category-price">от 8$</span>
+                            <svg class="tariff-category-arrow" id="arrow-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="tariff-category-content" id="content-bag">
+                        <div class="tariff-items-list">
+                            <div class="tariff-item">Сумки повседневные</div>
+                            <div class="tariff-item">Рюкзаки</div>
+                            <div class="tariff-item">Клатчи</div>
+                            <div class="tariff-item">Спортивные сумки</div>
+                            <div class="tariff-item">Дорожные сумки</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Категория: GGL Сумки -->
+                <div class="tariff-category">
+                    <div class="tariff-category-header" onclick="toggleTariffCategory('ggl')">
+                        <div class="tariff-category-left">
+                            <div class="tariff-category-icon">
+                                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                    <text x="16" y="9" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GEORGE</text>
+                                    <text x="16" y="18" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">GINA &amp;</text>
+                                    <text x="16" y="27" font-family="Arial, sans-serif" font-weight="900" font-size="7.5" fill="currentColor" letter-spacing="-0.5" text-anchor="middle">LUCY</text>
+                                </svg>
+                            </div>
+                            <h3 class="tariff-category-name">GGL Сумки</h3>
+                        </div>
+                        <div class="tariff-category-right">
+                            <span class="tariff-category-price">от 10$</span>
+                            <svg class="tariff-category-arrow" id="arrow-ggl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="tariff-category-content" id="content-ggl">
+                        <div class="tariff-items-list">
+                            <div class="tariff-item">Сумки и рюкзаки GEORGE GINA & LUCY</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Категория: Другое -->
+                <div class="tariff-category">
+                    <div class="tariff-category-header" onclick="toggleTariffCategory('other')">
+                        <div class="tariff-category-left">
+                            <div class="tariff-category-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M3.498,9.357c-1.583,.011-2.498,.989-2.498,2.651,0,1.649,.916,2.624,2.505,2.634,1.583-.01,2.471-.946,2.499-2.651-.027-1.663-.938-2.624-2.506-2.634Z"/>
+                                    <path fill="currentColor" d="M11.996,9.357c-1.583,.011-2.498,.989-2.498,2.651,0,1.649,.916,2.624,2.505,2.634,1.583-.01,2.471-.946,2.499-2.651-.027-1.663-.938-2.624-2.506-2.634Z"/>
+                                    <path fill="currentColor" d="M20.494,9.357c-1.583,.011-2.498,.989-2.498,2.651,0,1.649,.916,2.624,2.505,2.634,1.583-.01,2.471-.946,2.499-2.651-.027-1.663-.938-2.624-2.506-2.634Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="tariff-category-name">Другое</h3>
+                        </div>
+                        <div class="tariff-category-right">
+                            <span class="tariff-category-price">по запросу</span>
+                            <svg class="tariff-category-arrow" id="arrow-other" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="tariff-category-content" id="content-other">
+                        <div class="tariff-items-list">
+                            <div class="tariff-item">Аксессуары для волос</div>
+                            <div class="tariff-item">Шарфы, платки</div>
+                            <div class="tariff-item">Перчатки, варежки</div>
+                            <div class="tariff-item">Головные уборы</div>
+                            <div class="tariff-item">Прочие товары</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Примечание -->
+                <div class="tariff-note">
+                    <p class="tariff-note-title">Обратите внимание:</p>
+                    <p class="tariff-note-text">Стоимость указана за одну единицу товара. Цена в белорусских рублях рассчитывается автоматически по текущему курсу.</p>
+                </div>
             </div>
         </div>
         <!-- Экран настроек -->
@@ -1460,7 +1811,7 @@
                     tg.BackButton.offClick(goHome);
                 }
             }
-            tg.HapticFeedback.impactOccurred('light');
+           tg.HapticFeedback.impactOccurred('light');
         }
         function goHome() {
             navigateTo('home');
@@ -1598,128 +1949,4 @@
         }
         
         function fallbackCopy(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-999999px';
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                tg.showAlert('Адрес скопирован: ' + text);
-                tg.HapticFeedback.notificationOccurred('success');
-            } catch (err) {
-                tg.showAlert('Не удалось скопировать адрес');
-            }
-            document.body.removeChild(textArea);
-        }
-        
-        // Добавляем обработчики изменений для всех тумблеров
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggles = ['toggle-order-updates', 'toggle-telegram-notifications', 'toggle-dark-theme'];
-            toggles.forEach(id => {
-                const toggle = document.getElementById(id);
-                if (toggle) {
-                    toggle.addEventListener('change', function() {
-                        if (id === 'toggle-dark-theme') {
-                            applyTheme(this.checked);
-                        }
-                        saveSettings();
-                    });
-                }
-            });
-            
-            // Обработчики для пикеров цвета
-            const colorPickerPrimary = document.getElementById('color-picker-primary');
-            const colorPreviewPrimary = document.getElementById('color-preview-primary');
-            const colorPickerSecondary = document.getElementById('color-picker-secondary');
-            const colorPreviewSecondary = document.getElementById('color-preview-secondary');
-            
-            if (colorPickerPrimary && colorPreviewPrimary) {
-                colorPickerPrimary.addEventListener('input', function() {
-                    colorPreviewPrimary.style.backgroundColor = this.value;
-                    const secondaryColor = document.getElementById('color-picker-secondary').value;
-                    applyAccentColors(this.value, secondaryColor);
-                });
-                colorPickerPrimary.addEventListener('change', saveSettings);
-            }
-            
-            if (colorPickerSecondary && colorPreviewSecondary) {
-                colorPickerSecondary.addEventListener('input', function() {
-                    colorPreviewSecondary.style.backgroundColor = this.value;
-                    const primaryColor = document.getElementById('color-picker-primary').value;
-                    applyAccentColors(primaryColor, this.value);
-                });
-                colorPickerSecondary.addEventListener('change', saveSettings);
-            }
-            
-            // Инициализируем функцию закрытия клавиатуры
-            setupInputBlur();
-        });
-        
-        // 7. ИНИЦИАЛИЗАЦИЯ
-        (function initApp() {
-            // Инициализация никнейма из Telegram
-            const user = tg.initDataUnsafe.user;
-            
-            // Загрузка профиля из облака или памяти
-            tg.CloudStorage.getItem('user_profile', (err, value) => {
-                if (!err && value) {
-                    const profileData = JSON.parse(value);
-                    fillProfileFields(profileData);
-                    localStorage.setItem('user_profile', value); // Синхронизируем локальное хранилище с облаком
-                } else {
-                    const localData = localStorage.getItem('user_profile');
-                    if (localData) {
-                        fillProfileFields(JSON.parse(localData));
-                        // Если в облаке нет данных, но есть локально - загружаем в облако
-                        tg.CloudStorage.setItem('user_profile', localData);
-                    }
-                }
-            });
-            
-            // Загрузка настроек из облака или памяти
-            tg.CloudStorage.getItem('app_settings', (err, value) => {
-                if (!err && value) {
-                    localStorage.setItem('app_settings', value);
-                    const settings = JSON.parse(value);
-                    if (settings.darkTheme) {
-                        applyTheme(settings.darkTheme);
-                    }
-                    if (settings.accentColorPrimary && settings.accentColorSecondary) {
-                        applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
-                    }
-                } else {
-                    const localSettings = localStorage.getItem('app_settings');
-                    if (localSettings) {
-                        tg.CloudStorage.setItem('app_settings', localSettings);
-                        const settings = JSON.parse(localSettings);
-                        if (settings.darkTheme) {
-                            applyTheme(settings.darkTheme);
-                        }
-                        if (settings.accentColorPrimary && settings.accentColorSecondary) {
-                            applyAccentColors(settings.accentColorPrimary, settings.accentColorSecondary);
-                        }
-                    }
-                }
-            });
-            
-            // Обработка входящих данных (баланс, заказы)
-            const urlParams = new URLSearchParams(window.location.search);
-            const dataParam = urlParams.get('data');
-            if (dataParam) {
-                try {
-                    const decodedData = JSON.parse(decodeURIComponent(dataParam));
-                    if (decodedData.b !== undefined) {
-                        const balanceValue = parseFloat(decodedData.b);
-                        let formattedBalance = balanceValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, ' ');
-                        document.getElementById('user-balance').innerText = formattedBalance;
-                        updateBalanceDisplay(balanceValue);
-                    }
-                    window.userOrders = decodedData.o || [];
-                } catch (e) { console.error("Ошибка данных:", e); }
-            }
-        })();
-    </script>
-</body>
-</html>
+            const textArea = 
