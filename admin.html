@@ -405,8 +405,8 @@
         
         /* Кнопки периодов статистики */
         .stats-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -414,26 +414,25 @@
             background: var(--card-bg);
             border: 2px solid var(--input-border);
             border-radius: 16px;
-            padding: 16px 12px;
+            padding: 16px 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
         .stats-period-btn:active {
-            transform: scale(0.96);
+            transform: scale(0.98);
         }
         .stats-period-btn.active {
             border-color: var(--accent-color);
             background: var(--input-bg);
         }
         .stats-period-icon {
-            font-size: 28px;
+            font-size: 24px;
         }
         .stats-period-label {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
         }
@@ -747,24 +746,18 @@
         
         // Показать статистику за период
         function showStats(period) {
-            // Скрываем все карточки статистики
-            document.querySelectorAll('.stats-card').forEach(card => card.classList.remove('active'));
-            
             // Убираем активный класс со всех кнопок
             document.querySelectorAll('.stats-period-btn').forEach(btn => btn.classList.remove('active'));
             
-            // Если нажали на ту же кнопку - скрываем
-            if (currentStatsPeriod === period) {
-                currentStatsPeriod = null;
-                return;
-            }
-            
-            // Активируем выбранную кнопку и карточку
+            // Активируем выбранную кнопку
             document.querySelector(`.stats-period-btn[data-period="${period}"]`).classList.add('active');
+            
+            // Показываем карточку статистики
             document.getElementById(`stats-${period}`).classList.add('active');
             currentStatsPeriod = period;
             
-            // Запрашиваем статистику от бота
+            // TODO: Здесь будет запрос к Google Sheets API
+            // Сейчас используем локальную базу через бота
             requestStats(period);
         }
         
@@ -804,15 +797,12 @@
             document.getElementById('order-card').classList.remove('active');
             
             try {
-                // Отправляем данные в бота
+                // TODO: Здесь будет запрос к Google Sheets API
+                // Сейчас используем локальную базу через бота
                 tg.sendData(JSON.stringify({
                     action: 'search_order',
                     track_id: trackId
                 }));
-                
-                // Ждем ответа от бота (будет через WebAppData)
-                // В реальном приложении здесь будет API запрос
-                // Сейчас используем локальную базу данных через бота
                 
             } catch (error) {
                 console.error('Ошибка поиска:', error);
@@ -899,6 +889,8 @@
             }
             
             try {
+                // TODO: Здесь будет запрос к Google Sheets API для обновления статуса
+                // Сейчас отправляем через бота
                 tg.sendData(JSON.stringify({
                     action: 'update_status',
                     order_id: currentOrder.id,
@@ -906,9 +898,12 @@
                     user_id: currentOrder.user_id
                 }));
                 
-                // Обновляем текущий статус
+                // Обновляем текущий статус локально
                 currentOrder.status = selectedStatus;
                 document.getElementById('save-btn').disabled = true;
+                
+                // Показываем уведомление об успехе
+                tg.showAlert('Статус успешно обновлен!');
                 
             } catch (error) {
                 console.error('Ошибка сохранения:', error);
