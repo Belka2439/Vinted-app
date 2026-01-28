@@ -758,12 +758,24 @@
                 </div>
                 <div class="stats-card-content">
                     <div class="stats-row">
-                        <span class="stats-label">Заказов:</span>
+                        <span class="stats-label">📦 Заказов:</span>
                         <span class="stats-value" id="stats-day-orders">0</span>
                     </div>
                     <div class="stats-row">
-                        <span class="stats-label">Прибыль:</span>
+                        <span class="stats-label">💰 Прибыль:</span>
                         <span class="stats-value" id="stats-day-profit">0 BYN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">💵 Продажи (BYN):</span>
+                        <span class="stats-value" id="stats-day-total-byn">0 BYN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">🇵🇱 Потрачено (PLN):</span>
+                        <span class="stats-value" id="stats-day-total-pln">0 PLN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">📊 Средний чек:</span>
+                        <span class="stats-value" id="stats-day-avg-check">0 BYN</span>
                     </div>
                 </div>
             </div>
@@ -775,12 +787,24 @@
                 </div>
                 <div class="stats-card-content">
                     <div class="stats-row">
-                        <span class="stats-label">Заказов:</span>
+                        <span class="stats-label">📦 Заказов:</span>
                         <span class="stats-value" id="stats-week-orders">0</span>
                     </div>
                     <div class="stats-row">
-                        <span class="stats-label">Прибыль:</span>
+                        <span class="stats-label">💰 Прибыль:</span>
                         <span class="stats-value" id="stats-week-profit">0 BYN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">💵 Продажи (BYN):</span>
+                        <span class="stats-value" id="stats-week-total-byn">0 BYN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">🇵🇱 Потрачено (PLN):</span>
+                        <span class="stats-value" id="stats-week-total-pln">0 PLN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">📊 Средний чек:</span>
+                        <span class="stats-value" id="stats-week-avg-check">0 BYN</span>
                     </div>
                 </div>
             </div>
@@ -792,12 +816,24 @@
                 </div>
                 <div class="stats-card-content">
                     <div class="stats-row">
-                        <span class="stats-label">Заказов:</span>
+                        <span class="stats-label">📦 Заказов:</span>
                         <span class="stats-value" id="stats-month-orders">0</span>
                     </div>
                     <div class="stats-row">
-                        <span class="stats-label">Прибыль:</span>
+                        <span class="stats-label">💰 Прибыль:</span>
                         <span class="stats-value" id="stats-month-profit">0 BYN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">💵 Продажи (BYN):</span>
+                        <span class="stats-value" id="stats-month-total-byn">0 BYN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">🇵🇱 Потрачено (PLN):</span>
+                        <span class="stats-value" id="stats-month-total-pln">0 PLN</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">📊 Средний чек:</span>
+                        <span class="stats-value" id="stats-month-avg-check">0 BYN</span>
                     </div>
                 </div>
             </div>
@@ -912,9 +948,15 @@
         function updateStatsDisplay(period, data) {
             const ordersEl = document.getElementById(`stats-${period}-orders`);
             const profitEl = document.getElementById(`stats-${period}-profit`);
+            const totalBynEl = document.getElementById(`stats-${period}-total-byn`);
+            const totalPlnEl = document.getElementById(`stats-${period}-total-pln`);
+            const avgCheckEl = document.getElementById(`stats-${period}-avg-check`);
             
             if (ordersEl) ordersEl.textContent = data.orders || 0;
             if (profitEl) profitEl.textContent = (data.profit || 0) + ' BYN';
+            if (totalBynEl) totalBynEl.textContent = (data.total_byn || 0) + ' BYN';
+            if (totalPlnEl) totalPlnEl.textContent = (data.total_pln || 0) + ' PLN';
+            if (avgCheckEl) avgCheckEl.textContent = (data.avg_check || 0) + ' BYN';
         }
         
         // Поиск по трек-номеру
